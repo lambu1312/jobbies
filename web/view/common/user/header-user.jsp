@@ -5,11 +5,10 @@
         <a href="${pageContext.request.contextPath}/HomeSeeker" class="logo">JOBBIES</a>
         
         <div class="nav-links" id="navLinks">
-            <a href="${pageContext.request.contextPath}/HomeSeeker">Home</a>
-            <a href="#">About</a>
-            <a href="#">Services</a>
-            <a href="#">Contact</a>
-            <a href="${pageContext.request.contextPath}/FavourJobPosting">Favourite Jobs</a>
+            <a href="${pageContext.request.contextPath}/HomeSeeker">Trang chủ</a>
+            <a href="#">Tạo CV</a>
+            <a href="#">Cẩm nang</a>
+            <a href="${pageContext.request.contextPath}/FavourJobPosting">Yêu thích</a>
             
             <div class="user-dropdown">
                 <button class="user-dropdown-toggle" id="userDropdownBtn">

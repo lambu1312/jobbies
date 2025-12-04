@@ -23,6 +23,7 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
     private final JobPostingsDAO jobPostingsDAO = new JobPostingsDAO();
     private final JobSeekerDAO jobSeekerDAO = new JobSeekerDAO();
     private final ApplicationDAO applicationDAO = new ApplicationDAO();
+    private final FavourJobPostingDAO favourJPDAO = new FavourJobPostingDAO();
     private final Validation valid = new Validation();
 
     @Override
@@ -127,6 +128,12 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
                 if (existingApplication != null) {
                     request.setAttribute("existingApplication", existingApplication);
                 }
+
+                FavourJobPosting existFavourJP = favourJPDAO.findExistFavourJP(
+                        jobSeeker.getJobSeekerID(), jobPost.getJobPostingID());
+                if (existFavourJP != null) {
+                    request.setAttribute("existFavourJP", existFavourJP);
+                }
             }
 
             // Set notice if exists
@@ -159,7 +166,6 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
                 return "jobPostingDetail?action=details&idJP=" + jobPostingId + "&error="
                         + URLEncoder.encode("You are not currently a member of Job Seeker. Please join to use this function.", "UTF-8");
             }
-
 
             // Check for existing pending application
             Applications existingApp = applicationDAO.findPendingApplication(
@@ -200,6 +206,13 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
             if (jobSeeker == null) {
                 return "jobPostingDetail?action=details&idJP=" + jobPostingId + "&error="
                         + URLEncoder.encode("You are not currently a member of Job Seeker. Please join to use this function.", "UTF-8");
+            }
+
+            if (!favourJPDAO.getJobPostingsByJobSeeker(jobSeeker.getJobSeekerID(), jobPostingId)) {
+                FavourJobPosting favourJP = new FavourJobPosting();
+                favourJP.setJobSeekerID(jobSeeker.getJobSeekerID());
+                favourJP.setJobPostingID(jobPostingId);
+                favourJPDAO.insert(favourJP);
             }
 
             return "jobPostingDetail?action=details&idJP=" + jobPostingId + "&success="
