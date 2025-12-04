@@ -499,15 +499,7 @@
     <div class="pixel-decoration deco-2">💎</div>
     <div class="pixel-decoration deco-3">🚀</div>
 
-    <nav class="navbar">
-        <div class="logo">JOBBIES</div>
-        <div class="nav-links">
-            <a href="${pageContext.request.contextPath}/home">Việc làm</a>
-            <a href="#">Tạo CV</a>
-            <a href="#">Cẩm nang</a>
-            <button class="cta-button" onclick="window.location.href='${pageContext.request.contextPath}/login'">Đăng nhập / Đăng ký</button>
-        </div>
-    </nav>
+    <jsp:include page="../view/common/header-area.jsp"></jsp:include>
 
     <section class="hero">
         <h1>Find Your Vibe,<br>Build Your Future ✨</h1>
