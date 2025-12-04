@@ -19,7 +19,7 @@
 
     /* Footer styling */
     footer {
-        background-color: #389354;
+        background-color: #140A20;
         color: white;
         text-align: center;
         padding: 10px 0; /* Reduced padding for smaller footer */

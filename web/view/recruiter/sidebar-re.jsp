@@ -17,23 +17,23 @@
     </div>
 
     <!-- Navigation Links -->
-    <a href="${pageContext.request.contextPath}/Dashboard">
+    <a>
         <i class="fa-solid fa-home"></i> Tổng quan
     </a>
-    <a href="${pageContext.request.contextPath}/view/recruiter/viewRecruiterProfile.jsp">
+    <a>
         <i class="fa-duotone fa-solid fa-address-card"></i> Trang cá nhân
     </a>
     <a href="${pageContext.request.contextPath}/jobPost">
         <i class="fa-solid fa-list"></i> Đăng tin tuyển dụng
     </a>
-    <a href="${pageContext.request.contextPath}/company?action=create">
+    <a>
         <i class="fa-solid fa-building me"></i> Tạo công ty
     </a>
-    <a href="${pageContext.request.contextPath}/company?action=edit">
+    <a>
         <i class="fas fa-pencil-alt me"></i> Chỉnh sửa công ty
     </a>
-    <a href="${pageContext.request.contextPath}/view/recruiter/changePW-re.jsp"><i class="fas fa-lock"></i> Thay đổi mật khẩu</a>
-    <a href="${pageContext.request.contextPath}/view/recruiter/deactiveAccountRecruiter.jsp"><i class="fa-solid fa-eraser"></i> Vô hiệu hóa tài khoản</a>
+    <a><i class="fas fa-lock"></i> Thay đổi mật khẩu</a>
+    <a><i class="fa-solid fa-eraser"></i> Vô hiệu hóa tài khoản</a>
 
     <a href="${pageContext.request.contextPath}/view/authen/logout.jsp" style="color: red;">
         <i class="fas fa-sign-out-alt" style="color: red;"></i> Đăng xuất

@@ -49,7 +49,7 @@
                     }
 
                     .header-section h2 {
-                        color: #007b5e;
+                        color: #140A20;
                         font-weight: bold;
                         font-size: 26px;
                         margin-top: 80px;
@@ -66,7 +66,7 @@
 
                     /* Add new job button */
                     .btn-add-job {
-                        background-color: #007b5e;
+                        background-color: #140A20;
                         color: white;
                         padding: 10px 20px;
                         font-size: 15px;
@@ -102,7 +102,7 @@
                     }
 
                     .search-button {
-                        background-color: #007b5e;
+                        background-color: #140A20;
                         border: none;
                         padding: 8px 15px;
                         border-radius: 0 5px 5px 0;
@@ -126,8 +126,8 @@
 
                     .filter-buttons .btn-filter {
                         background-color: #f8f9fa;
-                        border: 1px solid #007b5e;
-                        color: #007b5e;
+                        border: 1px solid #140A20;
+                        color: #140A20;
                         padding: 7px 11px;
                         border-radius: 5px;
                         cursor: pointer;
@@ -136,7 +136,7 @@
                     }
 
                     .filter-buttons .btn-filter:hover {
-                        background-color: #007b5e;
+                        background-color: #140A20;
                         color: white;
                     }
 
@@ -152,7 +152,7 @@
                     }
 
                     table thead th {
-                        background-color: #007b5e;
+                        background-color: #140A20;
                         color: white;
                         padding: 15px;
                         text-align: center; /* Center the headers */
@@ -170,7 +170,7 @@
                     .btn-action {
                         margin-right: 20px; /* Increase spacing between action buttons */
                         background-color: transparent;
-                        color: #007b5e;
+                        color: #140A20;
                         font-size: 16px;
                         cursor: pointer;
                         text-decoration: none;

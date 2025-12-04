@@ -32,7 +32,7 @@
 <style>
     /* Header styling */
     header {
-        background-color: #389354;
+        background-color: #140A20;
         padding: 15px 30px;
         color: white;
         display: flex;
