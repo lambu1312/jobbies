@@ -1,25 +1,31 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <header>
     <!-- Navigation Links -->
     <div class="nav-links">
         <div class="nav-item">
-            <a href="${pageContext.request.contextPath}/home">Home</a>
+            <a href="${pageContext.request.contextPath}/home">Trang chủ</a>
         </div>
         <div class="nav-item">
-            <a href="#">About</a>
+            <a href="#">Dịch vụ</a>
         </div>
         <div class="nav-item">
-            <a href="#">Services</a>
+            <a href="#">Điều khoản và bảo mật</a>
         </div>
         <div class="nav-item">
-            <a href="#">Contact</a>
+            <a href="#">Liên hệ</a>
         </div>
     </div>
 
-    <!-- JobPath Logo/Text -->
+    <!-- Jobbies Logo -->
     <div class="jobpath-logo">
-        <img class="logo__image" src="${pageContext.request.contextPath}/assets/img/logo/header__one_dark.svg" width="160" height="40" alt="logo">
+        <img class="logo__image"
+             src="${pageContext.request.contextPath}/assets/img/logo/logo_jobbies.png"
+             width="350"
+             height="150"
+             style="object-fit: contain;"
+             alt="Jobbies Logo">
     </div>
 </header>
 
@@ -30,18 +36,17 @@
         padding: 15px 30px;
         color: white;
         display: flex;
-        justify-content: space-between; /* Space between navigation links and JobPath */
+        justify-content: space-between;
         align-items: center;
         position: fixed;
         top: 0;
-        left: 260px; /* Leaves room for the sidebar */
-        width: calc(100% - 260px); /* Adjust the header width to avoid sidebar overlap */
-        height: 70px; /* Fixed height for the header */
+        left: 260px;
+        width: calc(100% - 260px);
+        height: 70px;
         z-index: 1000;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds a slight shadow to separate header */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-    /* Sidebar styling */
     .sidebar {
         height: 100vh;
         width: 260px;
@@ -74,22 +79,17 @@
         color: #f8f9fa;
     }
 
-    /* JobPath Logo/Text */
+    /* Logo */
     .jobpath-logo {
-        font-size: 24px;
-        font-weight: bold;
+        display: flex;
+        align-items: center;
     }
 
-    .green-text {
-        color: #28a745; /* Green color for the word 'Path' */
-    }
-
-    /* Add margin-top to main content to avoid overlapping header */
+    /* Main content margin */
     .main-content {
-        margin-top: 90px; /* Adjust this value if needed based on header height */
+        margin-top: 90px;
     }
 
-    /* General page styling for conflict-free content */
     body {
         margin: 0;
         padding: 0;

@@ -2,9 +2,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <footer>
-    <p>© 2024 JobPath. All rights reserved.</p>
-    <a href="#">Privacy Policy</a>
-    <a href="#">Terms of Service</a>
+    <p>Jobbies. Đảm bảo mọi thông tin và quyền lợi của bạn.</p>
+    <a href="#">Điều khoản và dịch vụ</a>
+    <a href="#">Liên hệ với chúng tôi</a>
 </footer>
 
 <style>

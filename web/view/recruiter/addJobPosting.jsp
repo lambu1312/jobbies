@@ -207,15 +207,15 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="closingDate">Closing Date:</label>
+                                <label for="closingDate">Ngày kết thúc:</label>
                                 <input type="date" id="closingDate" name="closingDate" class="form-control" value="${closingDate}" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="jobCategory">Job Category:</label>
+                                <label for="jobCategory">Hạng mục công việc:</label>
                                 <select id="jobCategory" name="jobCategory" class="form-control" required>
-                                    <option value="">Select Job Category</option>
+                                    <option value="">Chọn hạng mục</option>
                                     <c:forEach var="category" items="${jobCategories}">
                                         <c:if test="${category.status == true}">
                                             <option value="${category.id}" <c:if test="${category.id == selectedJobCategory}">selected</c:if>>${category.name}</option>
@@ -230,7 +230,7 @@
                     <div class="form-check">
                         <input type="checkbox" id="jobPathAgreement" name="jobPathAgreement" class="form-check-input" required>
                         <label class="form-check-label" for="jobPathAgreement">
-                            I have read and agree to Job Path's Terms of Service
+                            Tôi đã đọc và đồng ý với điều khoản và dịch vụ của Jobbies
                         </label>
                     </div>
 
@@ -254,8 +254,8 @@
 
                     <!-- Buttons -->
                     <div class="btn-group">
-                        <button type="submit" class="btn btn-success">Save Job</button>
-                        <button type="button" class="btn btn-secondary" onclick="clearForm()">Reset</button>
+                        <button type="submit" class="btn btn-success">Đăng tuyển</button>
+                        <button type="button" class="btn btn-secondary" onclick="clearForm()">Xóa thông tin đã nhập</button>
                     </div>
                 </form>
             </div>

@@ -338,11 +338,11 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Job Title</th>
-                                        <th>Date Posted</th>
-                                        <th>Status</th>
-                                        <th>Actions</th>
-                                        <th>Applications</th>
+                                        <th>Tiêu đề công việc</th>
+                                        <th>Ngày đăng</th>
+                                        <th>Trạng thái</th>
+                                        <th>Hành động</th>
+                                        <th>Người ứng tuyển</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -400,16 +400,17 @@
                                             </td>
 
                                             <td>
-                                                <c:if test="${i.application.size() !=  0}">
+                                                <c:if test="${i.application.size() != 0}">
                                                     <a
                                                         href="${pageContext.request.contextPath}/applicationSeekers?action=view&jobPostId=${i.getJobPostingID()}"
                                                         class="btn-action text-info"
                                                         >
-                                                        <i class="fas fa-arrow-up"></i>
+                                                        Xem danh sách người đã ứng tuyển
                                                     </a>
                                                 </c:if>
+
                                                 <c:if test="${i.application.size() ==  0}">
-                                                    Not yet
+                                                    Chưa có người ứng tuyển công việc này
                                                 </c:if>
                                             </td>
                                         </tr>
@@ -422,7 +423,7 @@
                         <c:if test="${not empty requestScope.NoJP}">
                             <div class="error-message">${requestScope.NoJP}</div>
                         </c:if>
-                            
+
                         <!-- Pagination controls -->
                         <nav aria-label="Page navigation" class="footer-container">
                             <ul class="pagination justify-content-center">
