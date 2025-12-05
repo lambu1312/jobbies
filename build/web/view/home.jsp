@@ -112,7 +112,7 @@
 
         .hero h1 {
             font-size: 4rem;
-            font-weight: 900;
+/*            font-weight: 900;*/
             background: linear-gradient(135deg, #fff 0%, #c471f5 50%, #7ee8fa 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
@@ -517,34 +517,48 @@
 
     <div class="content-section">
         <!-- Filters Sidebar -->
-        <aside class="filters-sidebar">
-            <h3 class="filter-title">🎯 Filters</h3>
-            <form action="${pageContext.request.contextPath}/home" method="GET" id="filterForm">
-                <input type="hidden" name="search" value="${param.search}">
-                
-                <div class="filter-group">
-                    <label class="filter-label">Job Category</label>
-                    <select name="filterCategory" class="filter-select" onchange="document.getElementById('filterForm').submit();">
-                        <option value="">All Categories</option>
-                        <c:forEach var="category" items="${activeCategories}">
-                            <option value="${category.getId()}" ${category.getId() == param.filterCategory ? 'selected' : ''}>
-                                ${category.getName()}
-                            </option>
-                        </c:forEach>
-                    </select>
-                </div>
+<aside class="filters-sidebar">
+    <h3 class="filter-title">🎯 Filters</h3>
+    <form action="${pageContext.request.contextPath}/home" method="GET" id="filterForm">
+        <input type="hidden" name="search" value="${param.search}">
+        
+        <!-- Category Filter -->
+        <div class="filter-group">
+            <label class="filter-label">Job Category</label>
+            <select name="filterCategory" id="filterCategory" class="filter-select" onchange="document.getElementById('filterForm').submit();">
+                <option value="">All Categories</option>
+                <c:forEach var="category" items="${activeCategories}">
+                    <option value="${category.getId()}" ${category.getId() == param.filterCategory ? 'selected' : ''}>
+                        ${category.getName()}
+                    </option>
+                </c:forEach>
+            </select>
+        </div>
 
-                <div class="filter-group">
-                    <label class="filter-label">Salary Range</label>
-                    <div class="salary-range">
-                        <input type="number" name="minSalary" class="filter-input" placeholder="Min ($)" value="${param.minSalary}">
-                        <span>-</span>
-                        <input type="number" name="maxSalary" class="filter-input" placeholder="Max ($)" value="${param.maxSalary}">
-                    </div>
-                    <button type="submit" class="filter-button">Apply Filter 🔍</button>
-                </div>
-            </form>
-        </aside>
+        <!-- Salary Range Filter -->
+        <div class="filter-group">
+            <label class="filter-label">Salary Range ($)</label>
+            <input type="number" 
+                   name="minSalary" 
+                   id="minSalary" 
+                   class="filter-input" 
+                   placeholder="Min (e.g. 1000)" 
+                   value="${param.minSalary}"
+                   min="0"
+                   step="100">
+            <span style="display: block; text-align: center; padding: 0.5rem 0; color: #b8b8d1;">to</span>
+            <input type="number" 
+                   name="maxSalary" 
+                   id="maxSalary" 
+                   class="filter-input" 
+                   placeholder="Max (e.g. 5000)" 
+                   value="${param.maxSalary}"
+                   min="0"
+                   step="100">
+            <button type="submit" class="filter-button">Apply Filter 🔍</button>
+        </div>
+    </form>
+</aside>
 
         <!-- Job Listings -->
         <main class="jobs-content">

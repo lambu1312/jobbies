@@ -389,7 +389,7 @@
                                     <div class="meta-item">
                                         <i class="fas fa-calendar-alt"></i>
                                         <div>
-                                            <span class="meta-label">Posted:</span>
+                                            <span class="meta-label">Ngày Đăng:</span>
                                             <span class="meta-value">${jobPost.getPostedDate()}</span>
                                         </div>
                                     </div>
@@ -397,7 +397,7 @@
                                     <div class="meta-item">
                                         <i class="fas fa-hourglass-end"></i>
                                         <div>
-                                            <span class="meta-label">Deadline:</span>
+                                            <span class="meta-label">Hạn:</span>
                                             <span class="meta-value">${jobPost.getClosingDate()}</span>
                                         </div>
                                     </div>
@@ -405,7 +405,7 @@
                                     <div class="meta-item">
                                         <i class="fas fa-map-marker-alt"></i>
                                         <div>
-                                            <span class="meta-label">Location:</span>
+                                            <span class="meta-label">Địa điểm:</span>
                                             <span class="meta-value">${jobPost.getLocation()}</span>
                                         </div>
                                     </div>
@@ -413,7 +413,7 @@
                                     <div class="meta-item">
                                         <i class="fas fa-dollar-sign"></i>
                                         <div>
-                                            <span class="meta-label">Salary:</span>
+                                            <span class="meta-label">Lương:</span>
                                             <span class="meta-value">${jobPost.getMinSalary()} - ${jobPost.getMaxSalary()}</span>
                                         </div>
                                     </div>
@@ -421,7 +421,7 @@
                                     <div class="meta-item">
                                         <i class="fas fa-list"></i>
                                         <div>
-                                            <span class="meta-label">Category:</span>
+                                            <span class="meta-label">Danh mục:</span>
                                             <span class="meta-value">
                                                 <c:choose>
                                                     <c:when test="${category != 'This category was deleted!'}">
@@ -438,7 +438,7 @@
                                     <div class="meta-item">
                                         <i class="fas fa-circle"></i>
                                         <div>
-                                            <span class="meta-label">Status:</span>
+                                            <span class="meta-label">Trạng thái:</span>
                                             <span class="status-badge ${jobPost.getStatus() == 'Active' ? 'status-active' : 'status-closed'}">
                                                 ${jobPost.getStatus()}
                                             </span>
