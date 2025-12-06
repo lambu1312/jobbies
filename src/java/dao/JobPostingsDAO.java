@@ -201,20 +201,37 @@ public class JobPostingsDAO extends GenericDAO<JobPostings> {
         parameterMap.put("MaxSalary", maxSalary);
         return findTotalRecordGenericDAO(JobPostings.class, sql, parameterMap);
     }
-
-    public List<JobPostings> findJobPostingsWithFilterAndRecruiterID(String sortField, int recruiterID, int page, int pageSize) {
-        String sql = "SELECT * FROM [dbo].[JobPostings] WHERE RecruiterID = ? ORDER BY " + sortField + " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
-        parameterMap = new LinkedHashMap<>();
-        parameterMap.put("RecruiterID", recruiterID);  // Thêm RecruiterID vào truy vấn
-        parameterMap.put("offset", (page - 1) * pageSize);
-        parameterMap.put("fetch", pageSize);
-        List<JobPostings> list = queryGenericDAO(JobPostings.class, sql, parameterMap);
-        ApplicationDAO applicationDao = new ApplicationDAO();
-        for (JobPostings jobPostings : list) {
-            jobPostings.setApplication(applicationDao.findApplicationByJobPostingID(jobPostings.getJobPostingID()));
-        }
-        return list;
+    
+    public List<JobPostings> findJobPostingsWithFilterAndRecruiterID(
+        String sortField, 
+        String order,
+        int recruiterID, 
+        int page, 
+        int pageSize
+) {
+    if (!order.equalsIgnoreCase("ASC") && !order.equalsIgnoreCase("DESC")) {
+        order = "ASC"; 
     }
+
+    String sql = "SELECT * FROM [dbo].[JobPostings] WHERE RecruiterID = ? ORDER BY " 
+                 + sortField + " " + order +
+                 " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+
+    parameterMap = new LinkedHashMap<>();
+    parameterMap.put("RecruiterID", recruiterID);
+    parameterMap.put("offset", (page - 1) * pageSize);
+    parameterMap.put("fetch", pageSize);
+
+    List<JobPostings> list = queryGenericDAO(JobPostings.class, sql, parameterMap);
+
+    ApplicationDAO applicationDao = new ApplicationDAO();
+    for (JobPostings jobPostings : list) {
+        jobPostings.setApplication(applicationDao.findApplicationByJobPostingID(jobPostings.getJobPostingID()));
+    }
+
+    return list;
+}
+
 
     public List<JobPostings> findJobPostingsWithFilter(String sortField, int page, int pageSize) {
         String sql = "SELECT * FROM [dbo].[JobPostings] WHERE Status = ? ORDER BY " + sortField + " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
