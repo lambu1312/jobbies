@@ -110,30 +110,6 @@
                 box-shadow: 0 0 5px rgba(0, 123, 94, 0.3);
             }
 
-            .form-control.is-invalid {
-                border-color: #dc3545 !important;
-                background-color: #fff5f5;
-            }
-
-            .form-control.is-invalid:focus {
-                box-shadow: 0 0 5px rgba(220, 53, 69, 0.3) !important;
-            }
-
-            /* Error messages */
-            .error-message {
-                color: #dc3545;
-                font-size: 13px;
-                margin-top: 5px;
-                display: none;
-            }
-
-            .field-hint {
-                color: #dc3545;
-                font-size: 12px;
-                margin-top: 5px;
-                font-style: italic;
-            }
-
             /* Buttons */
             .btn-save {
                 background-color: #007b5e;
@@ -173,6 +149,7 @@
                 text-decoration: underline;
                 color: #005f46;
             }
+
         </style>
     </head>
     <body>
@@ -204,8 +181,6 @@
                                 <label for="jobTitle" class="form-label">Job Title</label>
                                 <input type="text" id="jobTitle" name="jobTitle" class="form-control" 
                                        value="${param.jobTitle != null ? param.jobTitle : jobPost.getTitle()}" required>
-                                <span class="field-hint">This field is required. Cannot be empty or contain only spaces.</span>
-                                <span class="error-message" data-field="jobTitle">Job Title is required and cannot be empty or whitespace only.</span>
                             </div>
 
                             <!-- Job Location -->
@@ -213,24 +188,20 @@
                                 <label for="jobLocation" class="form-label">Location</label>
                                 <input type="text" id="jobLocation" name="jobLocation" class="form-control" 
                                        value="${param.jobLocation != null ? param.jobLocation : jobPost.getLocation()}" required>
-                                <span class="field-hint">This field is required. Cannot be empty or contain only spaces.</span>
-                                <span class="error-message" data-field="jobLocation">Location is required and cannot be empty or whitespace only.</span>
                             </div>
 
                             <!-- Job Description (Full-width) -->
                             <div class="form-group full-width">
                                 <label for="jobDescription" class="form-label">Job Description</label>
                                 <textarea id="jobDescription" name="jobDescription" class="form-control" rows="6">${fn:escapeXml(param.jobDescription != null ? param.jobDescription : jobPost.getDescription())}</textarea>
-                                <span class="field-hint">This field is required. Cannot be empty or contain only spaces.</span>
-                                <span class="error-message" data-field="jobDescription">Job Description is required and cannot be empty or whitespace only.</span>
+                                <span id="descriptionError" class="text-danger" style="display: none;">Job Description is required.</span>
                             </div>
 
                             <!-- Job Requirements (Full-width) -->
                             <div class="form-group full-width">
                                 <label for="jobRequirements" class="form-label">Job Requirements</label>
                                 <textarea id="jobRequirements" name="jobRequirements" class="form-control" rows="6">${fn:escapeXml(param.jobRequirements != null ? param.jobRequirements : jobPost.getRequirements())}</textarea>
-                                <span class="field-hint">This field is required. Cannot be empty or contain only spaces.</span>
-                                <span class="error-message" data-field="jobRequirements">Job Requirements are required and cannot be empty or whitespace only.</span>
+                                <span id="requirementsError" class="text-danger" style="display: none;">Job Requirements are required.</span>
                             </div>
 
                             <!-- Job Salary -->
@@ -238,13 +209,11 @@
                                 <label for="minSalary" class="form-label">Min Salary $</label>
                                 <input type="number" id="minSalary" name="minSalary" class="form-control" 
                                        value="${param.minSalary != null ? param.minSalary : jobPost.getMinSalary()}" required>
-                                <span class="error-message" data-field="minSalary">Min Salary is required.</span>
                             </div>
                             <div class="form-group">
                                 <label for="maxSalary" class="form-label">Max Salary $</label>
                                 <input type="number" id="maxSalary" name="maxSalary" class="form-control" 
                                        value="${param.maxSalary != null ? param.maxSalary : jobPost.getMaxSalary()}" required>
-                                <span class="error-message" data-field="maxSalary">Max Salary is required.</span>
                             </div>
 
                             <div class="form-group">
@@ -260,7 +229,6 @@
                                         </c:if>
                                     </c:forEach>
                                 </select>
-                                <span class="error-message" data-field="jobCategory">Job Category is required.</span>
                             </div>
 
                             <!-- Job Status -->
@@ -268,6 +236,7 @@
                                 <label for="jobStatus" class="form-label">Status</label>
                                 <select id="jobStatus" name="jobStatus" class="form-control" required>
                                     <option value="Open" ${param.jobStatus == 'Open' ? 'selected' : (jobPost.getStatus() == 'Open' ? 'selected' : '')}>Open</option>
+<!--                                    <option value="Filled" ${param.jobStatus == 'Filled' ? 'selected' : (jobPost.getStatus() == 'Filled' ? 'selected' : '')}>Filled</option>-->
                                     <option value="Closed" ${param.jobStatus == 'Closed' ? 'selected' : (jobPost.getStatus() == 'Closed' ? 'selected' : '')}>Closed</option>
                                 </select>
                             </div>
@@ -277,7 +246,6 @@
                                 <label for="postedDate" class="form-label">Posted Date</label>
                                 <input type="date" id="postedDate" name="postedDate" class="form-control" 
                                        value="${param.postedDate != null ? param.postedDate : jobPost.getPostedDate()}" required>
-                                <span class="error-message" data-field="postedDate">Posted Date is required.</span>
                             </div>
 
                             <!-- Closing Date -->
@@ -285,7 +253,6 @@
                                 <label for="closingDate" class="form-label">Closing Date</label>
                                 <input type="date" id="closingDate" name="closingDate" class="form-control" 
                                        value="${param.closingDate != null ? param.closingDate : jobPost.getClosingDate()}" required>
-                                <span class="error-message" data-field="closingDate">Closing Date is required.</span>
                             </div>
                         </div>
 
@@ -323,153 +290,36 @@
                 }
             });
 
-            // Helper function to trim and check if empty
-            function isFieldEmpty(value) {
-                return value === null || value === undefined || value.trim() === '';
-            }
-
-            // Validation function for text inputs
-            function validateTextField(fieldId) {
-                const field = document.getElementById(fieldId);
-                const errorElement = document.querySelector(`.error-message[data-field="${fieldId}"]`);
-                const value = field.value;
-
-                if (isFieldEmpty(value)) {
-                    field.classList.add('is-invalid');
-                    if (errorElement) {
-                        errorElement.style.display = 'block';
-                    }
-                    return false;
-                } else {
-                    field.classList.remove('is-invalid');
-                    if (errorElement) {
-                        errorElement.style.display = 'none';
-                    }
-                    return true;
-                }
-            }
-
-            // Add real-time validation on blur and input events
-            document.addEventListener('DOMContentLoaded', function() {
-                const textFields = ['jobTitle', 'jobLocation', 'minSalary', 'maxSalary', 'postedDate', 'closingDate'];
-                const textareaFields = ['jobDescription', 'jobRequirements'];
-
-                // Real-time validation for text inputs
-                textFields.forEach(fieldId => {
-                    const field = document.getElementById(fieldId);
-                    if (field) {
-                        field.addEventListener('blur', function() {
-                            validateTextField(fieldId);
-                        });
-                        field.addEventListener('input', function() {
-                            if (!isFieldEmpty(this.value)) {
-                                this.classList.remove('is-invalid');
-                                const errorElement = document.querySelector(`.error-message[data-field="${fieldId}"]`);
-                                if (errorElement) {
-                                    errorElement.style.display = 'none';
-                                }
-                            }
-                        });
-                    }
-                });
-
-                // Real-time validation for textareas
-                textareaFields.forEach(fieldId => {
-                    const field = document.getElementById(fieldId);
-                    if (field) {
-                        field.addEventListener('blur', function() {
-                            const editorContent = tinymce.get(fieldId);
-                            let content = '';
-                            if (editorContent) {
-                                content = editorContent.getContent({ format: 'text' });
-                            } else {
-                                content = this.value;
-                            }
-
-                            const errorElement = document.querySelector(`.error-message[data-field="${fieldId}"]`);
-                            if (isFieldEmpty(content)) {
-                                field.classList.add('is-invalid');
-                                if (errorElement) {
-                                    errorElement.style.display = 'block';
-                                }
-                            } else {
-                                field.classList.remove('is-invalid');
-                                if (errorElement) {
-                                    errorElement.style.display = 'none';
-                                }
-                            }
-                        });
-                    }
-                });
-            });
-
-            // Form submission validation
+            // Validation function
             function validateForm() {
+                // Retrieve content from TinyMCE editors after save
+                let description = document.getElementById("jobDescription").value.trim();
+                let requirements = document.getElementById("jobRequirements").value.trim();
+
+                // Get error elements
+                const descriptionError = document.getElementById("descriptionError");
+                const requirementsError = document.getElementById("requirementsError");
+
+                // Reset error messages visibility
+                descriptionError.style.display = "none";
+                requirementsError.style.display = "none";
+
+                // Initialize validity flag
                 let isValid = true;
-                const textFields = ['jobTitle', 'jobLocation', 'minSalary', 'maxSalary', 'postedDate', 'closingDate'];
-                const textareaFields = ['jobDescription', 'jobRequirements'];
 
-                // Validate text fields
-                textFields.forEach(fieldId => {
-                    if (!validateTextField(fieldId)) {
-                        isValid = false;
-                    }
-                });
-
-                // Validate textarea fields
-                textareaFields.forEach(fieldId => {
-                    const field = document.getElementById(fieldId);
-                    const errorElement = document.querySelector(`.error-message[data-field="${fieldId}"]`);
-                    
-                    let content = '';
-                    const editor = tinymce.get(fieldId);
-                    if (editor) {
-                        content = editor.getContent({ format: 'text' });
-                    } else {
-                        content = field.value;
-                    }
-
-                    if (isFieldEmpty(content)) {
-                        field.classList.add('is-invalid');
-                        if (errorElement) {
-                            errorElement.style.display = 'block';
-                        }
-                        isValid = false;
-                    } else {
-                        field.classList.remove('is-invalid');
-                        if (errorElement) {
-                            errorElement.style.display = 'none';
-                        }
-                    }
-                });
-
-                // Validate select fields
-                const jobCategory = document.getElementById('jobCategory');
-                if (jobCategory && jobCategory.value === '') {
-                    jobCategory.classList.add('is-invalid');
-                    const errorElement = document.querySelector(`.error-message[data-field="jobCategory"]`);
-                    if (errorElement) {
-                        errorElement.style.display = 'block';
-                    }
+                // Check if the fields are empty and show errors
+                if (description === "") {
+                    descriptionError.style.display = "block";
                     isValid = false;
-                } else if (jobCategory) {
-                    jobCategory.classList.remove('is-invalid');
-                    const errorElement = document.querySelector(`.error-message[data-field="jobCategory"]`);
-                    if (errorElement) {
-                        errorElement.style.display = 'none';
-                    }
+                }
+                if (requirements === "") {
+                    requirementsError.style.display = "block";
+                    isValid = false;
                 }
 
+                // Return true if valid, false otherwise
                 return isValid;
             }
-
-            // Attach validation to form submission
-            document.getElementById('jobForm').addEventListener('submit', function(event) {
-                if (!validateForm()) {
-                    event.preventDefault();
-                    alert('Please fill in all required fields correctly. Empty or whitespace-only values are not allowed.');
-                }
-            });
         </script>
     </body>
 </html>

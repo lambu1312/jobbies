@@ -170,33 +170,33 @@
                     <div class="row align-items-center mb-3">
                         <!-- Back Button -->
                         <div class="col-auto">
-                            <a href="${pageContext.request.contextPath}/jobPost" class="btn btn-secondary">Trở lại</a>
+                            <a href="${pageContext.request.contextPath}/jobPost" class="btn btn-secondary">Back</a>
                         </div>
 
                         <!-- Filter Buttons -->
                         <div class="col-auto">
                             <form action="${pageContext.request.contextPath}/applicationSeekers" method="get" class="d-inline">
                                 <input type="hidden" name="jobPostId" value="${param.jobPostId}" />
-                                <input type="text" name="searchName" value="${searchName}" placeholder="Tìm kiếm theo tên" class="form-control d-inline-block" style="width: 200px;">
-                                <button type="submit" class="btn btn-outline-primary">Tìm</button>
+                                <input type="text" name="searchName" value="${searchName}" placeholder="Search by name" class="form-control d-inline-block" style="width: 200px;">
+                                <button type="submit" class="btn btn-outline-primary">Search</button>
                             </form>
 
                             <form action="${pageContext.request.contextPath}/applicationSeekers" method="get" class="d-inline">
                                 <input type="hidden" name="jobPostId" value="${param.jobPostId}" />
                                 <select name="statusFilter" class="form-control d-inline-block" style="width: 150px;">
-                                    <option value="">Tất cả trạng thái</option>
-                                    <option value="3" ${statusFilter == '3' ? 'selected' : ''}>Đang chờ</option>
-                                    <option value="2" ${statusFilter == '2' ? 'selected' : ''}>Đồng ý</option>
-                                    <option value="1" ${statusFilter == '1' ? 'selected' : ''}>Từ chối</option>
-                                    <option value="0" ${statusFilter == '0' ? 'selected' : ''}>Hủy bỏ</option>
+                                    <option value="">All status</option>
+                                    <option value="3" ${statusFilter == '3' ? 'selected' : ''}>Pending</option>
+                                    <option value="2" ${statusFilter == '2' ? 'selected' : ''}>Agree</option>
+                                    <option value="1" ${statusFilter == '1' ? 'selected' : ''}>Reject</option>
+                                    <option value="0" ${statusFilter == '0' ? 'selected' : ''}>Cancel</option>
                                 </select>
-                                <button type="submit" class="btn btn-outline-primary">Tìm kiếm theo trạng thái</button>
+                                <button type="submit" class="btn btn-outline-primary">Filter by Status</button>
                             </form>
 
                             <form action="${pageContext.request.contextPath}/applicationSeekers" method="get" class="d-inline">
                                 <input type="hidden" name="jobPostId" value="${param.jobPostId}" />
                                 <input type="date" name="dateFilter" value="${dateFilter}" class="form-control d-inline-block" style="width: 200px;">
-                                <button type="submit" class="btn btn-outline-primary">Sắp xếp theo ngày đăng</button>
+                                <button type="submit" class="btn btn-outline-primary">Filter by Applied Date</button>
                             </form>
                         </div>
                     </div>
@@ -206,11 +206,11 @@
                         <table class="table">
                             <thead>
                                 <tr>
-                                    <th>Tên người ứng tuyển</th>
-                                    <th>Ngày ứng tuyển</th>
-                                    <th>Trạng thái ứng tuyển</th>
-                                    <th>Thông tin người ứng tuyển</th>
-                                    <th>Hành động</th>
+                                    <th>Applicant Name</th>
+                                    <th>Applied Date</th>
+                                    <th>Status</th>
+                                    <th>Seeker Details</th>
+                                    <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -225,16 +225,16 @@
                                         <td>
                                             <c:choose>
                                                 <c:when test="${application.getStatus() == 3}">
-                                                    <span class="badge bg-warning">Đang chờ</span>
+                                                    <span class="badge bg-warning">Pending</span>
                                                 </c:when>
                                                 <c:when test="${application.getStatus() == 2}">
-                                                    <span class="badge bg-success">Đồng ý</span>
+                                                    <span class="badge bg-success">Agree</span>
                                                 </c:when>
                                                 <c:when test="${application.getStatus() == 1}">
-                                                    <span class="badge bg-danger">Từ chối</span>
+                                                    <span class="badge bg-danger">Reject</span>
                                                 </c:when>
                                                 <c:when test="${application.getStatus() == 0}">
-                                                    <span class="badge bg-danger">Đã hủy</span>
+                                                    <span class="badge bg-danger">Cancel</span>
                                                 </c:when>
                                             </c:choose>
                                         </td>
@@ -242,7 +242,7 @@
                                         <td>
                                             <c:choose>
                                                 <c:when test="${application.getStatus() == 1 || application.getStatus() == 0}">
-                                                    Chưa có thông tin
+                                                    No information
                                                 </c:when>
                                                 <c:otherwise>
                                                     <a href="${pageContext.request.contextPath}/applicationSeekers?action=viewCV&id=${application.getCVID()}" class="btn-action text-primary">

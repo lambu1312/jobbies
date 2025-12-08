@@ -12,7 +12,7 @@
         <url-pattern>/job_posting</url-pattern>
         <url-pattern>/feedback</url-pattern>
         <url-pattern>/recruiters</url-pattern>
-        <url-pattern>/candidate</url-pattern>
+        <url-pattern>/seekers</url-pattern>
         <url-pattern>/AddJobPosting</url-pattern>
         <url-pattern>/applicationSeekers</url-pattern>
         <url-pattern>/company</url-pattern>
@@ -47,7 +47,7 @@
         <url-pattern>/job_posting</url-pattern>
         <url-pattern>/feedback</url-pattern>
         <url-pattern>/recruiters</url-pattern>
-        <url-pattern>/candidate</url-pattern>
+        <url-pattern>/seekers</url-pattern>
     </filter-mapping>
     <!--end-filter-admin-->
     <filter>

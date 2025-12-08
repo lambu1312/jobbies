@@ -2,9 +2,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <footer>
-    <p>Jobbies. Đảm bảo mọi thông tin và quyền lợi của bạn.</p>
-    <a href="#">Điều khoản và dịch vụ</a>
-    <a href="#">Liên hệ với chúng tôi</a>
+    <p>© 2024 JobPath. All rights reserved.</p>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms of Service</a>
 </footer>
 
 <style>
@@ -19,7 +19,7 @@
 
     /* Footer styling */
     footer {
-        background-color: #140A20;
+        background-color: #389354;
         color: white;
         text-align: center;
         padding: 10px 0; /* Reduced padding for smaller footer */
