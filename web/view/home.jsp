@@ -644,26 +644,6 @@
             star.style.animationDelay = Math.random() * 3 + 's';
             starsContainer.appendChild(star);
         }
-
-        // Salary range validation
-        const minSalaryInput = document.querySelector('input[name="minSalary"]');
-        const maxSalaryInput = document.querySelector('input[name="maxSalary"]');
-
-        if (minSalaryInput && maxSalaryInput) {
-            minSalaryInput.addEventListener('change', function () {
-                const minValue = parseInt(this.value);
-                if (maxSalaryInput.value && minValue > parseInt(maxSalaryInput.value)) {
-                    maxSalaryInput.value = minValue;
-                }
-            });
-
-            maxSalaryInput.addEventListener('change', function () {
-                const maxValue = parseInt(this.value);
-                if (minSalaryInput.value && maxValue < parseInt(minSalaryInput.value)) {
-                    minSalaryInput.value = maxValue;
-                }
-            });
-        }
     </script>
 </body>
 </html>
