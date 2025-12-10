@@ -1,4 +1,8 @@
 package controller.admin;
+<<<<<<< HEAD
+=======
+
+>>>>>>> tuanbmhe181513
 import static constant.CommonConst.RECORD_PER_PAGE;
 import dao.AccountDAO;
 import jakarta.servlet.ServletException;
@@ -10,78 +14,69 @@ import java.io.IOException;
 import java.util.List;
 import model.Account;
 import model.PageControl;
-@WebServlet(name = "SeekerAdminController", urlPatterns = {"/candidates"})
+
+@WebServlet(name = "SeekerAdminController", urlPatterns = {"/seekers"})
 public class SeekerAdminController extends HttpServlet {
+
     AccountDAO dao = new AccountDAO();
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //get ve page
         PageControl pageControl = new PageControl();
         String pageRaw = request.getParameter("page");
+        String url;
+        //valid page
         int page;
         try {
             page = Integer.parseInt(pageRaw);
-            if (page <= 1) page = 1;
-        } catch (Exception e) {
+            if (page <= 1) {
+                page = 1;
+            }
+        } catch (NumberFormatException e) {
             page = 1;
         }
+        ///get ve action 
         String action = request.getParameter("action") != null ? request.getParameter("action") : "";
-        String url = "view/admin/seekerManagement.jsp";
-        String filter = request.getParameter("filter") != null ? request.getParameter("filter") : "all";
+        switch (action) {
+            case "view-list-seekers":
+                url = "view/admin/seekerManagement.jsp";
+                break;
+            default:
+                url = "view/admin/seekerManagement.jsp";
+        }
+        String filter = request.getParameter("filter") != null ? request.getParameter("filter") : "";
+        //get ve gia tri search by name
         String searchQuery = request.getParameter("searchQuery") != null ? request.getParameter("searchQuery") : "";
         List<Account> listSeekers = null;
-        int totalRecord = 0;
+        //get ve request URL
         String requestURL = request.getRequestURL().toString();
-        // ===========================
-        // 🔥 SEARCH MODE
-        // ===========================
+        //total record
+        int totalRecord = 0;
         if (!searchQuery.isEmpty()) {
-            boolean searchByEmail = searchQuery.contains("@");
             switch (filter) {
                 case "all":
-                    if (searchByEmail) {
-                        listSeekers = dao.searchUserByEmail(searchQuery, 3, page);
-                        totalRecord = dao.findTotalRecordByEmail(searchQuery, 3);
-                    } else {
-                        listSeekers = dao.searchUserByName(searchQuery, 3, page);
-                        totalRecord = dao.findTotalRecordByName(searchQuery, 3);
-                    }
+                    listSeekers = dao.searchUserByName(searchQuery, 3, page); // Tìm tất cả
+                    totalRecord = dao.findTotalRecordByName(searchQuery, 3);
                     pageControl.setUrlPattern(requestURL + "?searchQuery=" + searchQuery + "&");
                     break;
                 case "active":
-                    if (searchByEmail) {
-                        listSeekers = dao.searchUserByEmailAndStatus(searchQuery, true, 3, page);
-                        totalRecord = dao.findTotalRecordByEmailAndStatus(searchQuery, true, 3);
-                    } else {
-                        listSeekers = dao.searchUserByNameAndStatus(searchQuery, true, 3, page);
-                        totalRecord = dao.findTotalRecordByNameAndStatus(searchQuery, true, 3);
-                    }
+                    listSeekers = dao.searchUserByNameAndStatus(searchQuery, true, 3, page); // Chỉ tìm active
+                    totalRecord = dao.findTotalRecordByNameAndStatus(searchQuery, true, 3);
                     pageControl.setUrlPattern(requestURL + "?filter=active&searchQuery=" + searchQuery + "&");
                     break;
                 case "inactive":
-                    if (searchByEmail) {
-                        listSeekers = dao.searchUserByEmailAndStatus(searchQuery, false, 3, page);
-                        totalRecord = dao.findTotalRecordByEmailAndStatus(searchQuery, false, 3);
-                    } else {
-                        listSeekers = dao.searchUserByNameAndStatus(searchQuery, false, 3, page);
-                        totalRecord = dao.findTotalRecordByNameAndStatus(searchQuery, false, 3);
-                    }
+                    listSeekers = dao.searchUserByNameAndStatus(searchQuery, false, 3, page); // Chỉ tìm inactive
+                    totalRecord = dao.findTotalRecordByNameAndStatus(searchQuery, false, 3);
                     pageControl.setUrlPattern(requestURL + "?filter=inactive&searchQuery=" + searchQuery + "&");
                     break;
                 default:
-                    if (searchByEmail) {
-                        listSeekers = dao.searchUserByEmail(searchQuery, 3, page);
-                        totalRecord = dao.findTotalRecordByEmail(searchQuery, 3);
-                    } else {
-                        listSeekers = dao.searchUserByName(searchQuery, 3, page);
-                        totalRecord = dao.findTotalRecordByName(searchQuery, 3);
-                    }
+                    listSeekers = dao.searchUserByName(searchQuery, 3, page); // Mặc định là tất cả
+                    totalRecord = dao.findTotalRecordByName(searchQuery, 3);
                     pageControl.setUrlPattern(requestURL + "?searchQuery=" + searchQuery + "&");
             }
         } else {
-            // ===========================
-            // 🔥 NO SEARCH MODE (LOAD LIST)
-            // ===========================
             switch (filter) {
                 case "all":
                     listSeekers = dao.findAllUserByRoleId(3, page);
@@ -91,12 +86,20 @@ public class SeekerAdminController extends HttpServlet {
                 case "active":
                     listSeekers = dao.filterUserByStatus(true, 3, page);
                     totalRecord = dao.findTotalRecordByStatus(true, 3);
+<<<<<<< HEAD
                     pageControl.setUrlPattern(requestURL + "?filter=active&");
+=======
+                    pageControl.setUrlPattern(requestURL + "?filter=active" + "&");
+>>>>>>> tuanbmhe181513
                     break;
                 case "inactive":
                     listSeekers = dao.filterUserByStatus(false, 3, page);
                     totalRecord = dao.findTotalRecordByStatus(false, 3);
+<<<<<<< HEAD
                     pageControl.setUrlPattern(requestURL + "?filter=inactive&");
+=======
+                    pageControl.setUrlPattern(requestURL + "?filter=inactive" + "&");
+>>>>>>> tuanbmhe181513
                     break;
                 default:
                     listSeekers = dao.findAllUserByRoleId(3, page);
@@ -104,22 +107,24 @@ public class SeekerAdminController extends HttpServlet {
                     pageControl.setUrlPattern(requestURL + "?");
             }
         }
-        // ===========================
-        // SET ATTRIBUTE + PAGE
-        // ===========================
+
         request.setAttribute("listSeekers", listSeekers);
-        int totalPage = (totalRecord % RECORD_PER_PAGE == 0)
-                ? (totalRecord / RECORD_PER_PAGE)
-                : (totalRecord / RECORD_PER_PAGE) + 1;
+        //total page
+        int totalPage = (totalRecord % RECORD_PER_PAGE) == 0 ? (totalRecord / RECORD_PER_PAGE) : (totalRecord / RECORD_PER_PAGE) + 1;
+        //set total record, total page, page to pageControl
         pageControl.setPage(page);
         pageControl.setTotalRecord(totalRecord);
         pageControl.setTotalPages(totalPage);
+        //set attribute pageControl 
         request.setAttribute("pageControl", pageControl);
+        // Handle GET requests based on the action
+
+        
+
+        // Forward to the appropriate page
         request.getRequestDispatcher(url).forward(request, response);
     }
-    // ===========================
-    // POST ACTIONS
-    // ===========================
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -159,4 +164,5 @@ public class SeekerAdminController extends HttpServlet {
         request.setAttribute("accountView", account);
         return "view/admin/viewDetailUser.jsp";
     }
+
 }

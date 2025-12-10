@@ -1,8 +1,3 @@
+/build/
 /dist/
-build/
-dist/
-nbproject/private/
-*.class
-*.jar
-*.war
-*.ear
+/nbproject/private/

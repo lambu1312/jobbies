@@ -34,6 +34,18 @@ public class JobPostingsDAO extends GenericDAO<JobPostings> {
         return queryGenericDAO(JobPostings.class, sql, parameterMap);
     }
 
+    public List<JobPostings> findJobPostingbyRecruitersID(int recruiterID) {
+        String sql = "select * from [dbo].[JobPostings] where RecruiterID = ?";
+        parameterMap = new LinkedHashMap<>();
+        parameterMap.put("RecruiterID", recruiterID);
+        List<JobPostings> list = queryGenericDAO(JobPostings.class, sql, parameterMap);
+        ApplicationDAO applicationDao = new ApplicationDAO();
+        for (JobPostings jobPostings : list) {
+            jobPostings.setApplication(applicationDao.findApplicationByJobPostingID(jobPostings.getJobPostingID()));
+        }
+        return list;
+
+    }
 
     public void updateJobPosting(JobPostings t) {
         String sql = "UPDATE [dbo].[JobPostings]\n"
@@ -43,6 +55,7 @@ public class JobPostingsDAO extends GenericDAO<JobPostings> {
                 + "      ,[Requirements] = ?\n"
                 + "      ,[MinSalary] = ?\n"
                 + "      ,[MaxSalary] = ?\n"
+                + "      ,[Currency] = ?\n"
                 + "      ,[Location] = ?\n"
                 + "      ,[PostedDate] = ?\n"
                 + "      ,[ClosingDate] = ?\n"
@@ -56,6 +69,7 @@ public class JobPostingsDAO extends GenericDAO<JobPostings> {
         parameterMap.put("Requirements", t.getRequirements());
         parameterMap.put("MinSalary", t.getMinSalary());
         parameterMap.put("MaxSalary", t.getMaxSalary());
+        parameterMap.put("Currency", t.getCurrency());
         parameterMap.put("Location", t.getLocation());
         parameterMap.put("PostedDate", t.getPostedDate());
         parameterMap.put("ClosingDate", t.getClosingDate());
@@ -90,12 +104,13 @@ public class JobPostingsDAO extends GenericDAO<JobPostings> {
                 + "           ,[Requirements]\n"
                 + "           ,[MinSalary]\n"
                 + "           ,[MaxSalary]\n"
+                + "           ,[Currency]\n"
                 + "           ,[Location]\n"
                 + "           ,[PostedDate]\n"
                 + "           ,[ClosingDate]\n"
                 + "           ,[Job_Posting_CategoryID]\n"
                 + "           ,[Status])\n"
-                + "     VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+                + "     VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
         parameterMap = new LinkedHashMap<>();
         parameterMap.put("RecruiterID", t.getRecruiterID());
         parameterMap.put("Title", t.getTitle());
@@ -103,6 +118,7 @@ public class JobPostingsDAO extends GenericDAO<JobPostings> {
         parameterMap.put("Requirements", t.getRequirements());
         parameterMap.put("MinSalary", t.getMinSalary());
         parameterMap.put("MaxSalary", t.getMaxSalary());
+        parameterMap.put("Currency", t.getCurrency());
         parameterMap.put("Location", t.getLocation());
         parameterMap.put("PostedDate", t.getPostedDate());
         parameterMap.put("ClosingDate", t.getClosingDate());
@@ -138,7 +154,21 @@ public class JobPostingsDAO extends GenericDAO<JobPostings> {
         return queryGenericDAO(JobPostings.class, sql, parameterMap);
     }
 
-
+    ////
+    public List<JobPostings> searchJobPostingByTitleAndRecruiterID(String searchJP, int recruiterID, int page) {
+        String sql = "SELECT * FROM [dbo].[JobPostings] WHERE Title LIKE '%' + ? + '%' AND RecruiterID = ? ORDER BY JobPostingID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        parameterMap = new LinkedHashMap<>();
+        parameterMap.put("Title", searchJP);
+        parameterMap.put("RecruiterID", recruiterID);  // Thêm RecruiterID vào truy vấn
+        parameterMap.put("offset", (page - 1) * RECORD_PER_PAGE);
+        parameterMap.put("fetch", RECORD_PER_PAGE);
+        List<JobPostings> list = queryGenericDAO(JobPostings.class, sql, parameterMap);
+        ApplicationDAO applicationDao = new ApplicationDAO();
+        for (JobPostings jobPostings : list) {
+            jobPostings.setApplication(applicationDao.findApplicationByJobPostingID(jobPostings.getJobPostingID()));
+        }
+        return list;
+    }
 
     public List<JobPostings> searchJobPostingByTitle(String searchJP, int page) {
         String sql = "SELECT * FROM [dbo].[JobPostings] WHERE Title LIKE '%' + ? + '%' AND Status = ? ORDER BY JobPostingID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
@@ -176,7 +206,33 @@ public class JobPostingsDAO extends GenericDAO<JobPostings> {
         return findTotalRecordGenericDAO(JobPostings.class, sql, parameterMap);
     }
 
- 
+    public List<JobPostings> findJobPostingsWithFilterAndRecruiterID(String sortField, int recruiterID, int page, int pageSize) {
+        String sql = "SELECT * FROM [dbo].[JobPostings] WHERE RecruiterID = ? ORDER BY " + sortField + " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        parameterMap = new LinkedHashMap<>();
+        parameterMap.put("RecruiterID", recruiterID);  // Thêm RecruiterID vào truy vấn
+        parameterMap.put("offset", (page - 1) * pageSize);
+        parameterMap.put("fetch", pageSize);
+        List<JobPostings> list = queryGenericDAO(JobPostings.class, sql, parameterMap);
+        ApplicationDAO applicationDao = new ApplicationDAO();
+        for (JobPostings jobPostings : list) {
+            jobPostings.setApplication(applicationDao.findApplicationByJobPostingID(jobPostings.getJobPostingID()));
+        }
+        return list;
+    }
+
+    public List<JobPostings> findJobPostingsWithFilter(String sortField, int page, int pageSize) {
+        String sql = "SELECT * FROM [dbo].[JobPostings] WHERE Status = ? ORDER BY " + sortField + " OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        parameterMap = new LinkedHashMap<>();
+        parameterMap.put("Status", "Open");
+        parameterMap.put("offset", (page - 1) * pageSize);
+        parameterMap.put("fetch", pageSize);
+        List<JobPostings> list = queryGenericDAO(JobPostings.class, sql, parameterMap);
+        ApplicationDAO applicationDao = new ApplicationDAO();
+        for (JobPostings jobPostings : list) {
+            jobPostings.setApplication(applicationDao.findApplicationByJobPostingID(jobPostings.getJobPostingID()));
+        }
+        return list;
+    }
 
     public int countTotalJobPostingsByRecruiterID(int recruiterID) {
         String sql = "SELECT count(*) FROM [dbo].[JobPostings] WHERE RecruiterID = ?";
@@ -308,49 +364,35 @@ public class JobPostingsDAO extends GenericDAO<JobPostings> {
     }
 
     public List<JobPostings> findAndfilterJobPostingsHome(String minSalaryStr, String maxSalaryStr, String filterCategory, String search, int page) {
-    String sql = """
-                 SELECT * FROM JobPostings where Status LIKE 'Open' """;
-    
-    parameterMap = new LinkedHashMap<>();
-    
-    // ✅ SỬA LOGIC NÀY - cho phép lọc linh hoạt
-    boolean hasMinSalary = minSalaryStr != null && !minSalaryStr.isEmpty();
-    boolean hasMaxSalary = maxSalaryStr != null && !maxSalaryStr.isEmpty();
-    
-    if (hasMinSalary && hasMaxSalary) {
-        // Cả 2 có: lọc trong khoảng
-        sql += " AND MinSalary >= ? AND MaxSalary <= ?";
-        parameterMap.put("MinSalary", minSalaryStr);
-        parameterMap.put("MaxSalary", maxSalaryStr);
-    } else if (hasMinSalary) {
-        // Chỉ có Min: lương >= Min
-        sql += " AND MaxSalary >= ?";
-        parameterMap.put("MinSalary", minSalaryStr);
-    } else if (hasMaxSalary) {
-        // Chỉ có Max: lương <= Max
-        sql += " AND MinSalary <= ?";
-        parameterMap.put("MaxSalary", maxSalaryStr);
-    }
-    
-    if(filterCategory != null && !filterCategory.isEmpty()) {
-        sql+=" AND Job_Posting_CategoryID = ?";
-        parameterMap.put("Job_Posting_CategoryID", filterCategory);
-    }
-    
-    if (search != null && !search.isEmpty()) {
-        sql += " AND Title LIKE ?";
-        parameterMap.put("Title", "%" + search + "%");
-    }
+        String sql = """
+                     SELECT * FROM JobPostings where Status LIKE 'Open' """;
+        
+        parameterMap = new LinkedHashMap<>();
+        if (minSalaryStr != null && maxSalaryStr != null && !minSalaryStr.isEmpty() && !maxSalaryStr.isEmpty()) {
+            sql += " AND MinSalary >= ? AND MaxSalary <=?";
+            parameterMap.put("MinSalary", minSalaryStr);
+            parameterMap.put("MaxSalary", maxSalaryStr);
+        }
+        
+        if(filterCategory != null && !filterCategory.isEmpty()) {
+            sql+=" AND Job_Posting_CategoryID = ?";
+            parameterMap.put("Job_Posting_CategoryID", filterCategory);
+        }
+        
+        if (search != null && !search.isEmpty()) {
+            sql += " AND Title LIKE ?";
+            parameterMap.put("Title", "%" + search + "%");
+        }
 
-    sql += """
-            order by JobPostingID
-           OFFSET ? rows
-           FETCH NEXT ? rows only""";
+        sql += """
+                order by JobPostingID
+               OFFSET ? rows
+               FETCH NEXT ? rows only""";
 
-    parameterMap.put("offset", (page - 1) * 12);
-    parameterMap.put("fetch", 12);
-    return queryGenericDAO(JobPostings.class, sql, parameterMap);
-}
+        parameterMap.put("offset", (page - 1) * 12);
+        parameterMap.put("fetch", 12);
+        return queryGenericDAO(JobPostings.class, sql, parameterMap);
+    }
 
     public void violateJobPost(int jobPostId) {
         String sql = """

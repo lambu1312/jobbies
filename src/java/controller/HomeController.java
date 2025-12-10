@@ -38,7 +38,7 @@ public class HomeController extends HttpServlet {
         processRequest(request, response);
     }
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         PageControl pageControl = new PageControl();
@@ -114,5 +114,7 @@ public class HomeController extends HttpServlet {
 
         // Forward to JSP
         request.getRequestDispatcher("view/home.jsp").forward(request, response);
-    }
-}
+    }}
+   
+    
+

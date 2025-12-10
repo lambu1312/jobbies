@@ -12,6 +12,7 @@ public class JobPostings {
     private String Requirements;
     private double MinSalary;
     private double MaxSalary;
+    private String Currency;
     private String Location;
     private Date PostedDate;
     private Date ClosingDate;
@@ -22,7 +23,7 @@ public class JobPostings {
     public JobPostings() {
     }
 
-    public JobPostings(int JobPostingID, int RecruiterID, String Title, String Description, String Requirements, double MinSalary, double MaxSalary, String Location, Date PostedDate, Date ClosingDate, int Job_Posting_CategoryID, String Status) {
+    public JobPostings(int JobPostingID, int RecruiterID, String Title, String Description, String Requirements, double MinSalary, double MaxSalary, String Currency, String Location, Date PostedDate, Date ClosingDate, int Job_Posting_CategoryID, String Status) {
         this.JobPostingID = JobPostingID;
         this.RecruiterID = RecruiterID;
         this.Title = Title;
@@ -30,6 +31,7 @@ public class JobPostings {
         this.Requirements = Requirements;
         this.MinSalary = MinSalary;
         this.MaxSalary = MaxSalary;
+        this.Currency = Currency;
         this.Location = Location;
         this.PostedDate = PostedDate;
         this.ClosingDate = ClosingDate;
@@ -91,6 +93,14 @@ public class JobPostings {
 
     public void setMaxSalary(double MaxSalary) {
         this.MaxSalary = MaxSalary;
+    }
+
+    public String getCurrency() {
+        return Currency;
+    }
+
+    public void setCurrency(String Currency) {
+        this.Currency = Currency;
     }
 
     public String getLocation() {

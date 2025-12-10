@@ -1,6 +1,7 @@
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-<html lang="en">
+<%@page contentType="text/html" pageEncoding="UTF-8" %>
+    <!DOCTYPE html>
+    <html lang="en">
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,8 +42,15 @@
             }
 
             @keyframes twinkle {
-                0%, 100% { opacity: 0.3; }
-                50% { opacity: 1; }
+
+                0%,
+                100% {
+                    opacity: 0.3;
+                }
+
+                50% {
+                    opacity: 1;
+                }
             }
 
             .pixel-decoration {
@@ -54,13 +62,33 @@
             }
 
             @keyframes float {
-                0%, 100% { transform: translateY(0px); }
-                50% { transform: translateY(-20px); }
+
+                0%,
+                100% {
+                    transform: translateY(0px);
+                }
+
+                50% {
+                    transform: translateY(-20px);
+                }
             }
 
-            .deco-1 { top: 20%; left: 10%; }
-            .deco-2 { top: 60%; right: 15%; animation-delay: 2s; }
-            .deco-3 { bottom: 15%; left: 20%; animation-delay: 1s; }
+            .deco-1 {
+                top: 20%;
+                left: 10%;
+            }
+
+            .deco-2 {
+                top: 60%;
+                right: 15%;
+                animation-delay: 2s;
+            }
+
+            .deco-3 {
+                bottom: 15%;
+                left: 20%;
+                animation-delay: 1s;
+            }
 
             /* Register Container */
             .register-container {
@@ -91,6 +119,7 @@
                     opacity: 0;
                     transform: translateY(30px);
                 }
+
                 to {
                     opacity: 1;
                     transform: translateY(0);
@@ -179,7 +208,8 @@
                 font-size: 0.9rem;
             }
 
-            .form-control, .form-select {
+            .form-control,
+            .form-select {
                 width: 100%;
                 padding: 0.85rem 1.1rem;
                 background: rgba(255, 255, 255, 0.08);
@@ -195,7 +225,8 @@
                 color: rgba(255, 255, 255, 0.4);
             }
 
-            .form-control:focus, .form-select:focus {
+            .form-control:focus,
+            .form-select:focus {
                 border-color: #c471f5;
                 box-shadow: 0 0 20px rgba(196, 113, 245, 0.3);
                 background: rgba(255, 255, 255, 0.1);
@@ -329,6 +360,7 @@
             }
         </style>
     </head>
+
     <body>
         <div class="stars" id="stars"></div>
 
@@ -364,13 +396,15 @@
                     <div class="form-row">
                         <div class="form-group">
                             <label for="lastname" class="form-label">Last Name</label>
-                            <input type="text" name="lastname" id="lastname" class="form-control" placeholder="Enter last name" value="${requestScope.lname}" required>
+                            <input type="text" name="lastname" id="lastname" class="form-control"
+                                placeholder="Enter last name" value="${requestScope.lname}" required>
                             <span class="text-danger">${errorLname}</span>
                         </div>
 
                         <div class="form-group">
                             <label for="firstname" class="form-label">First Name</label>
-                            <input type="text" name="firstname" id="firstname" class="form-control" placeholder="Enter first name" value="${requestScope.fname}" required>
+                            <input type="text" name="firstname" id="firstname" class="form-control"
+                                placeholder="Enter first name" value="${requestScope.fname}" required>
                             <span class="text-danger">${errorFname}</span>
                         </div>
                     </div>
@@ -379,106 +413,118 @@
                         <div class="form-group">
                             <label for="gender" class="form-label">Gender</label>
                             <select name="gender" id="gender" class="form-select">
-                                <option value="male" ${gender == 'male' ? 'selected' : ''}>Male</option>
-                                <option value="female" ${gender == 'female' ? 'selected' : ''}>Female</option>
+                                <option value="male" ${gender=='male' ? 'selected' : '' }>Male</option>
+                                <option value="female" ${gender=='female' ? 'selected' : '' }>Female</option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label for="dob" class="form-label">Date of Birth</label>
-                            <input type="date" name="dob" id="dob" class="form-control" value="${requestScope.dob}" required>
+                            <input type="date" name="dob" id="dob" class="form-control" value="${requestScope.dob}"
+                                required>
                             <span class="text-danger">${errorDob}</span>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label for="username" class="form-label">Username</label>
-                        <input type="text" name="username" id="username" class="form-control" placeholder="Enter username" value="${requestScope.username}" required>
+                        <input type="text" name="username" id="username" class="form-control"
+                            placeholder="Enter username" value="${requestScope.username}" required>
                         <span class="text-danger">${errorUsernameExits}</span>
                         <span class="text-danger">${errorUsername}</span>
                     </div>
 
                     <div class="form-group">
                         <label for="signemail" class="form-label">Your Email</label>
-                        <input type="email" name="email" id="signemail" class="form-control" placeholder="Enter your email" value="${requestScope.email}" required>
+                        <input type="email" name="email" id="signemail" class="form-control"
+                            placeholder="Enter your email" value="${requestScope.email}" required>
                         <span class="text-danger">${errorEmail}</span>
                     </div>
 
                     <div class="form-group">
                         <label for="password" class="form-label">Password</label>
                         <div class="input-group">
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" value="${requestScope.password}" required>
+                            <input type="password" class="form-control" id="password" name="password"
+                                placeholder="Enter your password" value="${requestScope.password}" required>
                             <span class="input-group-text" onclick="togglePassword('password')">
                                 👁️
                             </span>
                         </div>
-                        <small class="form-text">! Password must be 8-20 characters, containing at least one letter and one special character.</small>
+                        <small class="form-text">! Password must be 8-20 characters, containing at least one letter and
+                            one special character.</small>
                         <span class="text-danger">${errorPassword}</span>
                     </div>
 
                     <button type="submit" class="btn-register">Register 🚀</button>
                 </form>
 
-                <p class="login-link">Have an account? <a href="${pageContext.request.contextPath}/view/authen/login.jsp">Login</a></p>
+                <p class="login-link">Have an account? <a
+                        href="${pageContext.request.contextPath}/view/authen/login.jsp">Login</a></p>
             </div>
         </div>
 
         <jsp:include page="../common/footer.jsp"></jsp:include>
+        // Generate stars
+        const starsContainer = document.getElementById('stars');
+        for (let i = 0; i < 100; i++) { const star=document.createElement('div'); star.className='star' ;
+            star.style.left=Math.random() * 100 + '%' ; star.style.top=Math.random() * 100 + '%' ;
+            star.style.animationDelay=Math.random() * 3 + 's' ; starsContainer.appendChild(star); } // Role
+            selection=======<jsp:include page="../common/authen/common-js-authen.jsp">
+            </jsp:include>
 
-        <script>
-            // Generate stars
-            const starsContainer = document.getElementById('stars');
-            for (let i = 0; i < 100; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.animationDelay = Math.random() * 3 + 's';
-                starsContainer.appendChild(star);
-            }
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const buttons = document.querySelectorAll('button[data-role]');
+                    const hiddenInput = document.querySelector('input[name="role"]');
 
-            // Role selection
-            document.addEventListener('DOMContentLoaded', function () {
-                const buttons = document.querySelectorAll('button[data-role]');
-                const hiddenInput = document.querySelector('input[name="role"]');
+                    buttons.forEach(button => {
+                        button.addEventListener('click', function () {
+                            buttons.forEach(btn => btn.classList.remove('active'));
+                            this.classList.add('active');
 
-                buttons.forEach(button => {
-                    button.addEventListener('click', function () {
-                        buttons.forEach(btn => btn.classList.remove('active'));
-                        this.classList.add('active');
-
-                        const role = this.getAttribute('data-role');
-                        hiddenInput.value = (role === 'seeker') ? '3' : '2';
+                            const role = this.getAttribute('data-role');
+                            hiddenInput.value = (role === 'seeker') ? '3' : '2';
+                        });
                     });
+
+                    // Set initial value
+                    const activeButton = document.querySelector('button.active');
+                    if (activeButton) {
+                        hiddenInput.value = activeButton.getAttribute('data-role') === 'seeker' ? '3' : '2';
+                    }
                 });
 
-                // Set initial value
-                const activeButton = document.querySelector('button.active');
-                if (activeButton) {
-                    hiddenInput.value = activeButton.getAttribute('data-role') === 'seeker' ? '3' : '2';
+                function togglePassword(id) {
+                    var input = document.getElementById(id);
+                    var icon = document.querySelector(".input-group-text");
+                    if (input.type === "password") {
+                        input.type = "text";
+                        icon.textContent = '🙈';
+                    } else {
+                        input.type = "password";
+                        icon.textContent = '👁️';
+                    }
                 }
-            });
 
-            function togglePassword(id) {
-                var input = document.getElementById(id);
-                var icon = document.querySelector(".input-group-text");
-                if (input.type === "password") {
-                    input.type = "text";
-                    icon.textContent = '🙈';
-                } else {
-                    input.type = "password";
-                    icon.textContent = '👁️';
-                }
-            }
+                // Prevent spaces in username and password fields
+                document.getElementById("username").addEventListener("input", function () {
+                    this.value = this.value.replace(/\s/g, "");
+                });
 
-            // Prevent spaces in username and password fields
-            document.getElementById("username").addEventListener("input", function () {
-                this.value = this.value.replace(/\s/g, "");
-            });
-
-            document.getElementById("password").addEventListener("input", function () {
-                this.value = this.value.replace(/\s/g, "");
-            });
-        </script>
+                document.getElementById("password").addEventListener("input", function () {
+                    this.value = this.value.replace(/\s/g, "");
+                });
+            </script>
     </body>
-</html>
+
+    </html>
+    =======
+    this.value = this.value.replace(/\s/g, ""); // Remove all spaces
+    document.getElementById("password").addEventListener("input", function () {
+    this.value = this.value.replace(/\s/g, ""); // Remove all spaces
+    });
+    </script>
+    </body>
+
+    </html>
+    >>>>>>> tuanbmhe181513

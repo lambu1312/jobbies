@@ -73,6 +73,10 @@
 </head>
 <body class="d-flex justify-content-center align-items-center vh-100">
     <div class="logout-card text-center" style="width: 90%; max-width: 400px;">
+<<<<<<< HEAD
+=======
+        <img class="logout-logo" src="${pageContext.request.contextPath}/assets/img/logo/header__one.svg" alt="logo">
+>>>>>>> tuanbmhe181513
         <h2 class="logout-title">Are you sure you want to log out?</h2>
         <div class="logout-buttons">
             <button class="btn btn-secondary btn-custom btn-secondary-custom mr-3" onclick="cancelLogout()">Cancel</button>

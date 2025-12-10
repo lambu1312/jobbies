@@ -12,8 +12,8 @@ import jakarta.mail.internet.MimeMessage;
 
 public class Email {
     public static void sendEmail(String to, String subject, String body) throws AddressException, MessagingException {
-        final String username = "thangcdhe171682@fpt.edu.vn"; // Địa chỉ email của bạn
-        final String password = "rqon hpey spuc sltz"; // Mật khẩu ứng dụng của bạn
+        final String username = "tuanbmhe181513@fpt.edu.vn"; // Địa chỉ email của bạn
+        final String password = "rjev ylsn fkdk dspm"; // Mật khẩu ứng dụng của bạn
 
         // Thiết lập các thuộc tính cho phiên gửi email
         Properties props = new Properties();
