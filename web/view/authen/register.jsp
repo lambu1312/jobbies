@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
-    <!DOCTYPE html>
-    <html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 
     <head>
         <meta charset="UTF-8">
@@ -371,40 +371,40 @@
         <!-- Header Area -->
         <jsp:include page="../common/header-area.jsp"></jsp:include>
 
-        <!-- Register Container -->
-        <div class="register-container">
-            <div class="register-card">
-                <div class="card-header">
-                    <h4 class="card-title">Create A Free Account ✨</h4>
-                    <p class="card-subtitle">Choose your Account Type</p>
-                </div>
+            <!-- Register Container -->
+            <div class="register-container">
+                <div class="register-card">
+                    <div class="card-header">
+                        <h4 class="card-title">Create A Free Account ✨</h4>
+                        <p class="card-subtitle">Choose your Account Type</p>
+                    </div>
 
-                <!-- Role Selection -->
-                <div class="role-selection">
-                    <button class="role-btn active" data-role="seeker">
-                        <i class="fas fa-user"></i> Seeker
-                    </button>
-                    <button class="role-btn" data-role="recruiter">
-                        <i class="fas fa-briefcase"></i> Recruiter
-                    </button>
-                </div>
+                    <!-- Role Selection -->
+                    <div class="role-selection">
+                        <button class="role-btn active" data-role="seeker">
+                            <i class="fas fa-user"></i> Seeker
+                        </button>
+                        <button class="role-btn" data-role="recruiter">
+                            <i class="fas fa-briefcase"></i> Recruiter
+                        </button>
+                    </div>
 
-                <!-- Register Form -->
-                <form action="${pageContext.request.contextPath}/authen?action=sign-up" method="POST">
+                    <!-- Register Form -->
+                    <form action="${pageContext.request.contextPath}/authen?action=sign-up" method="POST">
                     <input type="hidden" name="role" value="3" />
 
                     <div class="form-row">
                         <div class="form-group">
                             <label for="lastname" class="form-label">Last Name</label>
                             <input type="text" name="lastname" id="lastname" class="form-control"
-                                placeholder="Enter last name" value="${requestScope.lname}" required>
+                                   placeholder="Enter last name" value="${requestScope.lname}" required>
                             <span class="text-danger">${errorLname}</span>
                         </div>
 
                         <div class="form-group">
                             <label for="firstname" class="form-label">First Name</label>
                             <input type="text" name="firstname" id="firstname" class="form-control"
-                                placeholder="Enter first name" value="${requestScope.fname}" required>
+                                   placeholder="Enter first name" value="${requestScope.fname}" required>
                             <span class="text-danger">${errorFname}</span>
                         </div>
                     </div>
@@ -421,7 +421,7 @@
                         <div class="form-group">
                             <label for="dob" class="form-label">Date of Birth</label>
                             <input type="date" name="dob" id="dob" class="form-control" value="${requestScope.dob}"
-                                required>
+                                   required>
                             <span class="text-danger">${errorDob}</span>
                         </div>
                     </div>
@@ -429,7 +429,7 @@
                     <div class="form-group">
                         <label for="username" class="form-label">Username</label>
                         <input type="text" name="username" id="username" class="form-control"
-                            placeholder="Enter username" value="${requestScope.username}" required>
+                               placeholder="Enter username" value="${requestScope.username}" required>
                         <span class="text-danger">${errorUsernameExits}</span>
                         <span class="text-danger">${errorUsername}</span>
                     </div>
@@ -437,7 +437,7 @@
                     <div class="form-group">
                         <label for="signemail" class="form-label">Your Email</label>
                         <input type="email" name="email" id="signemail" class="form-control"
-                            placeholder="Enter your email" value="${requestScope.email}" required>
+                               placeholder="Enter your email" value="${requestScope.email}" required>
                         <span class="text-danger">${errorEmail}</span>
                     </div>
 
@@ -445,7 +445,7 @@
                         <label for="password" class="form-label">Password</label>
                         <div class="input-group">
                             <input type="password" class="form-control" id="password" name="password"
-                                placeholder="Enter your password" value="${requestScope.password}" required>
+                                   placeholder="Enter your password" value="${requestScope.password}" required>
                             <span class="input-group-text" onclick="togglePassword('password')">
                                 👁️
                             </span>
@@ -464,67 +464,74 @@
         </div>
 
         <jsp:include page="../common/footer.jsp"></jsp:include>
-        // Generate stars
-        const starsContainer = document.getElementById('stars');
-        for (let i = 0; i < 100; i++) { const star=document.createElement('div'); star.className='star' ;
-            star.style.left=Math.random() * 100 + '%' ; star.style.top=Math.random() * 100 + '%' ;
-            star.style.animationDelay=Math.random() * 3 + 's' ; starsContainer.appendChild(star); } // Role
-            selection=======<jsp:include page="../common/authen/common-js-authen.jsp">
-            </jsp:include>
 
             <script>
-                document.addEventListener('DOMContentLoaded', function () {
-                    const buttons = document.querySelectorAll('button[data-role]');
-                    const hiddenInput = document.querySelector('input[name="role"]');
-
-                    buttons.forEach(button => {
-                        button.addEventListener('click', function () {
-                            buttons.forEach(btn => btn.classList.remove('active'));
-                            this.classList.add('active');
-
-                            const role = this.getAttribute('data-role');
-                            hiddenInput.value = (role === 'seeker') ? '3' : '2';
-                        });
-                    });
-
-                    // Set initial value
-                    const activeButton = document.querySelector('button.active');
-                    if (activeButton) {
-                        hiddenInput.value = activeButton.getAttribute('data-role') === 'seeker' ? '3' : '2';
-                    }
-                });
-
-                function togglePassword(id) {
-                    var input = document.getElementById(id);
-                    var icon = document.querySelector(".input-group-text");
-                    if (input.type === "password") {
-                        input.type = "text";
-                        icon.textContent = '🙈';
-                    } else {
-                        input.type = "password";
-                        icon.textContent = '👁️';
-                    }
+                // Generate stars
+                const starsContainer = document.getElementById('stars');
+                for (let i = 0; i < 100; i++) {
+                    const star = document.createElement('div');
+                    star.className = 'star';
+                    star.style.left = Math.random() * 100 + '%';
+                    star.style.top = Math.random() * 100 + '%';
+                    star.style.animationDelay = Math.random() * 3 + 's';
+                    starsContainer.appendChild(star);
                 }
-
-                // Prevent spaces in username and password fields
-                document.getElementById("username").addEventListener("input", function () {
-                    this.value = this.value.replace(/\s/g, "");
-                });
-
-                document.getElementById("password").addEventListener("input", function () {
-                    this.value = this.value.replace(/\s/g, "");
-                });
             </script>
+
+        <jsp:include page="../common/authen/common-js-authen.jsp"></jsp:include>
+
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const buttons = document.querySelectorAll('button[data-role]');
+                const hiddenInput = document.querySelector('input[name="role"]');
+
+                buttons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        buttons.forEach(btn => btn.classList.remove('active'));
+                        this.classList.add('active');
+
+                        const role = this.getAttribute('data-role');
+                        hiddenInput.value = (role === 'seeker') ? '3' : '2';
+                    });
+                });
+
+                // Set initial value
+                const activeButton = document.querySelector('button.active');
+                if (activeButton) {
+                    hiddenInput.value = activeButton.getAttribute('data-role') === 'seeker' ? '3' : '2';
+                }
+            });
+
+            function togglePassword(id) {
+                var input = document.getElementById(id);
+                var icon = document.querySelector(".input-group-text");
+                if (input.type === "password") {
+                    input.type = "text";
+                    icon.textContent = '🙈';
+                } else {
+                    input.type = "password";
+                    icon.textContent = '👁️';
+                }
+            }
+
+            // Prevent spaces in username and password fields
+            document.getElementById("username").addEventListener("input", function () {
+                this.value = this.value.replace(/\s/g, "");
+            });
+
+            document.getElementById("password").addEventListener("input", function () {
+                this.value = this.value.replace(/\s/g, "");
+            });
+        </script>
     </body>
 
-    </html>
-    =======
-    this.value = this.value.replace(/\s/g, ""); // Remove all spaces
-    document.getElementById("password").addEventListener("input", function () {
-    this.value = this.value.replace(/\s/g, ""); // Remove all spaces
-    });
-    </script>
-    </body>
+</html>
 
-    </html>
-    >>>>>>> tuanbmhe181513
+this.value = this.value.replace(/\s/g, ""); // Remove all spaces
+document.getElementById("password").addEventListener("input", function () {
+this.value = this.value.replace(/\s/g, ""); // Remove all spaces
+});
+</script>
+</body>
+</html>

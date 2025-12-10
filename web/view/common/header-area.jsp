@@ -44,11 +44,11 @@
                                 </button>
 
                                 <div class="dropdown-menu" id="userDropdownMenu">
-                                    <a href="${pageContext.request.contextPath}/dashboard" class="dropdown-item">
+                                    <a href="${pageContext.request.contextPath}/Dashboard" class="dropdown-item">
                                         <i class="fas fa-tachometer-alt"></i>
                                         <span>Dashboard</span>
                                     </a>
-                                    <a href="${pageContext.request.contextPath}/profile" class="dropdown-item">
+                                    <a href="${pageContext.request.contextPath}/view/recruiter/viewRecruiterProfile.jsp" class="dropdown-item">
                                         <i class="fas fa-user"></i>
                                         <span>Profile</span>
                                     </a>

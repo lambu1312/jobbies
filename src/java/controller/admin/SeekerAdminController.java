@@ -1,8 +1,6 @@
 package controller.admin;
-<<<<<<< HEAD
-=======
 
->>>>>>> tuanbmhe181513
+
 import static constant.CommonConst.RECORD_PER_PAGE;
 import dao.AccountDAO;
 import jakarta.servlet.ServletException;
@@ -86,20 +84,14 @@ public class SeekerAdminController extends HttpServlet {
                 case "active":
                     listSeekers = dao.filterUserByStatus(true, 3, page);
                     totalRecord = dao.findTotalRecordByStatus(true, 3);
-<<<<<<< HEAD
                     pageControl.setUrlPattern(requestURL + "?filter=active&");
-=======
-                    pageControl.setUrlPattern(requestURL + "?filter=active" + "&");
->>>>>>> tuanbmhe181513
+
                     break;
                 case "inactive":
                     listSeekers = dao.filterUserByStatus(false, 3, page);
                     totalRecord = dao.findTotalRecordByStatus(false, 3);
-<<<<<<< HEAD
                     pageControl.setUrlPattern(requestURL + "?filter=inactive&");
-=======
-                    pageControl.setUrlPattern(requestURL + "?filter=inactive" + "&");
->>>>>>> tuanbmhe181513
+
                     break;
                 default:
                     listSeekers = dao.findAllUserByRoleId(3, page);

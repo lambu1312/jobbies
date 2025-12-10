@@ -91,8 +91,7 @@
                 position: relative;
                 animation: slideUp 0.6s ease-out;
             }
-
-            @keyframes slideUp {
+@keyframes slideUp {
                 from {
                     opacity: 0;
                     transform: translateY(30px);
@@ -192,7 +191,7 @@
                 font-size: 1.5rem;
                 font-weight: 700;
                 text-align: center;
-                background: rgba(255, 255, 255, 0.08);
+background: rgba(255, 255, 255, 0.08);
                 border: 2px solid rgba(255, 255, 255, 0.2);
                 border-radius: 12px;
                 color: #fff;
@@ -281,7 +280,7 @@
 
             .btn-submit:hover {
                 transform: translateY(-2px);
-                box-shadow: 0 15px 40px rgba(196, 113, 245, 0.6);
+box-shadow: 0 15px 40px rgba(196, 113, 245, 0.6);
             }
 
             .btn-submit:active {
@@ -374,18 +373,17 @@
                 <div class="card-header">
                     <h6 class="card-title">
                         <span class="card-icon">🔐</span>
-                        Confirm OTP
+                        Xác nhận OTP
                     </h6>
                 </div>
                 <div class="card-body">
                     <div class="info-message">
                         <i class="fas fa-info-circle"></i>
-                        Please enter the OTP code sent to your email
+                        Vui lòng nhập mã OTP đã gửi tới email của bạn
                     </div>
-
-                    <form action="${pageContext.request.contextPath}/authen?action=verify-otp" method="post" id="otpForm">
+<form action="${pageContext.request.contextPath}/authen?action=verify-otp" method="post" id="otpForm">
                         <div class="form-group">
-                            <label for="ResetOTPCode" class="form-label">Enter OTP Code</label>
+                            <label for="ResetOTPCode" class="form-label">Nhập OTP code</label>
                             <input type="text" name="otp" id="ResetOTPCode" class="form-control" placeholder="Enter 6-digit OTP" maxlength="6" required>
                         </div>
 
@@ -398,15 +396,15 @@
 
                         <button type="submit" class="btn-submit">
                             <i class="fas fa-check-circle"></i>
-                            Verify OTP
+                            Xác minh OTP
                         </button>
                     </form>
 
                     <div class="resend-container">
-                        Didn't receive the code? 
-                        <a href="#" class="resend-link">Resend OTP</a>
+                        Chưa nhận được mã ?
+                        <a href="#" class="resend-link">Gửi lại OTP</a>
                         <br>
-                        <span class="timer">⏱️ Expires in 5:00</span>
+                        <span class="timer">⏱️ Hết hạn trong 5:00</span>
                     </div>
                 </div>
             </div>
@@ -448,8 +446,7 @@
                 const minutes = Math.floor(timeLeft / 60);
                 const seconds = timeLeft % 60;
                 timerElement.textContent = `⏱️ Expires in ${minutes}:${seconds.toString().padStart(2, '0')}`;
-                
-                if (timeLeft > 0) {
+if (timeLeft > 0) {
                     timeLeft--;
                 } else {
                     timerElement.textContent = '⏱️ Expired';

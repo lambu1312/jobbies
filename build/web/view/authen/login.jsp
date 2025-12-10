@@ -6,7 +6,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Login - JobPath</title>
+        <title>Đăng nhập - Jobbies</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
             * {
@@ -91,7 +91,7 @@
             @keyframes slideUp {
                 from {
                     opacity: 0;
-                    transform: translateY(30px);
+transform: translateY(30px);
                 }
                 to {
                     opacity: 1;
@@ -192,8 +192,7 @@
             .form-group {
                 margin-bottom: 1.5rem;
             }
-
-            .form-label {
+.form-label {
                 display: block;
                 color: #b8b8d1;
                 font-weight: 600;
@@ -302,7 +301,7 @@
             .btn-login {
                 width: 100%;
                 padding: 1rem;
-                background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
+background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
                 border: none;
                 border-radius: 15px;
                 color: #fff;
@@ -374,7 +373,7 @@
             <div class="login-card">
                 <div class="card-header">
                     <h4 class="card-title">
-                        Login Job<span class="highlight">Path</span>
+                        Đăng nhập Jobbies<span class="highlight"></span>
                     </h4>
                     <a href="${pageContext.request.contextPath}/home" class="btn-close" aria-label="Close">✕</a>
                 </div>
@@ -390,14 +389,14 @@
                 </c:if>
 
                 <!-- Login Form -->
-                <form action="${pageContext.request.contextPath}/authen?action=login" method="post" id="login-form" onsubmit="return validateForm()">
+<form action="${pageContext.request.contextPath}/authen?action=login" method="post" id="login-form" onsubmit="return validateForm()">
                     <div class="form-group">
-                        <label for="username" class="form-label">Username</label>
+                        <label for="username" class="form-label">Tên đăng nhập</label>
                         <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" value="${cookie.cu.value}" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="password" class="form-label">Password</label>
+                        <label for="password" class="form-label">Mật khẩu</label>
                         <div class="input-group">
                             <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" value="${cookie.cp.value}" required>
                             <span class="input-group-text" onclick="togglePassword('password')">
@@ -409,8 +408,9 @@
                     <div class="form-options">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" id="rememberMe" name="rememberMe" ${(cookie.cr != null ? 'checked':'')}>
-                            <label class="form-check-label" for="rememberMe">Remember Me</label>
+                            <label class="form-check-label" for="rememberMe">Ghi nhớ tài khoản</label>
                         </div>
+                            <a href="${pageContext.request.contextPath}/view/authen/forgotPassword.jsp">Quên mật khẩu</a>
                     </div>
 
                     <!-- Google reCAPTCHA -->
@@ -420,11 +420,11 @@
                     </div>
 
                     <!-- Login Button -->
-                    <button type="button" onclick="checkCapCha()" class="btn-login">Login ✨</button>
+                    <button type="button" onclick="checkCapCha()" class="btn-login">Đăng nhập ✨</button>
                 </form>
 
                 <!-- Register Link -->
-                <p class="register-link">Don't have an account? <a href="${pageContext.request.contextPath}/authen?action=sign-up">Register</a></p>
+                <p class="register-link">Chưa có tài khoản? <a href="${pageContext.request.contextPath}/authen?action=sign-up">Đăng ký</a></p>
             </div>
         </div>
 
@@ -443,8 +443,7 @@
                 star.style.animationDelay = Math.random() * 3 + 's';
                 starsContainer.appendChild(star);
             }
-
-            function togglePassword() {
+function togglePassword() {
                 var input = document.getElementById("password");
                 var icon = document.querySelector(".input-group-text");
                 if (input.type === "password") {
