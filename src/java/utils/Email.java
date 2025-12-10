@@ -15,6 +15,7 @@ public class Email {
         final String username = "tuanbmhe181513@fpt.edu.vn"; // Địa chỉ email của bạn
         final String password = "rjev ylsn fkdk dspm"; // Mật khẩu ứng dụng của bạn
 
+
         // Thiết lập các thuộc tính cho phiên gửi email
         Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
