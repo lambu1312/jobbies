@@ -2,640 +2,243 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jobbies - Find Your Vibe</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>JobPath - Home</title>
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
-        body {
-            font-family: 'Segoe UI', system-ui, sans-serif;
-            background: linear-gradient(135deg, #0a0015 0%, #1a0b2e 50%, #16213e 100%);
-            color: #fff;
-            overflow-x: hidden;
-            min-height: 100vh;
-        }
-
-        .stars {
-            position: fixed;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-        }
-
-        .star {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: #fff;
-            border-radius: 50%;
-            animation: twinkle 3s infinite;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.3; }
-            50% { opacity: 1; }
-        }
-
-        .navbar {
-            position: relative;
-            z-index: 100;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 3rem;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .logo {
-            font-size: 2rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 0 30px rgba(196, 113, 245, 0.5);
-            letter-spacing: 2px;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.3s;
-            position: relative;
-        }
-
-        .nav-links a:hover {
-            color: #c471f5;
-            text-shadow: 0 0 20px rgba(196, 113, 245, 0.8);
-        }
-
-        .cta-button {
-            padding: 0.8rem 2rem;
-            background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
-            border: none;
-            border-radius: 50px;
-            color: #fff;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            box-shadow: 0 0 30px rgba(196, 113, 245, 0.4);
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0 40px rgba(196, 113, 245, 0.7);
-        }
-
-        .hero {
-            position: relative;
-            z-index: 10;
-            text-align: center;
-            padding: 4rem 2rem;
-            margin-top: 2rem;
-        }
-
-        .hero h1 {
-            font-size: 4rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, #fff 0%, #c471f5 50%, #7ee8fa 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 1rem;
-            text-shadow: 0 0 60px rgba(196, 113, 245, 0.5);
-            line-height: 1.2;
-        }
-
-        .hero p {
-            font-size: 1.3rem;
-            color: #b8b8d1;
-            margin-bottom: 3rem;
-        }
-
-        .search-container {
-            position: relative;
-            max-width: 700px;
-            margin: 0 auto 4rem;
-        }
-
-        .search-wrapper {
-            position: relative;
-            background: rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(30px);
-            border-radius: 60px;
-            padding: 1.5rem 3rem;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 20px 60px rgba(196, 113, 245, 0.3),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
-            animation: float 6s ease-in-out infinite;
-            display: flex;
-            gap: 1rem;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
-        }
-
-        .search-wrapper::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(135deg, #c471f5, #fa71cd, #7ee8fa);
-            border-radius: 60px;
-            z-index: -1;
-            opacity: 0.5;
-            filter: blur(20px);
-        }
-
-        .search-input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            outline: none;
-            color: #fff;
-            font-size: 1.2rem;
-            font-weight: 500;
-        }
-
-        .search-input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .search-button {
-            background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
-            border: none;
-            padding: 0.8rem 2rem;
-            border-radius: 50px;
-            color: #fff;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .search-button:hover {
-            transform: scale(1.05);
-        }
-
-        .content-section {
-            position: relative;
-            z-index: 10;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
-            display: flex;
-            gap: 2rem;
-        }
-
-        .filters-sidebar {
-            width: 300px;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 2rem;
-            height: fit-content;
-            position: sticky;
-            top: 2rem;
-        }
-
-        .filter-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            background: linear-gradient(135deg, #fff 0%, #c471f5 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .filter-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .filter-label {
-            display: block;
-            color: #b8b8d1;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-        }
-
-        .filter-select, .filter-input {
-            width: 100%;
-            padding: 0.8rem;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            color: #fff;
-            font-size: 0.95rem;
-            outline: none;
-            transition: all 0.3s;
-        }
-
-        .filter-select:focus, .filter-input:focus {
-            border-color: #c471f5;
-            box-shadow: 0 0 15px rgba(196, 113, 245, 0.3);
-        }
-
-        .filter-select option {
-            background: #1a0b2e;
-            color: #fff;
-        }
-
-        .salary-range {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-
-        .salary-range input {
-            flex: 1;
-        }
-
-        .salary-range span {
-            color: #b8b8d1;
-        }
-
-        .filter-button {
-            width: 100%;
-            padding: 0.8rem;
-            background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
-            border: none;
-            border-radius: 15px;
-            color: #fff;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-top: 1rem;
-        }
-
-        .filter-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(196, 113, 245, 0.5);
-        }
-
-        .jobs-content {
-            flex: 1;
-        }
-
-        .section-title {
-            font-size: 2rem;
-            font-weight: 900;
-            margin-bottom: 2rem;
-            background: linear-gradient(135deg, #fff 0%, #c471f5 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .job-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .job-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            padding: 2rem;
-            transition: all 0.3s;
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-        }
-
-        .job-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(196, 113, 245, 0.2), transparent);
-            transition: left 0.5s;
-        }
-
-        .job-card:hover::before {
-            left: 100%;
-        }
-
-        .job-card:hover {
-            transform: translateY(-10px);
-            border-color: #c471f5;
-            box-shadow: 0 20px 60px rgba(196, 113, 245, 0.4);
-            color: inherit;
-        }
-
-        .job-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            color: #fff;
-        }
-
-        .job-badges {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
-        }
-
-        .job-badge {
-            padding: 0.4rem 1rem;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-
-        .badge-location {
-            background: rgba(126, 232, 250, 0.2);
-            color: #7ee8fa;
-            border: 1px solid #7ee8fa;
-        }
-
-        .badge-salary {
-            background: rgba(57, 255, 20, 0.2);
-            color: #39ff14;
-            border: 1px solid #39ff14;
-        }
-
-        .job-date {
-            color: #b8b8d1;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .no-jobs {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: #b8b8d1;
-        }
-
-        .no-jobs h4 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .page-button {
-            min-width: 40px;
-            height: 40px;
-            padding: 0 0.8rem;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            color: #fff;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
-        }
-
-        .page-button:hover {
-            background: rgba(196, 113, 245, 0.3);
-            border-color: #c471f5;
-            color: #fff;
-        }
-
-        .page-button.active {
-            background: linear-gradient(135deg, #c471f5, #fa71cd);
-            border-color: transparent;
-            box-shadow: 0 5px 15px rgba(196, 113, 245, 0.4);
-        }
-
-        .pixel-decoration {
-            position: fixed;
-            font-size: 3rem;
-            opacity: 0.3;
-            z-index: 5;
-            animation: float 4s ease-in-out infinite;
-        }
-
-        .deco-1 { top: 20%; left: 10%; }
-        .deco-2 { top: 60%; right: 15%; animation-delay: 2s; }
-        .deco-3 { bottom: 15%; left: 20%; animation-delay: 1s; }
-
-        @media (max-width: 1024px) {
-            .content-section {
-                flex-direction: column;
-            }
-
-            .filters-sidebar {
-                width: 100%;
-                position: static;
-            }
-
-            .job-grid {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            }
-        }
-
-        @media (max-width: 768px) {
-            .navbar {
-                padding: 1rem 1.5rem;
+        <style>
+            /* Custom CSS styles go here */
+            .hero {
+                background: linear-gradient(rgba(40, 167, 69, 0.8), rgba(40, 167, 69, 0.8)), url('${pageContext.request.contextPath}/assets/img/istockphoto-475352876-612x612.jpg') center/cover no-repeat;
+                color: white;
+                padding: 120px 0;
+                text-align: center;
             }
 
             .hero h1 {
-                font-size: 2.5rem;
+                font-size: 3rem;
+                font-weight: 700;
+                margin-bottom: 1rem;
             }
 
             .hero p {
-                font-size: 1rem;
+                font-size: 1.25rem;
+                margin-bottom: 2rem;
             }
 
-            .search-wrapper {
-                flex-direction: column;
+            .search-container {
+                background-color: #f8f9fa;
                 padding: 1.5rem;
+                border-radius: 0.5rem;
+                box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
             }
 
-            .job-grid {
-                grid-template-columns: 1fr;
+            .search-box {
+                width: 100%;
+                padding: 12px;
+                border: 1px solid #ddd;
+                border-radius: 25px;
+                font-size: 16px;
             }
-        }
-    </style>
-</head>
-<body>
-    <div class="stars" id="stars"></div>
 
-    <div class="pixel-decoration deco-1">✨</div>
-    <div class="pixel-decoration deco-2">💎</div>
-    <div class="pixel-decoration deco-3">🚀</div>
+            .search-button {
+                background-color: #28a745;
+                color: white;
+                border: none;
+                padding: 12px 20px;
+                border-radius: 25px;
+                transition: background-color 0.3s;
+            }
 
-    <jsp:include page="../view/common/header-area.jsp"></jsp:include>
+            .search-button:hover {
+                background-color: #218838;
+            }
 
-    <section class="hero">
-        <h1>Find Your Vibe,<br>Build Your Future ✨</h1>
-        <p>Tìm việc dễ dàng, sự nghiệp vững vàng 🚀</p>
+            .filter-form {
+                background-color: #f8f9fa;
+                padding: 1.5rem;
+                border-radius: 0.5rem;
+                box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+            }
 
-        <div class="search-container">
-            <form action="${pageContext.request.contextPath}/home" method="GET">
-                <div class="search-wrapper">
-                    <input type="text" name="search" class="search-input" placeholder="🔍 Search jobs, companies, or skills..." value="${param.search}">
-                    <button type="submit" class="search-button">Search</button>
-                </div>
-            </form>
-        </div>
-    </section>
+            .job-card {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                height: 100%;
+            }
 
-    <div class="content-section">
-        <!-- Filters Sidebar -->
-        <aside class="filters-sidebar">
-            <h3 class="filter-title">🎯 Filters</h3>
-            <form action="${pageContext.request.contextPath}/home" method="GET" id="filterForm">
-                <input type="hidden" name="search" value="${param.search}">
-                
-                <div class="filter-group">
-                    <label class="filter-label">Job Category</label>
-                    <select name="filterCategory" class="filter-select" onchange="document.getElementById('filterForm').submit();">
-                        <option value="">All Categories</option>
-                        <c:forEach var="category" items="${activeCategories}">
-                            <option value="${category.getId()}" ${category.getId() == param.filterCategory ? 'selected' : ''}>
-                                ${category.getName()}
-                            </option>
-                        </c:forEach>
-                    </select>
-                </div>
+            .job-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            }
 
-                <div class="filter-group">
-                    <label class="filter-label">Salary Range</label>
-                    <div class="salary-range">
-                        <input type="number" name="minSalary" class="filter-input" placeholder="Min ($)" value="${param.minSalary}">
-                        <span>-</span>
-                        <input type="number" name="maxSalary" class="filter-input" placeholder="Max ($)" value="${param.maxSalary}">
-                    </div>
-                    <button type="submit" class="filter-button">Apply Filter 🔍</button>
-                </div>
-            </form>
-        </aside>
+            .job-card-link {
+                text-decoration: none;
+                color: inherit;
+                display: block;
+                height: 100%;
+            }
 
-        <!-- Job Listings -->
-        <main class="jobs-content">
-            <h2 class="section-title">✨ Hot Jobs Right Now</h2>
+            .job-card-link:hover {
+                color: inherit;
+            }
+        </style>
+    </head>
+    <body class="d-flex flex-column min-vh-100">
 
-            <c:choose>
-                <c:when test="${empty jobPostingsList}">
-                    <div class="no-jobs">
-                        <h4>🔍 No jobs found matching your criteria</h4>
-                        <p>Try adjusting your filters or search terms</p>
-                    </div>
-                </c:when>
-                <c:otherwise>
-                    <div class="job-grid">
-                        <c:forEach var="job" items="${jobPostingsList}">
-                            <a href="${pageContext.request.contextPath}/viewdetail?action=details&idJP=${job.getJobPostingID()}" class="job-card">
-                                <h5 class="job-title">${job.getTitle()}</h5>
-                                <div class="job-badges">
-                                    <span class="job-badge badge-location">
-                                        <i class="fas fa-map-marker-alt"></i>
-                                        ${job.getLocation()}
-                                    </span>
-                                    <span class="job-badge badge-salary">
-                                        <i class="fas fa-dollar-sign"></i>
-                                        $${job.getMinSalary()} - $${job.getMaxSalary()}
-                                    </span>
+        <!-- Header -->
+        <jsp:include page="../view/common/header-area.jsp"></jsp:include>
+
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="container">
+                    <h1>Welcome to JobPath</h1>
+                    <p>Your path to finding the perfect job starts here.</p>
+            </div>
+        </section>
+
+        <!-- Job Listings Section -->
+        <section class="py-5">
+            <div class="container">
+                <div class="row">
+                    <!-- Filters Sidebar -->
+                    <div class="col-md-3 mb-4">
+                        <div class="filter-form">
+                            <h4 class="mb-3">Filters</h4>
+                            <form action="home" method="GET" class="mb-4" id="filterForm">
+                                <div class="row align-items-center mb-3">
+                                    <div class="col-md-9">
+                                        <input type="text" name="search" class="form-control search-box" placeholder="Search by job title" value="${param.search}">
+                                    </div>
+                                    <div class="col-md-2 mt-2 mt-md-0">
+                                        <button type="submit" class="search-button">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="job-date">
-                                    <i class="far fa-clock"></i>
-                                    Posted: ${job.getPostedDate()}
+
+                                <div class="mb-3">
+                                    <label for="jobCategory" class="form-label">Job Category:</label>
+                                    <select name="filterCategory" id="jobCategory" class="form-select" onchange="document.getElementById('filterForm').submit();">
+                                        <option value="">All Categories</option>
+                                        <c:forEach var="category" items="${activeCategories}">
+                                            <option value="${category.getId()}" ${category.getId() == param.filterCategory ? 'selected' : ''}>${category.getName()}</option>
+                                        </c:forEach>
+                                    </select>
                                 </div>
-                            </a>
-                        </c:forEach>
+                                <div class="mb-3">
+                                    <label for="minSalary" class="form-label">Salary Range:</label>
+                                    <div class="input-group">
+                                        <input type="number" class="form-control" id="minSalary" name="minSalary" placeholder="Min ($)" value="${param.minSalary}">
+                                        <span class="input-group-text">-</span>
+                                        <input type="number" class="form-control" id="maxSalary" name="maxSalary" placeholder="Max ($)" value="${param.maxSalary}">
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Filter by Salary</button>
+                                </div>
+                            </form>
+
+                        </div>
                     </div>
 
-                    <!-- Pagination -->
-                    <nav class="pagination">
-                        <c:if test="${pageControl.getPage() > 1}">
-                            <a href="${pageControl.getUrlPattern()}page=${pageControl.getPage()-1}" class="page-button">
-                                « Previous
-                            </a>
-                        </c:if>
+                    <!-- Job Listings -->
+                    <div class="col-md-9">
+                        <div class="row">
+                            <c:if test="${empty jobPostingsList}">
+                                <div class="col-12 text-center">
+                                    <h4>No jobs found matching your criteria</h4>
+                                </div>
+                            </c:if>
+                            <c:forEach var="job" items="${jobPostingsList}">
+                                <div class="col-md-6 col-lg-4 mb-4">
+                                    <a href="${pageContext.request.contextPath}/viewdetail?action=details&idJP=${job.getJobPostingID()}" class="job-card-link">
+                                        <div class="card job-card h-100">
+                                            <div class="card-body">
+                                                <h5 class="card-title mb-3">${job.getTitle()}</h5>
+                                                <div class="mb-2">
+                                                    <span class="badge bg-primary">
+                                                        <i class="fas fa-map-marker-alt me-1"></i>
+                                                        ${job.getLocation()}
+                                                    </span>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <span class="badge bg-success">
+                                                        <i class="fas fa-dollar-sign me-1"></i>
+                                                        ${job.getMinSalary()} - ${job.getMaxSalary()}
+                                                    </span>
+                                                </div>
+                                                <p class="text-muted mb-0">
+                                                    <i class="far fa-clock me-1"></i>
+                                                    Posted: ${job.getPostedDate()}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </c:forEach>
+                        </div>
 
-                        <c:set var="startPage" value="${pageControl.getPage() - 2 > 0 ? pageControl.getPage() - 2 : 1}"/>
-                        <c:set var="endPage" value="${startPage + 4 <= pageControl.getTotalPages() ? startPage + 4 : pageControl.getTotalPages()}"/>
+                        <!-- Pagination -->
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination justify-content-center" id="pagination">
+                                <c:if test="${pageControl.getPage() > 1}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="${pageControl.getUrlPattern()}page=${pageControl.getPage()-1}" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo; Previous</span>
+                                        </a>
+                                    </li>
+                                </c:if>
 
-                        <c:if test="${startPage > 1}">
-                            <a href="${pageControl.getUrlPattern()}page=${startPage-1}" class="page-button">...</a>
-                        </c:if>
+                                <c:set var="startPage" value="${pageControl.getPage() - 2 > 0 ? pageControl.getPage() - 2 : 1}"/>
+                                <c:set var="endPage" value="${startPage + 4 <= pageControl.getTotalPages() ? startPage + 4 : pageControl.getTotalPages()}"/>
 
-                        <c:forEach var="i" begin="${startPage}" end="${endPage}">
-                            <a href="${pageControl.getUrlPattern()}page=${i}" class="page-button ${i == pageControl.getPage() ? 'active' : ''}">
-                                ${i}
-                            </a>
-                        </c:forEach>
+                                <c:if test="${startPage > 1}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="${pageControl.getUrlPattern()}page=${startPage-1}">...</a>
+                                    </li>
+                                </c:if>
 
-                        <c:if test="${endPage < pageControl.getTotalPages()}">
-                            <a href="${pageControl.getUrlPattern()}page=${endPage + 1}" class="page-button">...</a>
-                        </c:if>
+                                <c:forEach var="i" begin="${startPage}" end="${endPage}">
+                                    <li class="page-item ${i == pageControl.getPage() ? 'active' : ''}">
+                                        <a class="page-link" href="${pageControl.getUrlPattern()}page=${i}">${i}</a>
+                                    </li>
+                                </c:forEach>
 
-                        <c:if test="${pageControl.getPage() < pageControl.getTotalPages()}">
-                            <a href="${pageControl.getUrlPattern()}page=${pageControl.getPage() + 1}" class="page-button">
-                                Next »
-                            </a>
-                        </c:if>
-                    </nav>
-                </c:otherwise>
-            </c:choose>
-        </main>
-    </div>
-                    
+                                <c:if test="${endPage < pageControl.getTotalPages()}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="${pageControl.getUrlPattern()}page=${endPage + 1}">...</a>
+                                    </li>
+                                </c:if>
+
+                                <c:if test="${pageControl.getPage() < pageControl.getTotalPages()}">
+                                    <li class="page-item">
+                                        <a class="page-link" href="${pageControl.getUrlPattern()}page=${pageControl.getPage() + 1}" aria-label="Next">
+                                            <span aria-hidden="true">Next &raquo;</span>
+                                        </a>
+                                    </li>
+                                </c:if>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Footer -->
         <jsp:include page="../view/common/footer.jsp"></jsp:include>
 
-    <script>
-        // Generate stars
-        const starsContainer = document.getElementById('stars');
-        for (let i = 0; i < 100; i++) {
-            const star = document.createElement('div');
-            star.className = 'star';
-            star.style.left = Math.random() * 100 + '%';
-            star.style.top = Math.random() * 100 + '%';
-            star.style.animationDelay = Math.random() * 3 + 's';
-            starsContainer.appendChild(star);
-        }
+        <script>
+            // Category filter auto-submit
+            document.getElementById('jobCategory').addEventListener('change', function () {
+                document.getElementById('categoryForm').submit();
+            });
 
-        // Salary range validation
-        const minSalaryInput = document.querySelector('input[name="minSalary"]');
-        const maxSalaryInput = document.querySelector('input[name="maxSalary"]');
+            // Salary range validation
+            const minSalaryInput = document.getElementById('minSalary');
+            const maxSalaryInput = document.getElementById('maxSalary');
 
-        if (minSalaryInput && maxSalaryInput) {
             minSalaryInput.addEventListener('change', function () {
                 const minValue = parseInt(this.value);
                 if (maxSalaryInput.value && minValue > parseInt(maxSalaryInput.value)) {
@@ -649,7 +252,27 @@
                     minSalaryInput.value = maxValue;
                 }
             });
-        }
-    </script>
-</body>
+
+            // Back to top button
+            const backToTopButton = document.getElementById('back-to-top');
+
+            window.onscroll = function () {
+                if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                    backToTopButton.style.display = 'block';
+                } else {
+                    backToTopButton.style.display = 'none';
+                }
+            };
+
+            backToTopButton.addEventListener('click', function () {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        </script>
+        <!-- Bootstrap JS and dependencies -->
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    </body>
 </html>

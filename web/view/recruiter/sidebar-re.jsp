@@ -17,26 +17,29 @@
     </div>
 
     <!-- Navigation Links -->
-    <a>
-        <i class="fa-solid fa-home"></i> Tổng quan
+    <a href="${pageContext.request.contextPath}/Dashboard">
+        <i class="fa-solid fa-home"></i> Dashboard
     </a>
     <a href="${pageContext.request.contextPath}/view/recruiter/viewRecruiterProfile.jsp">
-        <i class="fa-duotone fa-solid fa-address-card"></i> Trang cá nhân
+        <i class="fa-duotone fa-solid fa-address-card"></i> Profile
     </a>
-    <a>
-        <i class="fa-solid fa-list"></i> Đăng tin tuyển dụng
+    <a href="${pageContext.request.contextPath}/jobPost">
+        <i class="fa-solid fa-list"></i> Job Posting
+    </a>
+    <a href="${pageContext.request.contextPath}/interviewManagement">
+        <i class="fa-solid fa-calendar-check"></i> Interview Management
     </a>
     <a href="${pageContext.request.contextPath}/company?action=create">
-        <i class="fa-solid fa-building me"></i> Tạo công ty
+        <i class="fa-solid fa-building me"></i> Create Company
     </a>
     <a href="${pageContext.request.contextPath}/company?action=edit">
-        <i class="fas fa-pencil-alt me"></i> Chỉnh sửa công ty
+        <i class="fas fa-pencil-alt me"></i> Edit Company
     </a>
-    <a><i class="fas fa-lock"></i> Thay đổi mật khẩu</a>
-    <a><i class="fa-solid fa-eraser"></i> Vô hiệu hóa tài khoản</a>
+    <a href="${pageContext.request.contextPath}/view/recruiter/changePW-re.jsp"><i class="fas fa-lock"></i> Change Password</a>
+    <a href="${pageContext.request.contextPath}/view/recruiter/deactiveAccountRecruiter.jsp"><i class="fa-solid fa-eraser"></i> Deactive Account</a>
 
     <a href="${pageContext.request.contextPath}/view/authen/logout.jsp" style="color: red;">
-        <i class="fas fa-sign-out-alt" style="color: red;"></i> Đăng xuất
+        <i class="fas fa-sign-out-alt" style="color: red;"></i> Log Out
     </a>
 </div>
 
@@ -105,7 +108,8 @@
 
     /* Account Actions */
     .account-actions {
-        margin-top: 20px;padding: 0 20px;
+        margin-top: 20px;
+        padding: 0 20px;
     }
 
     .account-actions a {

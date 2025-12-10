@@ -167,30 +167,30 @@
         <!-- Main content -->
         <div class="main-content">
             <div class="card">
-                <div class="card-header">Xác minh tài khoản của bạn</div>
+                <div class="card-header">Verify Your Account</div>
                 <form action="${pageContext.request.contextPath}/verifyRecruiter" method="post" enctype="multipart/form-data" onsubmit="return validateForm();">
                     <!-- Company ID input -->
                     <div class="mb-3">
-                        <label for="businessCode" class="form-label">Mã doanh nghiệp:</label>
-                        <input type="text" class="form-control" id="businessCode" name="businessCode" placeholder="Nhập mã doanh nghiệp của bạn" value="${param.businessCode != null ? param.businessCode : ''}" required>
+                        <label for="businessCode" class="form-label">Business code:</label>
+                        <input type="text" class="form-control" id="businessCode" name="businessCode" placeholder="e.g. 12345" value="${param.businessCode != null ? param.businessCode : ''}" required>
                     </div>
 
                     <!-- Position input -->
                     <div class="mb-3">
-                        <label for="position" class="form-label">Chức vụ</label>
-                        <input type="text" class="form-control" id="position" name="position" placeholder="Ví dụ: Nhà tuyển dụng,..." value="${param.position != null ? param.position : ''}" required>
+                        <label for="position" class="form-label">Position</label>
+                        <input type="text" class="form-control" id="position" name="position" placeholder="e.g. Recruiter" value="${param.position != null ? param.position : ''}" required>
                     </div>
 
                     <!-- Upload Front of Citizen ID -->
                     <div class="mb-3">
-                        <label for="frontCitizenID" class="form-label">Mặt trước CCCD</label>
+                        <label for="frontCitizenID" class="form-label">Front of Citizen ID</label>
                         <input type="file" class="form-control" id="frontCitizenID" name="frontCitizenID" accept="image/*" onchange="previewImage(this, 'frontPreview')" required>
                         <img id="frontPreview" class="preview-img" alt="Front Citizen ID">
                     </div>
 
                     <!-- Upload Back of Citizen ID -->
                     <div class="mb-3">
-                        <label for="backCitizenID" class="form-label">Mặt sau CCCD</label>
+                        <label for="backCitizenID" class="form-label">Back of Citizen ID</label>
                         <input type="file" class="form-control" id="backCitizenID" name="backCitizenID" accept="image/*" onchange="previewImage(this, 'backPreview')" required>
                         <img id="backPreview" class="preview-img" alt="Back Citizen ID">
                     </div>

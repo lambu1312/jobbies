@@ -34,7 +34,7 @@
             }
 
             .card-header {
-                background-color: #140A20;
+                background-color: var(--primary-color);
                 color: white;
                 border-radius: var(--border-radius) var(--border-radius) 0 0;
                 padding: 1rem;

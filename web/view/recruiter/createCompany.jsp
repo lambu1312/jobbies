@@ -49,7 +49,7 @@
             }
 
             .card-header {
-                background-color: #140A20;
+                background-color: #28a745;
                 color: white;
                 border-radius: 10px 10px 0 0;
                 padding: 10px;

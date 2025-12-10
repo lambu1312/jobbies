@@ -286,7 +286,7 @@
                     <div class="job-posting-container">
                         <!-- Centered Header section -->
                         <div class="header-section">
-                            <h2>Quản lý đăng tin tuyển dụng</h2>
+                            <h2>Job Posting Management</h2>
                         </div>
 
                         <!-- Search bar, Add New Job, and Filters -->
@@ -294,7 +294,7 @@
                             <!-- Add New Job Button -->
 
                             <a href="${pageContext.request.contextPath}/AddJobPosting" class="btn-add-job">
-                                <i class="fas fa-plus"></i> Thêm tin tuyển dụng
+                                <i class="fas fa-plus"></i> Add New Job
                             </a>
 
                             <!-- Filter Buttons -->
@@ -302,17 +302,17 @@
                                 <a
                                     href="${pageContext.request.contextPath}/jobPost?sort=title&page=1&searchJP=${searchJP}"
                                     class="btn-filter"
-                                    >Sắp xếp theo A-z</a
+                                    >Filter by Title A-Z</a
                                 >
                                 <a
                                     href="${pageContext.request.contextPath}/jobPost?sort=postedDate&page=1&searchJP=${searchJP}"
                                     class="btn-filter"
-                                    >Sắp xếp theo ngày đăng</a
+                                    >Filter by Post Date</a
                                 >
                                 <a
                                     href="${pageContext.request.contextPath}/jobPost?sort=status&page=1&searchJP=${searchJP}"
                                     class="btn-filter"
-                                    >Sắp xếp theo trạng thái</a
+                                    >Filter by Status</a
                                 >
                             </div>
                             <!-- Search bar -->
@@ -325,7 +325,7 @@
                                     type="text"
                                     name="searchJP"
                                     class="search-box"
-                                    placeholder="Tìm kiếm theo tiêu đề"
+                                    placeholder="Search by job title"
                                     />
                                 <button type="submit" class="search-button">
                                     <i class="fas fa-search"></i>
@@ -338,11 +338,11 @@
                             <table>
                                 <thead>
                                     <tr>
-                                        <th>Tiêu đề công việc</th>
-                                        <th>Ngày đăng</th>
-                                        <th>Trạng thái</th>
-                                        <th>Hành động</th>
-                                        <th>Người ứng tuyển</th>
+                                        <th>Job Title</th>
+                                        <th>Date Posted</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                        <th>Applications</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -400,17 +400,16 @@
                                             </td>
 
                                             <td>
-                                                <c:if test="${i.application.size() != 0}">
+                                                <c:if test="${i.application.size() !=  0}">
                                                     <a
                                                         href="${pageContext.request.contextPath}/applicationSeekers?action=view&jobPostId=${i.getJobPostingID()}"
                                                         class="btn-action text-info"
                                                         >
-                                                        Xem danh sách người đã ứng tuyển
+                                                        <i class="fas fa-arrow-up"></i>
                                                     </a>
                                                 </c:if>
-
                                                 <c:if test="${i.application.size() ==  0}">
-                                                    Chưa có người ứng tuyển công việc này
+                                                    Not yet
                                                 </c:if>
                                             </td>
                                         </tr>
@@ -423,7 +422,7 @@
                         <c:if test="${not empty requestScope.NoJP}">
                             <div class="error-message">${requestScope.NoJP}</div>
                         </c:if>
-
+                            
                         <!-- Pagination controls -->
                         <nav aria-label="Page navigation" class="footer-container">
                             <ul class="pagination justify-content-center">
