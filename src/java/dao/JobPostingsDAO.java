@@ -55,6 +55,7 @@ public class JobPostingsDAO extends GenericDAO<JobPostings> {
                 + "      ,[Requirements] = ?\n"
                 + "      ,[MinSalary] = ?\n"
                 + "      ,[MaxSalary] = ?\n"
+                + "      ,[Currency] = ?\n"
                 + "      ,[Location] = ?\n"
                 + "      ,[PostedDate] = ?\n"
                 + "      ,[ClosingDate] = ?\n"
@@ -68,6 +69,7 @@ public class JobPostingsDAO extends GenericDAO<JobPostings> {
         parameterMap.put("Requirements", t.getRequirements());
         parameterMap.put("MinSalary", t.getMinSalary());
         parameterMap.put("MaxSalary", t.getMaxSalary());
+        parameterMap.put("Currency", t.getCurrency());
         parameterMap.put("Location", t.getLocation());
         parameterMap.put("PostedDate", t.getPostedDate());
         parameterMap.put("ClosingDate", t.getClosingDate());
@@ -102,12 +104,13 @@ public class JobPostingsDAO extends GenericDAO<JobPostings> {
                 + "           ,[Requirements]\n"
                 + "           ,[MinSalary]\n"
                 + "           ,[MaxSalary]\n"
+                + "           ,[Currency]\n"
                 + "           ,[Location]\n"
                 + "           ,[PostedDate]\n"
                 + "           ,[ClosingDate]\n"
                 + "           ,[Job_Posting_CategoryID]\n"
                 + "           ,[Status])\n"
-                + "     VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+                + "     VALUES(?,?,?,?,?,?,?,?,?,?,?,?)";
         parameterMap = new LinkedHashMap<>();
         parameterMap.put("RecruiterID", t.getRecruiterID());
         parameterMap.put("Title", t.getTitle());
@@ -115,6 +118,7 @@ public class JobPostingsDAO extends GenericDAO<JobPostings> {
         parameterMap.put("Requirements", t.getRequirements());
         parameterMap.put("MinSalary", t.getMinSalary());
         parameterMap.put("MaxSalary", t.getMaxSalary());
+        parameterMap.put("Currency", t.getCurrency());
         parameterMap.put("Location", t.getLocation());
         parameterMap.put("PostedDate", t.getPostedDate());
         parameterMap.put("ClosingDate", t.getClosingDate());

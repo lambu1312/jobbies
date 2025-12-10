@@ -142,6 +142,7 @@ public class JobPost extends HttpServlet {
             String jobLocation = request.getParameter("jobLocation");
             double minSalary = Double.parseDouble(request.getParameter("minSalary"));
             double maxSalary = Double.parseDouble(request.getParameter("maxSalary"));
+            String currency = request.getParameter("currency");
             String jobStatus = request.getParameter("jobStatus");
             Date postedDate = Date.valueOf(request.getParameter("postedDate"));
             Date closingDate = Date.valueOf(request.getParameter("closingDate"));
@@ -161,6 +162,7 @@ public class JobPost extends HttpServlet {
             request.setAttribute("jobLocation", jobLocation);
             request.setAttribute("minSalary", minSalary);
             request.setAttribute("maxSalary", maxSalary);
+            request.setAttribute("currency", currency);
             request.setAttribute("postedDate", postedDate);
             request.setAttribute("closingDate", closingDate);
             request.setAttribute("jobStatus", jobStatus);
@@ -183,6 +185,7 @@ public class JobPost extends HttpServlet {
             jobPost.setLocation(jobLocation);
             jobPost.setMinSalary(minSalary);
             jobPost.setMaxSalary(maxSalary);
+            jobPost.setCurrency(currency != null && !currency.isEmpty() ? currency : "USD");
             jobPost.setStatus(jobStatus);
             jobPost.setPostedDate(postedDate);
             jobPost.setClosingDate(closingDate);
@@ -277,6 +280,7 @@ public class JobPost extends HttpServlet {
         String jobLocation = request.getParameter("jobLocation");
         double minSalary = Double.parseDouble(request.getParameter("minSalary"));
         double maxSalary = Double.parseDouble(request.getParameter("maxSalary"));
+        String currency = request.getParameter("currency");
         String jobStatus = request.getParameter("jobStatus");
         Date postedDate = Date.valueOf(request.getParameter("postedDate"));
         Date closingDate = Date.valueOf(request.getParameter("closingDate"));
@@ -299,6 +303,7 @@ public class JobPost extends HttpServlet {
         jobPost.setLocation(jobLocation);
         jobPost.setMinSalary(minSalary);
         jobPost.setMaxSalary(maxSalary);
+        jobPost.setCurrency(currency != null && !currency.isEmpty() ? currency : "USD");
         jobPost.setStatus(jobStatus);
         jobPost.setPostedDate(postedDate);
         jobPost.setClosingDate(closingDate);

@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@page import="model.JobPostings"%>
@@ -166,6 +167,30 @@
                     <!-- Title Section -->
                     <h2 class="table-title mt-4 mb-4">${jobPostingTitle}</h2>
 
+                    <!-- Error Message Alert -->
+                    <c:if test="${not empty sessionScope.errorMessage}">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fas fa-exclamation-circle"></i> ${sessionScope.errorMessage}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                        <c:remove var="errorMessage" scope="session"/>
+                    </c:if>
+
+                    <!-- Success Message Alert -->
+                    <c:if test="${param.success != null}">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <i class="fas fa-check-circle"></i> 
+                            <c:choose>
+                                <c:when test="${param.success == 'interview_scheduled'}">Interview scheduled successfully!</c:when>
+                                <c:when test="${param.success == 'interview_updated'}">Interview updated successfully!</c:when>
+                                <c:when test="${param.success == 'status_updated'}">Interview status updated successfully!</c:when>
+                                <c:when test="${param.success == 'interview_deleted'}">Interview deleted successfully!</c:when>
+                                <c:otherwise>Operation completed successfully!</c:otherwise>
+                            </c:choose>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </c:if>
+
                     <!-- Row for Back Button, Filter Buttons, and Search Box -->
                     <div class="row align-items-center mb-3">
                         <!-- Back Button -->
@@ -280,6 +305,33 @@
                                                     <span class="text-danger"> (Not allowed)</span>
                                                     <% } %>
                                                 </c:when>
+                                                <c:when test="${application.getStatus() == 2}">
+                                                    <!-- Check if interview exists for this application -->
+                                                    <c:set var="hasInterview" value="false" />
+                                                    <c:forEach var="interview" items="${interviews}">
+                                                        <c:if test="${interview.applicationID == application.applicationID}">
+                                                            <c:set var="hasInterview" value="true" />
+                                                            <c:set var="currentInterview" value="${interview}" />
+                                                        </c:if>
+                                                    </c:forEach>
+                                                    
+                                                    <c:choose>
+                                                        <c:when test="${hasInterview}">
+                                                            <button type="button" class="btn btn-info btn-sm" 
+                                                                    data-bs-toggle="modal" data-bs-target="#viewInterviewModal" 
+                                                                    onclick="viewInterview(${currentInterview.interviewID}, ${application.applicationID}, '${currentInterview.interviewDate}', '${currentInterview.interviewTime}', '${currentInterview.location}', '${currentInterview.interviewType}', '${currentInterview.meetingLink}', '${currentInterview.notes}', '${currentInterview.status}')">
+                                                                <i class="fas fa-calendar-check"></i> View Interview
+                                                            </button>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <button type="button" class="btn btn-primary btn-sm" 
+                                                                    data-bs-toggle="modal" data-bs-target="#scheduleInterviewModal" 
+                                                                    onclick="setApplicationId(${application.applicationID})">
+                                                                <i class="fas fa-calendar-plus"></i> Schedule Interview
+                                                            </button>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </c:when>
                                                 <c:otherwise>
                                                     <span class="text-muted">Not yet</span>
                                                 </c:otherwise>
@@ -355,6 +407,147 @@
                     </div>
                 </div>
 
+                <!-- Schedule Interview Modal -->
+                <div class="modal fade" id="scheduleInterviewModal" tabindex="-1" aria-labelledby="scheduleInterviewModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header bg-primary text-white">
+                                <h5 class="modal-title" id="scheduleInterviewModalLabel">
+                                    <i class="fas fa-calendar-plus"></i> Schedule Interview
+                                </h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="scheduleInterviewForm" action="${pageContext.request.contextPath}/scheduleInterview" method="post">
+                                    <input type="hidden" name="action" value="create">
+                                    <input type="hidden" name="applicationId" id="scheduleApplicationId" value="">
+                                    <input type="hidden" name="jobPostId" value="${param.jobPostId}">
+                                    <input type="hidden" name="status" value="Scheduled">
+                                    <input type="hidden" name="returnTo" value="applications">
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="interviewDate" class="form-label">Interview Date <span class="text-danger">*</span></label>
+                                            <input type="date" class="form-control" id="interviewDate" name="interviewDate" 
+                                                   min="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="interviewTime" class="form-label">Interview Time <span class="text-danger">*</span></label>
+                                            <input type="time" class="form-control" id="interviewTime" name="interviewTime" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="interviewType" class="form-label">Interview Type <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="interviewType" name="interviewType" onchange="toggleMeetingLink()" required>
+                                            <option value="">-- Select Type --</option>
+                                            <option value="Online">Online</option>
+                                            <option value="Offline">Offline</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="mb-3" id="locationField">
+                                        <label for="location" class="form-label">Location</label>
+                                        <input type="text" class="form-control" id="location" name="location" 
+                                               placeholder="Enter interview location">
+                                    </div>
+                                    
+                                    <div class="mb-3" id="meetingLinkField" style="display: none;">
+                                        <label for="meetingLink" class="form-label">Meeting Link <span class="text-danger">*</span></label>
+                                        <input type="url" class="form-control" id="meetingLink" name="meetingLink" 
+                                               placeholder="https://zoom.us/j/123456789">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="notes" class="form-label">Notes / Instructions</label>
+                                        <textarea class="form-control" id="notes" name="notes" rows="3" 
+                                                  placeholder="Enter additional information or instructions for the candidate..."></textarea>
+                                    </div>
+                                    
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                            <i class="fas fa-times"></i> Cancel
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> Schedule Interview
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- View Interview Modal -->
+                <div class="modal fade" id="viewInterviewModal" tabindex="-1" aria-labelledby="viewInterviewModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header bg-info text-white">
+                                <h5 class="modal-title" id="viewInterviewModalLabel">
+                                    <i class="fas fa-calendar-check"></i> Interview Details
+                                </h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="updateInterviewForm" action="${pageContext.request.contextPath}/scheduleInterview" method="post">
+                                    <input type="hidden" name="action" value="update">
+                                    <input type="hidden" name="interviewId" id="viewInterviewId" value="">
+                                    <input type="hidden" name="jobPostId" value="${param.jobPostId}">
+                                    <input type="hidden" name="returnTo" value="applications">
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="viewInterviewDate" class="form-label">Interview Date <span class="text-danger">*</span></label>
+                                            <input type="date" class="form-control" id="viewInterviewDate" name="interviewDate" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="viewInterviewTime" class="form-label">Interview Time <span class="text-danger">*</span></label>
+                                            <input type="time" class="form-control" id="viewInterviewTime" name="interviewTime" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="viewInterviewType" class="form-label">Interview Type <span class="text-danger">*</span></label>
+                                        <select class="form-select" id="viewInterviewType" name="interviewType" onchange="toggleMeetingLinkView()" required>
+                                            <option value="Online">Online</option>
+                                            <option value="Offline">Offline</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div class="mb-3" id="viewLocationField">
+                                        <label for="viewLocation" class="form-label">Location</label>
+                                        <input type="text" class="form-control" id="viewLocation" name="location">
+                                    </div>
+                                    
+                                    <div class="mb-3" id="viewMeetingLinkField">
+                                        <label for="viewMeetingLink" class="form-label">Meeting Link</label>
+                                        <input type="url" class="form-control" id="viewMeetingLink" name="meetingLink">
+                                    </div>
+                                    
+                                    <div class="mb-3">
+                                        <label for="viewNotes" class="form-label">Notes</label>
+                                        <textarea class="form-control" id="viewNotes" name="notes" rows="3"></textarea>
+                                    </div>
+                                    
+                                    <input type="hidden" id="viewStatus" name="status" value="Scheduled">
+                                    
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-danger" onclick="deleteInterview()">
+                                            <i class="fas fa-trash"></i> Delete
+                                        </button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                            <i class="fas fa-times"></i> Close
+                                        </button>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-save"></i> Update Interview
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
             <!-- Include Footer -->
@@ -372,7 +565,7 @@
         <script>
                                         // Khởi tạo TinyMCE cho textarea với id là 'emailContent'
                                         tinymce.init({
-                                            selector: 'textarea',
+                                            selector: 'textarea#emailContent',
                                             plugins: 'advlist autolink lists link image charmap print preview anchor',
                                             toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
                                             branding: false,
@@ -392,6 +585,70 @@
                                             // Reset các trường khác trong form nếu cần
                                             document.getElementById('status').selectedIndex = 0; // Đặt lại giá trị đầu tiên của dropdown
                                             document.getElementById('changeStatusForm').reset(); // Reset form nếu cần
+                                        }
+                                        
+                                        // Interview scheduling functions
+                                        function setApplicationId(applicationId) {
+                                            document.getElementById('scheduleApplicationId').value = applicationId;
+                                        }
+                                        
+                                        function toggleMeetingLink() {
+                                            const interviewType = document.getElementById('interviewType').value;
+                                            const meetingLinkField = document.getElementById('meetingLinkField');
+                                            const meetingLinkInput = document.getElementById('meetingLink');
+                                            const locationField = document.getElementById('locationField');
+                                            
+                                            if (interviewType === 'Online') {
+                                                meetingLinkField.style.display = 'block';
+                                                meetingLinkInput.required = true;
+                                                locationField.style.display = 'none';
+                                            } else {
+                                                meetingLinkField.style.display = 'none';
+                                                meetingLinkInput.required = false;
+                                                locationField.style.display = 'block';
+                                            }
+                                        }
+                                        
+                                        function toggleMeetingLinkView() {
+                                            const interviewType = document.getElementById('viewInterviewType').value;
+                                            const meetingLinkField = document.getElementById('viewMeetingLinkField');
+                                            const locationField = document.getElementById('viewLocationField');
+                                            
+                                            if (interviewType === 'Online') {
+                                                meetingLinkField.style.display = 'block';
+                                                locationField.style.display = 'none';
+                                            } else {
+                                                meetingLinkField.style.display = 'none';
+                                                locationField.style.display = 'block';
+                                            }
+                                        }
+                                        
+                                        function viewInterview(interviewId, applicationId, interviewDate, interviewTime, location, interviewType, meetingLink, notes, status) {
+                                            document.getElementById('viewInterviewId').value = interviewId;
+                                            
+                                            // Parse datetime if needed (format: 2024-12-09 00:00:00.0)
+                                            if (interviewDate && interviewDate.includes(' ')) {
+                                                interviewDate = interviewDate.split(' ')[0];
+                                            }
+                                            
+                                            document.getElementById('viewInterviewDate').value = interviewDate;
+                                            document.getElementById('viewInterviewTime').value = interviewTime || '';
+                                            document.getElementById('viewLocation').value = location || '';
+                                            document.getElementById('viewInterviewType').value = interviewType || 'Offline';
+                                            document.getElementById('viewMeetingLink').value = meetingLink || '';
+                                            document.getElementById('viewNotes').value = notes || '';
+                                            document.getElementById('viewStatus').value = status || 'Scheduled';
+                                            
+                                            // Toggle fields based on interview type
+                                            toggleMeetingLinkView();
+                                        }
+                                        
+                                        function deleteInterview() {
+                                            if (confirm('Are you sure you want to delete this interview?')) {
+                                                const interviewId = document.getElementById('viewInterviewId').value;
+                                                const jobPostId = '${param.jobPostId}';
+                                                window.location.href = '${pageContext.request.contextPath}/scheduleInterview?action=delete&interviewId=' + interviewId + '&jobPostId=' + jobPostId;
+                                            }
                                         }
         </script>
     </body>

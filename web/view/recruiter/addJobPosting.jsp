@@ -125,6 +125,19 @@
                 margin-top: 20px;
                 border-radius: 5px;
             }
+            
+            /* AI Auto-generate hint */
+            .ai-hint {
+                font-size: 13px;
+                color: #667eea;
+                margin-top: 5px;
+                display: block;
+                font-weight: 500;
+            }
+            
+            .ai-hint i {
+                margin-right: 5px;
+            }
 
         </style>
     </head>
@@ -146,7 +159,8 @@
                     <!-- Title -->
                     <div class="form-group">
                         <label for="jobTitle">Job Title:</label>
-                        <input type="text" id="jobTitle" name="jobTitle" class="form-control" placeholder="Enter job title" value="${fn:escapeXml(jobTitle)}" required>
+                        <input type="text" id="jobTitle" name="jobTitle" class="form-control" placeholder="Enter job title (e.g., Senior Java Developer, Lập trình viên Java)" value="${fn:escapeXml(jobTitle)}" required>
+                        <small class="ai-hint"><i class="fas fa-wand-magic-sparkles"></i> AI will auto-generate description and requirements when you type</small>
                     </div>
 
                     <!-- Description -->
@@ -163,15 +177,29 @@
 
                     <!-- Two-column row for Min Salary, Max Salary -->
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
-                                <label for="minSalary">Min Salary $:</label>
+                                <label for="currency">Currency:</label>
+                                <select id="currency" name="currency" class="form-control" required>
+                                    <option value="USD" <c:if test="${currency == 'USD'}">selected</c:if>>USD ($)</option>
+                                    <option value="VND" <c:if test="${currency == 'VND'}">selected</c:if>>VND (₫)</option>
+                                    <option value="EUR" <c:if test="${currency == 'EUR'}">selected</c:if>>EUR (€)</option>
+                                    <option value="GBP" <c:if test="${currency == 'GBP'}">selected</c:if>>GBP (£)</option>
+                                    <option value="JPY" <c:if test="${currency == 'JPY'}">selected</c:if>>JPY (¥)</option>
+                                    <option value="AUD" <c:if test="${currency == 'AUD'}">selected</c:if>>AUD (A$)</option>
+                                    <option value="CAD" <c:if test="${currency == 'CAD'}">selected</c:if>>CAD (C$)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="minSalary">Min Salary:</label>
                                 <input type="number" id="minSalary" name="minSalary" class="form-control" placeholder="Enter minimum salary" value="${minSalary}" required>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-4">
                             <div class="form-group">
-                                <label for="maxSalary">Max Salary $:</label>
+                                <label for="maxSalary">Max Salary:</label>
                                 <input type="number" id="maxSalary" name="maxSalary" class="form-control" placeholder="Enter maximum salary" value="${maxSalary}" required>
                             </div>
                         </div>
@@ -266,11 +294,141 @@
 
         <!-- JavaScript to handle form reset and validation -->
         <script>
+            let aiGenerateTimeout = null;
+            let lastGeneratedTitle = '';
+            
+            // Auto-generate AI suggestions when job title changes
+            document.addEventListener('DOMContentLoaded', function() {
+                const jobTitleInput = document.getElementById('jobTitle');
+                
+                jobTitleInput.addEventListener('input', function() {
+                    const jobTitle = this.value.trim();
+                    
+                    // Clear previous timeout
+                    if (aiGenerateTimeout) {
+                        clearTimeout(aiGenerateTimeout);
+                    }
+                    
+                    // Set new timeout (wait 1.5 seconds after user stops typing)
+                    if (jobTitle && jobTitle !== lastGeneratedTitle && jobTitle.length >= 3) {
+                        aiGenerateTimeout = setTimeout(() => {
+                            getAISuggestions();
+                        }, 1500);
+                    }
+                });
+            });
+            
+            // Function to get AI suggestions for job description and requirements
+            async function getAISuggestions() {
+                const jobTitle = document.getElementById('jobTitle').value.trim();
+                
+                if (!jobTitle || jobTitle.length < 3) {
+                    return;
+                }
+                
+                // Don't regenerate if it's the same title
+                if (jobTitle === lastGeneratedTitle) {
+                    return;
+                }
+                
+                lastGeneratedTitle = jobTitle;
+                
+                // Show loading indicator in hint
+                const hintElement = document.querySelector('.ai-hint');
+                const originalHint = hintElement.innerHTML;
+                hintElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> AI is generating content...';
+                hintElement.style.color = '#667eea';
+                
+                try {
+                    const response = await fetch('${pageContext.request.contextPath}/GeminiAISuggestion', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ jobTitle: jobTitle })
+                    });
+                    
+                    const data = await response.json();
+                    
+                    if (response.ok && data.description && data.requirements) {
+                        // Set content to TinyMCE editors
+                        tinymce.get('jobDescription').setContent(data.description);
+                        tinymce.get('jobRequirements').setContent(data.requirements);
+                        
+                        // Always AI generated content (no templates)
+                        hintElement.innerHTML = '<i class="fas fa-check-circle"></i> AI content generated successfully!';
+                        hintElement.style.color = '#28a745';
+                        showNotification('✨ AI suggestions generated for "' + jobTitle + '"', 'success');
+                    } else if (data.error) {
+                        // AI service unavailable
+                        hintElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i> AI service unavailable';
+                        hintElement.style.color = '#dc3545';
+                        
+                        if (data.retryable) {
+                            showNotification('⚠️ ' + data.error + ' Click the button to retry.', 'warning');
+                            // Reset lastGeneratedTitle so user can retry
+                            lastGeneratedTitle = '';
+                        } else {
+                            showNotification('❌ ' + data.error, 'error');
+                        }
+                    } else {
+                        hintElement.innerHTML = originalHint;
+                        hintElement.style.color = '#667eea';
+                        showNotification('⚠️ Unexpected response format. Please try again.', 'warning');
+                        lastGeneratedTitle = '';
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    hintElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Connection error';
+                    hintElement.style.color = '#dc3545';
+                    showNotification('❌ Network error. Please check your connection and try again.', 'error');
+                    lastGeneratedTitle = '';
+                }
+            }
+            
+            // Show notification function
+            function showNotification(message, type) {
+                // Remove existing notifications
+                const existingAlert = document.querySelector('.ai-notification');
+                if (existingAlert) {
+                    existingAlert.remove();
+                }
+                
+                // Create new notification
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-' + (type === 'success' ? 'success' : type === 'warning' ? 'warning' : type === 'info' ? 'info' : 'danger') + ' ai-notification';
+                alertDiv.style.cssText = 'position: fixed; top: 100px; right: 20px; z-index: 9999; min-width: 300px; animation: slideIn 0.3s ease;';
+                alertDiv.innerHTML = message;
+                
+                document.body.appendChild(alertDiv);
+                
+                // Auto remove after 5 seconds
+                setTimeout(() => {
+                    alertDiv.style.animation = 'slideOut 0.3s ease';
+                    setTimeout(() => alertDiv.remove(), 300);
+                }, 5000);
+            }
+            
+            // Add CSS animation
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes slideIn {
+                    from { transform: translateX(400px); opacity: 0; }
+                    to { transform: translateX(0); opacity: 1; }
+                }
+                @keyframes slideOut {
+                    from { transform: translateX(0); opacity: 1; }
+                    to { transform: translateX(400px); opacity: 0; }
+                }
+            `;
+            document.head.appendChild(style);
+            
             function clearForm() {
                 // Manually reset each input field by ID
                 document.getElementById("jobTitle").value = '';
                 document.getElementById("minSalary").value = '';
                 document.getElementById("maxSalary").value = '';
+                document.getElementById("currency").selectedIndex = 0;
                 document.getElementById("jobLocation").value = '';
                 document.getElementById("postedDate").value = '';
                 document.getElementById("closingDate").value = '';

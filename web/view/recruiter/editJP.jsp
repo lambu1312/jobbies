@@ -206,12 +206,24 @@
 
                             <!-- Job Salary -->
                             <div class="form-group">
-                                <label for="minSalary" class="form-label">Min Salary $</label>
+                                <label for="currency" class="form-label">Currency</label>
+                                <select id="currency" name="currency" class="form-control" required>
+                                    <option value="USD" ${(param.currency != null ? param.currency : jobPost.getCurrency()) == 'USD' ? 'selected' : ''}>USD ($)</option>
+                                    <option value="VND" ${(param.currency != null ? param.currency : jobPost.getCurrency()) == 'VND' ? 'selected' : ''}>VND (₫)</option>
+                                    <option value="EUR" ${(param.currency != null ? param.currency : jobPost.getCurrency()) == 'EUR' ? 'selected' : ''}>EUR (€)</option>
+                                    <option value="GBP" ${(param.currency != null ? param.currency : jobPost.getCurrency()) == 'GBP' ? 'selected' : ''}>GBP (£)</option>
+                                    <option value="JPY" ${(param.currency != null ? param.currency : jobPost.getCurrency()) == 'JPY' ? 'selected' : ''}>JPY (¥)</option>
+                                    <option value="AUD" ${(param.currency != null ? param.currency : jobPost.getCurrency()) == 'AUD' ? 'selected' : ''}>AUD (A$)</option>
+                                    <option value="CAD" ${(param.currency != null ? param.currency : jobPost.getCurrency()) == 'CAD' ? 'selected' : ''}>CAD (C$)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="minSalary" class="form-label">Min Salary</label>
                                 <input type="number" id="minSalary" name="minSalary" class="form-control" 
                                        value="${param.minSalary != null ? param.minSalary : jobPost.getMinSalary()}" required>
                             </div>
                             <div class="form-group">
-                                <label for="maxSalary" class="form-label">Max Salary $</label>
+                                <label for="maxSalary" class="form-label">Max Salary</label>
                                 <input type="number" id="maxSalary" name="maxSalary" class="form-control" 
                                        value="${param.maxSalary != null ? param.maxSalary : jobPost.getMaxSalary()}" required>
                             </div>

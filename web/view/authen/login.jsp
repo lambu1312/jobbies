@@ -10,10 +10,12 @@
         <!-- Bootstrap for responsiveness -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <style>
+            /*
             .g-recaptcha {
-                transform: scale(0.85); /* Thu nhỏ reCAPTCHA */
-                transform-origin: 0 0;  /* Căn chỉnh reCAPTCHA ở góc trên bên trái */
+                transform: scale(0.85);
+                transform-origin: 0 0;
             }
+            */
         </style>
 
     </head>
@@ -70,11 +72,11 @@
                         </div>
 
                         <!-- Google reCAPTCHA -->
-                        <div class="g-recaptcha" data-sitekey="6LeVFEsqAAAAAFK_7xKTrV798KMOrnTYcVgfeMIa"></div>
-                        <div id="error" class="text-danger mb-3"></div> <!-- Div to display reCAPTCHA errors -->
+                        <!-- <div class="g-recaptcha" data-sitekey="6LeVFEsqAAAAAFK_7xKTrV798KMOrnTYcVgfeMIa"></div> -->
+                        <!-- <div id="error" class="text-danger mb-3"></div> -->
 
                         <!-- Login Button -->
-                        <button type="button" onclick="checkCapCha()" class="btn btn-success w-100 my-3">Login</button>
+                        <button type="submit" class="btn btn-success w-100 my-3">Login</button>
                     </form>
 
                     <!-- Register Link -->
@@ -87,7 +89,7 @@
 
         <!-- JS logic -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        <!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
         <script type="text/javascript">
                             function togglePassword() {
                                 var input = document.getElementById("password");
@@ -144,6 +146,7 @@
                             document.getElementById("username").addEventListener("keydown", preventSpaces);
                             document.getElementById("password").addEventListener("keydown", preventSpaces);
 
+                            /*
                             function checkCapCha() {
                                 var form = document.getElementById("login-form");
                                 var error = document.getElementById("error");
@@ -154,6 +157,7 @@
                                     error.textContent = "Please verify that you are not a robot";
                                 }
                             }
+                            */
         </script>
     </body>
 </html>

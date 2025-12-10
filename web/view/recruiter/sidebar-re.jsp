@@ -26,6 +26,9 @@
     <a href="${pageContext.request.contextPath}/jobPost">
         <i class="fa-solid fa-list"></i> Job Posting
     </a>
+    <a href="${pageContext.request.contextPath}/interviewManagement">
+        <i class="fa-solid fa-calendar-check"></i> Interview Management
+    </a>
     <a href="${pageContext.request.contextPath}/company?action=create">
         <i class="fa-solid fa-building me"></i> Create Company
     </a>

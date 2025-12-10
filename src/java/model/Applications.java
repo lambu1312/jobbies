@@ -19,6 +19,7 @@ public class Applications {
     private int Status;
     private Date AppliedDate;
     private transient JobSeekers jobSeeker;
+    private transient JobPostings jobPostings;
 
     public Applications() {
     }
@@ -86,6 +87,14 @@ public class Applications {
 
     public void setJobSeeker(JobSeekers jobSeeker) {
         this.jobSeeker = jobSeeker;
+    }
+    
+    public JobPostings getJobPostings() {
+        return jobPostings;
+    }
+
+    public void setJobPostings(JobPostings jobPostings) {
+        this.jobPostings = jobPostings;
     }
 
 }

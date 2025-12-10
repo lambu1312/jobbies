@@ -9,6 +9,7 @@ import dao.AccountDAO;
 import dao.ApplicationDAO;
 import dao.CVDAO;
 import dao.EducationDAO;
+import dao.InterviewDAO;
 import dao.JobPostingsDAO;
 import dao.JobSeekerDAO;
 import dao.WorkExperienceDAO;
@@ -25,6 +26,7 @@ import model.Account;
 import model.Applications;
 import model.CV;
 import model.Education;
+import model.Interview;
 import model.JobSeekers;
 import model.WorkExperience;
 import utils.Email;
@@ -157,6 +159,7 @@ public class ApplicationSeekersController extends HttpServlet {
         try {
             ApplicationDAO applicationDao = new ApplicationDAO();
             JobPostingsDAO jp = new JobPostingsDAO();
+            InterviewDAO interviewDao = new InterviewDAO();
 
             String jobPostId = request.getParameter("jobPostId");
             int jobPostIdInt = Integer.parseInt(jobPostId);
@@ -178,10 +181,14 @@ public class ApplicationSeekersController extends HttpServlet {
             // Lấy tiêu đề và trạng thái của JobPost
             String jobPostingTitle = jp.getJobPostingTitleByJobPostingId(jobPostIdInt);
             String jobPostingStatus = jp.findJobPostingStatusByJobPostingId(jobPostIdInt);
+            
+            // Get interview data for each application
+            List<Interview> interviews = interviewDao.getInterviewsByJobPostingId(jobPostIdInt);
 
             request.setAttribute("jobPostingTitle", jobPostingTitle);
             request.setAttribute("jobPostingStatus", jobPostingStatus);
             request.setAttribute("applications", applications);
+            request.setAttribute("interviews", interviews);
             request.setAttribute("totalPages", totalPages);
             request.setAttribute("currentPage", page);
 
