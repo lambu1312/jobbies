@@ -14,6 +14,38 @@
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
 
         <style>
+    /* CRITICAL: Force navbar and dropdown positioning */
+    nav.navbar,
+    .navbar {
+        position: relative !important;
+        z-index: 9999 !important;
+    }
+
+    .user-dropdown {
+        position: relative !important;
+        z-index: 10000 !important;
+    }
+
+    .user-dropdown .dropdown-menu {
+        position: absolute !important;
+        top: calc(100% + 0.5rem) !important;
+        right: 0 !important;
+        z-index: 10001 !important;
+        display: block !important;
+    }
+
+    .user-dropdown:not(.active) .dropdown-menu {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+
+    .user-dropdown.active .dropdown-menu {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+
     * {
         margin: 0;
         padding: 0;
@@ -27,15 +59,6 @@
         overflow-x: hidden;
         overflow-y: auto;
         min-height: 100vh;
-    }
-
-    /* Ensure header and dropdown are always on top */
-    .navbar {
-        z-index: 9999 !important;
-    }
-
-    .dropdown-menu {
-        z-index: 10000 !important;
     }
 
     /* Stars Background */
