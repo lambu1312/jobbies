@@ -201,20 +201,7 @@ public class AccountDAO extends GenericDAO<Account> {
         List<Account> list = queryGenericDAO(Account.class, sql, parameterMap);
         return list.isEmpty() ? null : list.get(0);
     }
-
-    public static void main(String[] args) {
-//        Account account = new Account("nam", "xcvxcvx",
-//                "vxcvxcvx@gmail.com",
-//                "vcxvcxvxc", "vcxvcxvxc", "vcxvcxvxc",
-//                "vcxvcxvxc", null,
-//                "vcxvcxvxc",
-//                "vcxvcxvxc", 1, true, null, null);
-//        new AccountDAO().insert(account);
-//        System.out.println(new AccountDAO().checkUsernameExist(account));
-
-    }
-
-    //    update password
+     //    update password
     public void updatePasswordbyEmail(Account account) {
         String sql = "UPDATE [dbo].[Account]\n"
                 + "   SET [password] = ?\n"
