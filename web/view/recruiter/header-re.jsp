@@ -4,41 +4,50 @@
     <!-- Navigation Links -->
     <div class="nav-links">
         <div class="nav-item">
-            <a href="${pageContext.request.contextPath}/home">Home</a>
+            <a href="${pageContext.request.contextPath}/home">Trang Chủ</a>
         </div>
         <div class="nav-item">
-            <a href="#">About</a>
+            <a href="#">Giới Thiệu</a>
         </div>
         <div class="nav-item">
-            <a href="#">Services</a>
+            <a href="#">Dịch Vụ</a>
         </div>
         <div class="nav-item">
-            <a href="#">Contact</a>
+            <a href="#">Liên Hệ</a>
         </div>
     </div>
-
-    <!-- JobPath Logo/Text -->
+    <!-- Jobbies Logo/Text -->
     <div class="jobpath-logo">
-        <img class="logo__image" src="${pageContext.request.contextPath}/assets/img/logo/header__one_dark.svg" width="160" height="40" alt="logo">
+        <span class="jobbies-logo">
+            <span class="jobbies-text">Jobbies</span>
+            
+        </span>
     </div>
 </header>
 
 <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
     /* Header styling */
     header {
-        background-color: #389354;
+        background: linear-gradient(135deg, #e8eef5 0%, #dfe5f0 100%);
         padding: 15px 30px;
-        color: white;
+        color: #1a1a1a;
         display: flex;
-        justify-content: space-between; /* Space between navigation links and JobPath */
+        justify-content: space-between;
         align-items: center;
         position: fixed;
         top: 0;
-        left: 260px; /* Leaves room for the sidebar */
-        width: calc(100% - 260px); /* Adjust the header width to avoid sidebar overlap */
-        height: 70px; /* Fixed height for the header */
+        left: 260px;
+        width: calc(100% - 260px);
+        height: 70px;
         z-index: 1000;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds a slight shadow to separate header */
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+        border-bottom: 1px solid rgba(196, 113, 245, 0.15);
     }
 
     /* Sidebar styling */
@@ -51,48 +60,204 @@
         background-color: #fff;
         padding-top: 20px;
         overflow-y: auto;
-        border-right: 1px solid #ddd;
+        border-right: 1px solid #e5e5e5;
     }
 
-    /* Center the Navigation Links */
+    /* Navigation Links */
     .nav-links {
         display: flex;
         justify-content: center;
         flex-grow: 1;
+        gap: 0;
     }
 
     .nav-item {
-        margin: 0 20px;
+        margin: 0 25px;
+        position: relative;
     }
 
     .nav-item a {
-        color: white;
+        color: #666;
         text-decoration: none;
+        font-weight: 500;
+        font-size: 14px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        height: 40px;
+        position: relative;
     }
 
     .nav-item a:hover {
-        color: #f8f9fa;
+        color: #c471f5;
     }
 
-    /* JobPath Logo/Text */
+    .nav-item a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: linear-gradient(90deg, #c471f5, #fa71cd);
+        transition: width 0.3s ease;
+    }
+
+    .nav-item a:hover::after {
+        width: 100%;
+    }
+
+    /* Jobbies Logo/Text */
     .jobpath-logo {
         font-size: 24px;
         font-weight: bold;
+        display: flex;
+        align-items: center;
+    }
+
+    .jobbies-logo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2px;
+    }
+
+    .jobbies-text {
+        background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 22px;
+        font-weight: 700;
+        letter-spacing: -0.5px;
+    }
+
+    .jobbies-subtitle {
+        font-size: 10px;
+        color: #999;
+        font-weight: 500;
+        text-transform: none;
+        letter-spacing: 0.5px;
+    }
+
+    .logo__image {
+        filter: brightness(0.9);
+        transition: all 0.3s ease;
+    }
+
+    .logo__image:hover {
+        filter: brightness(1);
     }
 
     .green-text {
-        color: #28a745; /* Green color for the word 'Path' */
+        background: linear-gradient(135deg, #c471f5, #fa71cd);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
 
-    /* Add margin-top to main content to avoid overlapping header */
+    /* Main content margin */
     .main-content {
-        margin-top: 90px; /* Adjust this value if needed based on header height */
+        margin-top: 90px;
     }
 
-    /* General page styling for conflict-free content */
+    /* General page styling */
     body {
         margin: 0;
         padding: 0;
+        font-family: 'Inter', system-ui, sans-serif;
+    }
+
+    /* Mobile Responsive */
+    @media (max-width: 1200px) {
+        header {
+            left: 0;
+            width: 100%;
+        }
+
+        .nav-links {
+            justify-content: flex-start;
+            gap: 15px;
+        }
+
+        .nav-item {
+            margin: 0 15px;
+        }
+
+        .nav-item a {
+            font-size: 13px;
+        }
+    }
+
+    @media (max-width: 768px) {
+        header {
+            flex-direction: column;
+            height: auto;
+            padding: 10px 20px;
+            gap: 10px;
+        }
+
+        .nav-links {
+            width: 100%;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .nav-item {
+            margin: 0 10px;
+        }
+
+        .nav-item a {
+            font-size: 12px;
+            height: 35px;
+        }
+
+        .logo__image {
+            width: 130px !important;
+            height: 35px !important;
+        }
+
+        .jobbies-text {
+            font-size: 18px;
+        }
+
+        .jobbies-subtitle {
+            font-size: 8px;
+        }
+    }
+
+    @media (max-width: 480px) {
+        header {
+            padding: 10px 15px;
+        }
+
+        .nav-links {
+            gap: 5px;
+        }
+
+        .nav-item {
+            margin: 0 8px;
+        }
+
+        .nav-item a {
+            font-size: 11px;
+            height: 30px;
+            margin: 0 5px;
+        }
+
+        .logo__image {
+            width: 110px !important;
+            height: 30px !important;
+        }
+
+        .jobbies-text {
+            font-size: 16px;
+        }
+
+        .jobbies-subtitle {
+            font-size: 7px;
+        }
     }
 </style>
 
