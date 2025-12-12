@@ -203,6 +203,28 @@
                             font-weight: 600;
                         }
 
+                        .salary-display {
+                            background: linear-gradient(135deg, rgba(196, 113, 245, 0.1), rgba(250, 113, 205, 0.1));
+                            padding: 0.8rem 1rem;
+                            border-radius: 10px;
+                            border-left: 3px solid #c471f5;
+                        }
+
+                        .salary-amount {
+                            font-size: 1.3rem;
+                            font-weight: 800;
+                            background: linear-gradient(135deg, #7ee8fa, #c471f5);
+                            -webkit-background-clip: text;
+                            -webkit-text-fill-color: transparent;
+                        }
+
+                        .salary-currency {
+                            font-size: 0.9rem;
+                            color: #7ee8fa;
+                            font-weight: 700;
+                            margin-top: 0.3rem;
+                        }
+
                         .status-badge {
                             display: inline-flex;
                             align-items: center;
@@ -445,8 +467,39 @@
                                                         <i class="fas fa-dollar-sign"></i>
                                                         <div>
                                                             <span class="meta-label">Lương:</span>
-                                                            <span class="meta-value">${jobPost.getMinSalary()} -
-                                                                ${jobPost.getMaxSalary()}</span>
+                                                            <div class="salary-display">
+                                                                <div class="salary-amount">
+                                                                    ${jobPost.getMinSalary()} - ${jobPost.getMaxSalary()}
+                                                                </div>
+                                                                <div class="salary-currency">
+                                                                    <c:choose>
+                                                                        <c:when test="${jobPost.getCurrency() == 'USD'}">
+                                                                            💵 USD ($)
+                                                                        </c:when>
+                                                                        <c:when test="${jobPost.getCurrency() == 'VND'}">
+                                                                            🇻🇳 VND (₫)
+                                                                        </c:when>
+                                                                        <c:when test="${jobPost.getCurrency() == 'EUR'}">
+                                                                            💶 EUR (€)
+                                                                        </c:when>
+                                                                        <c:when test="${jobPost.getCurrency() == 'GBP'}">
+                                                                            💷 GBP (£)
+                                                                        </c:when>
+                                                                        <c:when test="${jobPost.getCurrency() == 'JPY'}">
+                                                                            🇯🇵 JPY (¥)
+                                                                        </c:when>
+                                                                        <c:when test="${jobPost.getCurrency() == 'AUD'}">
+                                                                            🇦🇺 AUD (A$)
+                                                                        </c:when>
+                                                                        <c:when test="${jobPost.getCurrency() == 'CAD'}">
+                                                                            🇨🇦 CAD (C$)
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            ${jobPost.getCurrency()}
+                                                                        </c:otherwise>
+                                                                    </c:choose>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
 
