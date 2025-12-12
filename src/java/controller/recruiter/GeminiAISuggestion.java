@@ -20,7 +20,7 @@ import java.nio.charset.StandardCharsets;
 public class GeminiAISuggestion extends HttpServlet {
 
     // Working API key (tested with curl)
-    private static final String GEMINI_API_KEY = "AIzaSyAhXf5lxRcPZdnrOdolZpaBX5Kq7mMw5i0";
+    private static final String GEMINI_API_KEY = "AIzaSyAZh5Onr3b8SdSxspVXjV5TNfyXqeY7xuQ";
     
     // Use v1beta API (confirmed working with curl test)
     private static final String[] AVAILABLE_MODELS = {

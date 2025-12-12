@@ -1,4 +1,4 @@
-}<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
@@ -362,13 +362,13 @@
                 <!-- Description -->
                 <div class="form-group">
                     <label for="jobDescription">Mô Tả Công Việc:</label>
-                    <textarea id="jobDescription" name="jobDescription" class="form-control" placeholder="Nhập mô tả công việc (Tối đa 100 chữ)" rows="6">${fn:escapeXml(jobDescription)}</textarea>
+                    <textarea id="jobDescription" name="jobDescription" class="form-control" placeholder="Nhập mô tả công việc" rows="6">${fn:escapeXml(jobDescription)}</textarea>
                 </div>
 
                 <!-- Requirements -->
                 <div class="form-group">
                     <label for="jobRequirements">Yêu Cầu Công Việc:</label>
-                    <textarea id="jobRequirements" name="jobRequirements" class="form-control" placeholder="Nhập yêu cầu công việc (Tối đa 100 chữ)" rows="6">${fn:escapeXml(jobRequirements)}</textarea>
+                    <textarea id="jobRequirements" name="jobRequirements" class="form-control" placeholder="Nhập yêu cầu công việc" rows="6">${fn:escapeXml(jobRequirements)}</textarea>
                 </div>
 
                 <!-- Two-column row for Min Salary, Max Salary -->
@@ -377,8 +377,8 @@
                         <div class="form-group">
                             <label for="currency">Loại Tiền Tệ:</label>
                             <select id="currency" name="currency" class="form-select" required>
-                                <option value="USD" <c:if test="${currency == 'USD'}">selected</c:if>>USD ($)</option>
                                 <option value="VND" <c:if test="${currency == 'VND'}">selected</c:if>>VND (₫)</option>
+                                <option value="USD" <c:if test="${currency == 'USD'}">selected</c:if>>USD ($)</option>
                                 <option value="EUR" <c:if test="${currency == 'EUR'}">selected</c:if>>EUR (€)</option>
                                 <option value="GBP" <c:if test="${currency == 'GBP'}">selected</c:if>>GBP (£)</option>
                                 <option value="JPY" <c:if test="${currency == 'JPY'}">selected</c:if>>JPY (¥)</option>
@@ -488,31 +488,129 @@
 
     <!-- JavaScript to handle form reset and validation -->
     <script>
+        // Global variables
+        const MAX_CHARS = 5000;
         let aiGenerateTimeout = null;
         let lastGeneratedTitle = '';
-        
-        // Auto-generate AI suggestions when job title changes
+        let tinymceReady = false;
+
+        // Initialize TinyMCE FIRST
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'advlist autolink lists link image charmap print preview anchor',
+            toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
+            branding: false,
+            height: 300,
+            setup: function (editor) {
+                editor.on('keydown', function (e) {
+                    blockExcessInput(editor, e);
+                });
+                editor.on('keyup', function () {
+                    enforceCharLimit(editor);
+                });
+                editor.on('change', function () {
+                    tinymce.triggerSave();
+                    enforceCharLimit(editor);
+                });
+                editor.on('paste', function (e) {
+                    e.preventDefault();
+                    const pastedText = e.clipboardData.getData('text');
+                    const currentContent = editor.getContent({format: 'text'});
+                    const newContent = currentContent + pastedText;
+                    
+                    if (newContent.length > MAX_CHARS) {
+                        const allowedText = pastedText.substring(0, MAX_CHARS - currentContent.length);
+                        editor.insertContent(allowedText);
+                    } else {
+                        editor.insertContent(pastedText);
+                    }
+                });
+            },
+            init_instance_callback: function(editor) {
+                console.log('✅ TinyMCE initialized:', editor.id);
+                if (tinymce.get('jobDescription') && tinymce.get('jobRequirements')) {
+                    tinymceReady = true;
+                    console.log('✅ All TinyMCE editors ready!');
+                }
+            }
+        });
+
+        // Block excess input BEFORE it's added
+        function blockExcessInput(editor, e) {
+            const content = editor.getContent({format: 'text'});
+            
+            // Nếu đã đủ 1000 ký tự, chặn phím bất kỳ (trừ Ctrl, Shift, Arrow, Delete, Backspace)
+            if (content.length >= MAX_CHARS) {
+                const allowedKeys = [8, 13, 46]; // Backspace, Enter, Delete
+                const ctrlKeys = [65, 67, 88]; // Ctrl+A, Ctrl+C, Ctrl+X
+                
+                // Chặn nếu không phải phím được phép
+                if (!e.ctrlKey && !allowedKeys.includes(e.keyCode) && !ctrlKeys.includes(e.keyCode)) {
+                    e.preventDefault();
+                    return false;
+                }
+            }
+        }
+
+        // Enforce character limit STRICTLY
+        function enforceCharLimit(editor) {
+            const content = editor.getContent({format: 'text'});
+            
+            if (content.length > MAX_CHARS) {
+                // Cắt ngay tại 1000 ký tự
+                const truncated = content.substring(0, MAX_CHARS);
+                editor.setContent(truncated, {format: 'text'});
+                editor.undoManager.clear();
+            }
+        }
+
+        // Wait for DOM and TinyMCE to be fully loaded
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('📄 DOM Content Loaded');
+            
+            setTimeout(function() {
+                let editorCount = 0;
+                let maxWait = 100;
+                let checkInterval = setInterval(function() {
+                    editorCount++;
+                    const desc = tinymce.get('jobDescription');
+                    const req = tinymce.get('jobRequirements');
+                    
+                    if (desc && req) {
+                        console.log('✅ All TinyMCE editors confirmed ready!');
+                        tinymceReady = true;
+                        clearInterval(checkInterval);
+                        setupJobTitleListener();
+                    } else if (editorCount >= maxWait) {
+                        console.warn('⚠️ TinyMCE timeout, attempting anyway');
+                        clearInterval(checkInterval);
+                        tinymceReady = true;
+                        setupJobTitleListener();
+                    }
+                }, 100);
+            }, 1000);
+        });
+
+        // Setup the job title input listener
+        function setupJobTitleListener() {
             const jobTitleInput = document.getElementById('jobTitle');
             
             jobTitleInput.addEventListener('input', function() {
                 const jobTitle = this.value.trim();
                 
-                // Clear previous timeout
                 if (aiGenerateTimeout) {
                     clearTimeout(aiGenerateTimeout);
                 }
                 
-                // Set new timeout (wait 1.5 seconds after user stops typing)
                 if (jobTitle && jobTitle !== lastGeneratedTitle && jobTitle.length >= 3) {
                     aiGenerateTimeout = setTimeout(() => {
                         getAISuggestions();
-                    }, 1500);
+                    }, 2000);
                 }
             });
-        });
-        
-        // Function to get AI suggestions for job description and requirements
+        }
+
+        // Function to get AI suggestions
         async function getAISuggestions() {
             const jobTitle = document.getElementById('jobTitle').value.trim();
             
@@ -520,15 +618,23 @@
                 return;
             }
             
-            // Don't regenerate if it's the same title
             if (jobTitle === lastGeneratedTitle) {
+                return;
+            }
+            
+            // Wait for TinyMCE if not ready
+            if (!tinymceReady) {
+                setTimeout(() => getAISuggestions(), 500);
                 return;
             }
             
             lastGeneratedTitle = jobTitle;
             
-            // Show loading indicator in hint
             const hintElement = document.querySelector('.ai-hint');
+            if (!hintElement) {
+                return;
+            }
+            
             const originalHint = hintElement.innerHTML;
             hintElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> AI đang tạo nội dung...';
             hintElement.style.color = '#667eea';
@@ -545,65 +651,81 @@
                 const data = await response.json();
                 
                 if (response.ok && data.description && data.requirements) {
-                    // Set content to TinyMCE editors
-                    tinymce.get('jobDescription').setContent(data.description);
-                    tinymce.get('jobRequirements').setContent(data.requirements);
+                    const descEditor = tinymce.get('jobDescription');
+                    const reqEditor = tinymce.get('jobRequirements');
                     
-                    // Always AI generated content (no templates)
-                    hintElement.innerHTML = '<i class="fas fa-check-circle"></i> Nội dung AI được tạo thành công!';
-                    hintElement.style.color = '#28a745';
-                    showNotification('✨ Gợi ý AI được tạo cho "' + jobTitle + '"', 'success');
-                } else if (data.error) {
-                    // AI service unavailable
-                    hintElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Dịch vụ AI không khả dụng';
-                    hintElement.style.color = '#dc3545';
-                    
-                    if (data.retryable) {
-                        showNotification('⚠️ ' + data.error + ' Nhấp vào nút để thử lại.', 'warning');
-                        // Reset lastGeneratedTitle so user can retry
-                        lastGeneratedTitle = '';
+                    if (descEditor && reqEditor) {
+                        // Strip HTML tags và cắt về 1000 ký tự
+                        const descText = stripHTML(data.description).substring(0, MAX_CHARS);
+                        const reqText = stripHTML(data.requirements).substring(0, MAX_CHARS);
+                        
+                        descEditor.setContent(descText, {format: 'text'});
+                        reqEditor.setContent(reqText, {format: 'text'});
+                        descEditor.undoManager.clear();
+                        reqEditor.undoManager.clear();
+                        
+                        hintElement.innerHTML = '<i class="fas fa-check-circle"></i> Nội dung AI được tạo thành công!';
+                        hintElement.style.color = '#28a745';
+                        showNotification('✨ Gợi ý AI được tạo cho "' + jobTitle + '"', 'success');
                     } else {
-                        showNotification('❌ ' + data.error, 'error');
+                        hintElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Lỗi trình soạn thảo';
+                        hintElement.style.color = '#dc3545';
+                        showNotification('❌ Lỗi: Trình soạn thảo chưa sẵn sàng', 'error');
+                        lastGeneratedTitle = '';
+                    }
+                } else if (data.error) {
+                    hintElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i> ' + data.error;
+                    hintElement.style.color = '#dc3545';
+                    showNotification('❌ ' + data.error, 'error');
+                    if (!data.retryable) {
+                        lastGeneratedTitle = jobTitle;
                     }
                 } else {
                     hintElement.innerHTML = originalHint;
                     hintElement.style.color = '#667eea';
-                    showNotification('⚠️ Định dạng phản hồi không mong muốn. Vui lòng thử lại.', 'warning');
+                    showNotification('⚠️ Định dạng phản hồi không mong muốn', 'warning');
                     lastGeneratedTitle = '';
                 }
             } catch (error) {
-                console.error('Error:', error);
                 hintElement.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Lỗi kết nối';
                 hintElement.style.color = '#dc3545';
-                showNotification('❌ Lỗi mạng. Vui lòng kiểm tra kết nối và thử lại.', 'error');
+                showNotification('❌ Lỗi mạng: ' + error.message, 'error');
                 lastGeneratedTitle = '';
             }
         }
-        
+
+        // Strip HTML tags
+        function stripHTML(html) {
+            const tmp = document.createElement('DIV');
+            tmp.innerHTML = html;
+            return tmp.textContent || tmp.innerText || '';
+        }
+
         // Show notification function
         function showNotification(message, type) {
-            // Remove existing notifications
             const existingAlert = document.querySelector('.ai-notification');
             if (existingAlert) {
                 existingAlert.remove();
             }
             
-            // Create new notification
             const alertDiv = document.createElement('div');
-            alertDiv.className = 'alert alert-' + (type === 'success' ? 'success' : type === 'warning' ? 'warning' : type === 'info' ? 'info' : 'danger') + ' ai-notification';
+            const typeClass = type === 'success' ? 'success' : 
+                             type === 'warning' ? 'warning' : 
+                             type === 'info' ? 'info' : 'danger';
+            
+            alertDiv.className = 'alert alert-' + typeClass + ' ai-notification';
             alertDiv.style.cssText = 'position: fixed; top: 100px; right: 20px; z-index: 9999; min-width: 300px; animation: slideIn 0.3s ease;';
             alertDiv.innerHTML = message;
             
             document.body.appendChild(alertDiv);
             
-            // Auto remove after 5 seconds
             setTimeout(() => {
                 alertDiv.style.animation = 'slideOut 0.3s ease';
                 setTimeout(() => alertDiv.remove(), 300);
             }, 5000);
         }
-        
-        // Add CSS animation
+
+        // Add CSS animations
         const style = document.createElement('style');
         style.textContent = `
             @keyframes slideIn {
@@ -616,9 +738,9 @@
             }
         `;
         document.head.appendChild(style);
-        
+
+        // Clear form function
         function clearForm() {
-            // Manually reset each input field by ID
             document.getElementById("jobTitle").value = '';
             document.getElementById("minSalary").value = '';
             document.getElementById("maxSalary").value = '';
@@ -630,79 +752,50 @@
             document.getElementById("jobCategory").selectedIndex = 0;
             document.getElementById("jobPathAgreement").checked = false;
 
-            // Manually clear TinyMCE fields
-            tinymce.get("jobDescription").setContent('');
-            tinymce.get("jobRequirements").setContent('');
+            const descEditor = tinymce.get("jobDescription");
+            const reqEditor = tinymce.get("jobRequirements");
+            if (descEditor) {
+                descEditor.setContent('');
+                descEditor.undoManager.clear();
+            }
+            if (reqEditor) {
+                reqEditor.setContent('');
+                reqEditor.undoManager.clear();
+            }
+            
+            lastGeneratedTitle = '';
         }
 
-        // Initialize TinyMCE with required validation check
-        tinymce.init({
-            selector: 'textarea',
-            plugins: 'advlist autolink lists link image charmap print preview anchor',
-            toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
-            branding: false,
-            height: 300,
-            setup: function (editor) {
-                editor.on('change', function () {
-                    tinymce.triggerSave();
-                });
-            }
-        });
+        // Validate form before submission
+        function validateForm() {
+            const descEditor = tinymce.get("jobDescription");
+            const reqEditor = tinymce.get("jobRequirements");
+            
+            let description = descEditor ? descEditor.getContent({format: 'text'}) : '';
+            let requirements = reqEditor ? reqEditor.getContent({format: 'text'}) : '';
 
-        // Character counter and validation for textareas
-        document.addEventListener('DOMContentLoaded', function() {
-            const descriptionField = document.getElementById('jobDescription');
-            const requirementsField = document.getElementById('jobRequirements');
-            const maxWords = 100;
-
-            // Function to count words (separated by spaces)
-            function countWords(text) {
-                return text.trim().split(/\s+/).filter(word => word.length > 0).length;
+            if (!description.trim()) {
+                alert("❌ Vui lòng nhập Mô Tả Công Việc!");
+                return false;
             }
 
-            // Function to handle textarea input
-            function handleTextareaInput(textarea) {
-                textarea.addEventListener('input', function() {
-                    const wordCount = countWords(this.value);
-                    if (wordCount > maxWords) {
-                        // Remove excess words
-                        const words = this.value.trim().split(/\s+/);
-                        this.value = words.slice(0, maxWords).join(' ');
-                    }
-                });
-
-                // Handle paste events
-                textarea.addEventListener('paste', function(e) {
-                    e.preventDefault();
-                    const pastedText = (e.clipboardData || window.clipboardData).getData('text');
-                    const currentText = this.value;
-                    const currentWordCount = countWords(currentText);
-                    const pastedWordCount = countWords(pastedText);
-
-                    if (currentWordCount + pastedWordCount > maxWords) {
-                        alert('Nội dung dán quá dài! Tối đa là ' + maxWords + ' chữ.');
-                        return false;
-                    }
-
-                    // Insert the pasted text
-                    const start = this.selectionStart;
-                    const end = this.selectionEnd;
-                    const newText = currentText.substring(0, start) + pastedText + currentText.substring(end);
-                    const finalWordCount = countWords(newText);
-
-                    if (finalWordCount > maxWords) {
-                        alert('Nội dung dán quá dài! Tối đa là ' + maxWords + ' chữ.');
-                        return false;
-                    }
-
-                    this.value = newText;
-                    this.selectionStart = this.selectionEnd = start + pastedText.length;
-                });
+            if (!requirements.trim()) {
+                alert("❌ Vui lòng nhập Yêu Cầu Công Việc!");
+                return false;
             }
 
-            handleTextareaInput(descriptionField);
-            handleTextareaInput(requirementsField);
-        });
+            if (description.length > MAX_CHARS) {
+                alert("❌ Mô tả vượt quá giới hạn!");
+                return false;
+            }
+
+            if (requirements.length > MAX_CHARS) {
+                alert("❌ Yêu cầu vượt quá giới hạn!");
+                return false;
+            }
+
+            return true;
+        }
     </script>
 
 </body>
