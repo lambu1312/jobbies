@@ -25,7 +25,7 @@
                             </div>
                             <div class="user-info">
                                 <span class="user-name">${sessionScope.account.fullName}</span>
-                                <span class="user-role">Seeker</span>
+                                <span class="user-role">Candidate</span>
                             </div>
                             <i class="fas fa-chevron-down"></i>
                         </button>

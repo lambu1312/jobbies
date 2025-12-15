@@ -458,9 +458,9 @@ hr {
                                         <form action="${pageContext.request.contextPath}/recruiters" method="GET">
                                         <label for="recruiter-filter">Filter </label>
                                         <select id="recruiter-filter" name="filter" onchange="this.form.submit()">
-                                            <option value="all" ${param.filter == null || param.filter == 'all' ? 'selected' : ''}>All Recruiters</option>
-                                            <option value="active" ${param.filter == 'active' ? 'selected' : ''}>Active Recruiters</option>
-                                            <option value="inactive" ${param.filter == 'inactive' ? 'selected' : ''}>Inactive Recruiters</option>
+                                            <option value="all" ${param.filter == null || param.filter == 'all' ? 'selected' : ''}>Toàn bộ tài khoản người tuyển dụng</option>
+                                            <option value="active" ${param.filter == 'active' ? 'selected' : ''}>Tài khoản người tuyển dụng hoạt động</option>
+                                            <option value="inactive" ${param.filter == 'inactive' ? 'selected' : ''}>Tài khoản người tuyển dụng không hoạt động</option>
                                         </select>
                                     </form>
                                 </div>
@@ -468,7 +468,7 @@ hr {
                                 <!-- Confirm Recruiter button -->
                                 <form action="${pageContext.request.contextPath}/confirm" method="GET">
                                     <input type="hidden" name="action" value="confirm-recruiter">
-                                    <button type="submit" class="btn btn-success">Confirm Recruiter</button>
+                                    <button type="submit" class="btn btn-success">Xác nhận tài khoản người tuyển dụng</button>
                                 </form>
                             </div>
 
@@ -477,8 +477,8 @@ hr {
                             <form action="${pageContext.request.contextPath}/recruiters" method="GET">
                                 <div class="d-flex justify-content-center mb-3">
                                     <input type="hidden" name="filter" value="${param.filter != null ? param.filter : 'all'}"> <!-- Thay đổi tại đây -->
-                                    <input type="text" id="searchRecruiter"  name="searchQuery" class="form-control" style="width: 60%;" placeholder="Search for name/email...">
-                                    <button type="submit" class="btn btn-primary ms-2">Search</button>
+                                    <input type="text" id="searchRecruiter"  name="searchQuery" class="form-control" style="width: 60%;" placeholder="Tìm theo tên/email...">
+                                    <button type="submit" class="btn btn-primary ms-2">Tìm</button>
                                 </div>
                             </form>
 
@@ -489,11 +489,12 @@ hr {
                                         <tr>
                                             <th>Id</th>
                                             <th>Avatar</th>
-                                            <th>Full Name</th>
-                                            <th>Company</th>
-                                            <th>Approval Status</th>
-                                            <th>Status Account</th>
-                                            <th>View</th>
+                                            <th>Tên</th>
+                                            <th>Email</th>
+                                            <th>Công Ty</th>
+                                            <th>Trạng thái xác nhận</th>
+                                            <th>Trạng thái tài khoản</th>
+                                            <th>Xem</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -520,6 +521,7 @@ hr {
 
                                                 <!-- Full Name Column -->
                                                 <td>${recruiter.getFullName()}</td>
+                                                <td>${recruiter.getEmail()}</td>
                                                 <!--Company Name Column-->
                                                 <td>
                                                     <%
@@ -660,43 +662,6 @@ hr {
         </div>
     </div>
 
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas" aria-labelledby="offcanvasLabel">
-        <div class="offcanvas-header p-0 mb-5 mt-4">
-            <a href="index.html" class="offcanvas-title" id="offcanvasLabel">
-                <img src="${pageContext.request.contextPath}/assets/img/logo/header__one.svg" alt="logo">
-            </a> 
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <!-- login offcanvas -->
-        <div class="mb-4 d-block d-sm-none">
-            <div class="header__right__btn d-flex justify-content-center gap-3">
-                <a href="#" class="small__btn d-xl-flex fill__btn border-6 font-xs" aria-label="Job Posting Button">Add Job</a>
-            </div>
-        </div>
-        <div class="offcanvas-body p-0">
-            <div class="rts__offcanvas__menu overflow-hidden">
-                <div class="offcanvas__menu"></div>
-            </div>
-            <p class="max-auto font-20 fw-medium text-center text-decoration-underline mt-4">Our Social Links</p>
-            <div class="rts__social d-flex justify-content-center gap-3 mt-3">
-                <a href="https://facebook.com" aria-label="facebook">
-                    <i class="fa-brands fa-facebook"></i>
-                </a>
-                <a href="https://instagram.com" aria-label="instagram">
-                    <i class="fa-brands fa-instagram"></i>
-                </a>
-                <a href="https://linkedin.com" aria-label="linkedin">
-                    <i class="fa-brands fa-linkedin"></i>
-                </a>
-                <a href="https://pinterest.com" aria-label="pinterest">
-                    <i class="fa-brands fa-pinterest"></i>
-                </a>
-                <a href="https://youtube.com" aria-label="youtube">
-                    <i class="fa-brands fa-youtube"></i>
-                </a>
-            </div>
-        </div>
-    </div>
 
     <!-- Theme Preloader Start -->
     <div class="loader-wrapper">
