@@ -20,7 +20,7 @@ import java.nio.charset.StandardCharsets;
 public class GeminiAISuggestion extends HttpServlet {
 
     // Working API key (tested with curl)
-    private static final String GEMINI_API_KEY = "AIzaSyAhXf5lxRcPZdnrOdolZpaBX5Kq7mMw5i0";
+    private static final String GEMINI_API_KEY = "AIzaSyAZh5Onr3b8SdSxspVXjV5TNfyXqeY7xuQ";
     
     // Use v1beta API (confirmed working with curl test)
     private static final String[] AVAILABLE_MODELS = {
@@ -66,8 +66,7 @@ public class GeminiAISuggestion extends HttpServlet {
             String language = isVietnamese ? "Vietnamese" : "English";
             
             System.out.println("Detected language: " + language);
-            
-            // Tạo prompt cho Gemini AI
+// Tạo prompt cho Gemini AI
             String prompt = createPrompt(jobTitle, language);
             
             System.out.println("Generated prompt: " + prompt);
@@ -125,8 +124,7 @@ public class GeminiAISuggestion extends HttpServlet {
                 Thread.currentThread().interrupt();
             }
         }
-        
-        System.err.println("All models failed");
+System.err.println("All models failed");
         return null;
     }
     
@@ -166,7 +164,7 @@ public class GeminiAISuggestion extends HttpServlet {
                    "Requirements:\n" +
                    "1. Analyze the job title '" + jobTitle + "' to understand the actual work\n" +
                    "2. Create DETAILED job description with:\n" +
-                   "   - Overview of the position and role in company\n" +
+"   - Overview of the position and role in company\n" +
                    "   - List 5-8 SPECIFIC RESPONSIBILITIES that a '" + jobTitle + "' performs daily\n" +
                    "   - Describe work environment and technologies/tools to be used\n" +
                    "3. List SPECIFIC requirements:\n" +
@@ -215,8 +213,7 @@ public class GeminiAISuggestion extends HttpServlet {
             content.add("parts", parts);
             contents.add(content);
             requestBody.add("contents", contents);
-            
-            System.out.println("Request body: " + requestBody.toString());
+System.out.println("Request body: " + requestBody.toString());
             
             // Gửi request
             try (OutputStream os = conn.getOutputStream()) {
@@ -273,7 +270,7 @@ public class GeminiAISuggestion extends HttpServlet {
             
         } catch (Exception e) {
             System.err.println("Exception in callGeminiAPI: " + e.getMessage());
-            e.printStackTrace();
+e.printStackTrace();
         }
         
         return null; // Return null to let caller handle default response with proper language

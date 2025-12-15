@@ -181,6 +181,28 @@
             font-weight: 600;
         }
 
+        .salary-display {
+            background: linear-gradient(135deg, rgba(196, 113, 245, 0.1), rgba(250, 113, 205, 0.1));
+            padding: 0.8rem 1rem;
+            border-radius: 10px;
+            border-left: 3px solid #c471f5;
+        }
+
+        .salary-amount {
+            font-size: 1.3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #7ee8fa, #c471f5);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .salary-currency {
+            font-size: 0.9rem;
+            color: #7ee8fa;
+            font-weight: 700;
+            margin-top: 0.3rem;
+        }
+
         .card-header {
             display: flex;
             align-items: center;
@@ -461,7 +483,39 @@
                                 <i class="fas fa-dollar-sign"></i>
                                 <div>
                                     <span class="meta-label">Salary:</span>
-                                    <span class="meta-value">$${jobPost.minSalary} - $${jobPost.maxSalary}</span>
+                                    <div class="salary-display">
+                                        <div class="salary-amount">
+                                            ${jobPost.minSalary} - ${jobPost.maxSalary}
+                                        </div>
+                                        <div class="salary-currency">
+                                            <c:choose>
+                                                <c:when test="${jobPost.currency == 'USD'}">
+                                                    💵 USD ($)
+                                                </c:when>
+                                                <c:when test="${jobPost.currency == 'VND'}">
+                                                    🇻🇳 VND (₫)
+                                                </c:when>
+                                                <c:when test="${jobPost.currency == 'EUR'}">
+                                                    💶 EUR (€)
+                                                </c:when>
+                                                <c:when test="${jobPost.currency == 'GBP'}">
+                                                    💷 GBP (£)
+                                                </c:when>
+                                                <c:when test="${jobPost.currency == 'JPY'}">
+                                                    🇯🇵 JPY (¥)
+                                                </c:when>
+                                                <c:when test="${jobPost.currency == 'AUD'}">
+                                                    🇦🇺 AUD (A$)
+                                                </c:when>
+                                                <c:when test="${jobPost.currency == 'CAD'}">
+                                                    🇨🇦 CAD (C$)
+                                                </c:when>
+                                                <c:otherwise>
+                                                    ${jobPost.currency}
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             
