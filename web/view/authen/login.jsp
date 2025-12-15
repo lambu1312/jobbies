@@ -91,7 +91,7 @@
             @keyframes slideUp {
                 from {
                     opacity: 0;
-transform: translateY(30px);
+                    transform: translateY(30px);
                 }
                 to {
                     opacity: 1;
@@ -192,8 +192,9 @@ transform: translateY(30px);
             .form-group {
                 margin-bottom: 1.5rem;
             }
-.form-label {
-display: block;
+
+            .form-label {
+                display: block;
                 color: #b8b8d1;
                 font-weight: 600;
                 margin-bottom: 0.5rem;
@@ -284,13 +285,6 @@ display: block;
                 text-shadow: 0 0 10px rgba(196, 113, 245, 0.5);
             }
 
-            /* reCAPTCHA */
-            .recaptcha-container {
-                margin-bottom: 1rem;
-                transform: scale(0.95);
-                transform-origin: 0 0;
-            }
-
             .error-message {
                 color: #ff5252;
                 font-size: 0.85rem;
@@ -301,7 +295,7 @@ display: block;
             .btn-login {
                 width: 100%;
                 padding: 1rem;
-background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
+                background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
                 border: none;
                 border-radius: 15px;
                 color: #fff;
@@ -389,7 +383,7 @@ background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
                 </c:if>
 
                 <!-- Login Form -->
-<form action="${pageContext.request.contextPath}/authen?action=login" method="post" id="login-form" onsubmit="return validateForm()">
+                <form action="${pageContext.request.contextPath}/authen?action=login" method="post" id="login-form" onsubmit="return validateForm()">
                     <div class="form-group">
                         <label for="username" class="form-label">Tên đăng nhập</label>
                         <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" value="${cookie.cu.value}" required>
@@ -410,17 +404,11 @@ background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
                             <input class="form-check-input" type="checkbox" id="rememberMe" name="rememberMe" ${(cookie.cr != null ? 'checked':'')}>
                             <label class="form-check-label" for="rememberMe">Ghi nhớ tài khoản</label>
                         </div>
-                            <a href="${pageContext.request.contextPath}/view/authen/forgotPassword.jsp">Quên mật khẩu</a>
-                    </div>
-
-                    <!-- Google reCAPTCHA -->
-                    <div class="recaptcha-container">
-                        <div class="g-recaptcha" data-sitekey="6LeVFEsqAAAAAFK_7xKTrV798KMOrnTYcVgfeMIa"></div>
-                        <div id="error" class="error-message"></div>
+                        <a href="${pageContext.request.contextPath}/view/authen/forgotPassword.jsp" class="form-link">Quên mật khẩu</a>
                     </div>
 
                     <!-- Login Button -->
-                    <button type="button" onclick="checkCapCha()" class="btn-login">Đăng nhập ✨</button>
+                    <button type="submit" class="btn-login">Đăng nhập ✨</button>
                 </form>
 
                 <!-- Register Link -->
@@ -431,7 +419,6 @@ background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
         <jsp:include page="../common/footer.jsp"></jsp:include>
 
         <!-- JS logic -->
-        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
         <script type="text/javascript">
             // Generate stars
             const starsContainer = document.getElementById('stars');
@@ -443,7 +430,8 @@ background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
                 star.style.animationDelay = Math.random() * 3 + 's';
                 starsContainer.appendChild(star);
             }
-function togglePassword() {
+
+            function togglePassword() {
                 var input = document.getElementById("password");
                 var icon = document.querySelector(".input-group-text");
                 if (input.type === "password") {
@@ -497,17 +485,6 @@ function togglePassword() {
             // Attach event listeners to prevent space input
             document.getElementById("username").addEventListener("keydown", preventSpaces);
             document.getElementById("password").addEventListener("keydown", preventSpaces);
-
-            function checkCapCha() {
-                var form = document.getElementById("login-form");
-                var error = document.getElementById("error");
-                const response = grecaptcha.getResponse();
-                if (response) {
-                    form.submit();
-                } else {
-                    error.textContent = "Please verify that you are not a robot";
-                }
-            }
         </script>
     </body>
 </html>
