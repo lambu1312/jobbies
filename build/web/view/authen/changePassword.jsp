@@ -100,7 +100,7 @@
             background: linear-gradient(135deg, #c471f5, #fa71cd, #7ee8fa);
             border-radius: 30px;
 z-index: -1;
-            opacity: 0.3;
+opacity: 0.3;
             filter: blur(20px);
         }
 
@@ -212,7 +212,7 @@ z-index: -1;
 
         @keyframes slideDown {
 from {
-                opacity: 0;
+opacity: 0;
                 transform: translateY(-10px);
             }
             to {
@@ -331,7 +331,7 @@ from {
 
             .card-icon {
 width: 60px;
-                height: 60px;
+height: 60px;
                 font-size: 2rem;
             }
 

@@ -73,7 +73,7 @@
         width: 260px;
         position: fixed;
         top: 0;
-        left: 0;
+left: 0;
         background-color: #fff;
         padding-top: 20px;
         overflow-y: auto;
@@ -211,7 +211,7 @@
         }
 
         .user-info .avatar-img {
-            width: 60px;
+width: 60px;
             height: 60px;
         }
 

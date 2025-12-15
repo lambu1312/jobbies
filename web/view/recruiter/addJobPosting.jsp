@@ -82,7 +82,7 @@
             border-radius: 8px;
             transition: all 0.3s ease;
             display: inline-flex;
-            align-items: center;
+align-items: center;
             gap: 8px;
             text-decoration: none;
             margin-bottom: 20px;
@@ -200,7 +200,7 @@
 
         .form-check-input:checked {
             background-color: #c471f5;
-            border-color: #c471f5;
+border-color: #c471f5;
         }
 
         .form-check-label {
@@ -334,7 +334,7 @@
                 padding: 10px 16px;
                 font-size: 13px;
             }
-        }
+}
     </style>
 </head>
 <body>
@@ -382,7 +382,7 @@
                                 <option value="EUR" <c:if test="${currency == 'EUR'}">selected</c:if>>EUR (€)</option>
                                 <option value="GBP" <c:if test="${currency == 'GBP'}">selected</c:if>>GBP (£)</option>
                                 <option value="JPY" <c:if test="${currency == 'JPY'}">selected</c:if>>JPY (¥)</option>
-                                <option value="AUD" <c:if test="${currency == 'AUD'}">selected</c:if>>AUD (A$)</option>
+<option value="AUD" <c:if test="${currency == 'AUD'}">selected</c:if>>AUD (A$)</option>
                                 <option value="CAD" <c:if test="${currency == 'CAD'}">selected</c:if>>CAD (C$)</option>
                             </select>
                         </div>
@@ -435,7 +435,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="jobCategory">Danh Mục Công Việc:</label>
+<label for="jobCategory">Danh Mục Công Việc:</label>
                             <select id="jobCategory" name="jobCategory" class="form-select" required>
                                 <option value="">Chọn Danh Mục</option>
                                 <c:forEach var="category" items="${jobCategories}">
@@ -502,7 +502,7 @@
             branding: false,
             height: 300,
             setup: function (editor) {
-                editor.on('keydown', function (e) {
+editor.on('keydown', function (e) {
                     blockExcessInput(editor, e);
                 });
                 editor.on('keyup', function () {
@@ -571,7 +571,7 @@
             setTimeout(function() {
                 let editorCount = 0;
                 let maxWait = 100;
-                let checkInterval = setInterval(function() {
+let checkInterval = setInterval(function() {
                     editorCount++;
                     const desc = tinymce.get('jobDescription');
                     const req = tinymce.get('jobRequirements');
@@ -647,8 +647,7 @@
                     },
                     body: JSON.stringify({ jobTitle: jobTitle })
                 });
-                
-                const data = await response.json();
+const data = await response.json();
                 
                 if (response.ok && data.description && data.requirements) {
                     const descEditor = tinymce.get('jobDescription');
@@ -704,7 +703,7 @@
         // Show notification function
         function showNotification(message, type) {
             const existingAlert = document.querySelector('.ai-notification');
-            if (existingAlert) {
+if (existingAlert) {
                 existingAlert.remove();
             }
             
@@ -773,8 +772,7 @@
             
             let description = descEditor ? descEditor.getContent({format: 'text'}) : '';
             let requirements = reqEditor ? reqEditor.getContent({format: 'text'}) : '';
-
-            if (!description.trim()) {
+if (!description.trim()) {
                 alert("❌ Vui lòng nhập Mô Tả Công Việc!");
                 return false;
             }
