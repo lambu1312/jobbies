@@ -102,18 +102,24 @@ public class CompanyDAO extends GenericDAO<Company> {
     }
 
     public void updateCompany(Company companyEdit) {
-        String sql = "UPDATE [dbo].[Company]\n"
-                + "   SET [name] = ?\n"
-                + "      ,[description] = ?\n"
-                + "      ,[location] = ?\n"
-                + " WHERE id = ?";
-        parameterMap = new LinkedHashMap<>();
-        parameterMap.put("name", companyEdit.getName());
-        parameterMap.put("description", companyEdit.getDescription());
-        parameterMap.put("location", companyEdit.getLocation());
-        parameterMap.put("id", companyEdit.getId());
-        updateGenericDAO(sql, parameterMap);
-    }
+    String sql = "UPDATE [dbo].[Company]\n"
+            + "   SET [name] = ?\n"
+            + "      ,[description] = ?\n"
+            + "      ,[location] = ?\n"
+            + "      ,[businessCode] = ?\n"
+            + "      ,[businessLicenseImage] = ?\n"
+            + " WHERE id = ?";
+    
+    parameterMap = new LinkedHashMap<>();
+    parameterMap.put("name", companyEdit.getName());
+    parameterMap.put("description", companyEdit.getDescription());
+    parameterMap.put("location", companyEdit.getLocation());
+    parameterMap.put("businessCode", companyEdit.getBusinessCode());
+    parameterMap.put("businessLicenseImage", companyEdit.getBusinessLicenseImage());
+    parameterMap.put("id", companyEdit.getId());
+    
+    updateGenericDAO(sql, parameterMap);
+}
 
     public int findAllTotalRecord() {
         String sql = "SELECT count(*) FROM [dbo].[Company]\n";

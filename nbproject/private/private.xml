@@ -121,18 +121,30 @@
             <file>file:/D:/Learning_Document/Term_5/SWP391/Project/swp391-jobseeker/src/java/controller/seeker/HomeSeekerServlet.java</file>
         </group>
         <group>
-            <file>file:/C:/Users/buimi/Downloads/swp/swp391-jobseeker-20251209T052702Z-1-001/swp391-jobseeker/src/java/utils/Email.java</file>
-            <file>file:/C:/Users/buimi/Downloads/swp/swp391-jobseeker-20251209T052702Z-1-001/swp391-jobseeker/src/java/controller/recruiter/InterviewManagementController.java</file>
-            <file>file:/C:/Users/buimi/Downloads/swp/swp391-jobseeker-20251209T052702Z-1-001/swp391-jobseeker/src/java/controller/recruiter/InterviewDetailsController.java</file>
-            <file>file:/C:/Users/buimi/Downloads/swp/swp391-jobseeker-20251209T052702Z-1-001/swp391-jobseeker/src/java/controller/recruiter/ScheduleInterviewServlet.java</file>
-            <file>file:/C:/Users/buimi/Downloads/swp/swp391-jobseeker-20251209T052702Z-1-001/swp391-jobseeker/src/java/controller/recruiter/DetailsJP.java</file>
-            <file>file:/C:/Users/buimi/Downloads/swp/swp391-jobseeker-20251209T052702Z-1-001/swp391-jobseeker/src/java/dao/JobPostingsDAO.java</file>
             <file>file:/C:/Users/buimi/Downloads/swp/swp391-jobseeker-20251209T052702Z-1-001/swp391-jobseeker/src/java/controller/recruiter/ApplicationSeekersController.java</file>
-            <file>file:/C:/Users/buimi/Downloads/swp/swp391-jobseeker-20251209T052702Z-1-001/swp391-jobseeker/src/java/controller/recruiter/DownloadCVServlet.java</file>
-            <file>file:/C:/Users/buimi/Downloads/swp/swp391-jobseeker-20251209T052702Z-1-001/swp391-jobseeker/src/java/controller/recruiter/JobPost.java</file>
         </group>
         <group>
-            <file>file:/C:/Users/buimi/Downloads/swp/swp391-jobseeker-20251209T052702Z-1-001/swp391-jobseeker/src/java/controller/recruiter/ApplicationSeekersController.java</file>
+            <file>file:/C:/Users/buimi/Downloads/clonegit/upgit/web/view/authen/ConfirmOTP.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/clonegit/upgit/web/view/authen/ForgotPasswordOTP.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/clonegit/upgit/web/view/authen/ResetPassword.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/clonegit/upgit/web/view/authen/changePassword.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/clonegit/upgit/web/view/authen/forgotPassword.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/clonegit/upgit/web/view/authen/login.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/clonegit/upgit/web/view/authen/register.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/clonegit/upgit/web/view/home.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/clonegit/upgit/src/java/utils/Email.java</file>
+            <file>file:/C:/Users/buimi/Downloads/clonegit/upgit/web/view/recruiter/jobPost-manager.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/clonegit/upgit/web/view/recruiter/addJobPosting.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/clonegit/upgit/web/view/recruiter/sidebar-re.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/clonegit/upgit/web/view/recruiter/header-re.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/clonegit/upgit/web/view/recruiter/footer-re.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/clonegit/upgit/web/view/common/header-area.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/clonegit/upgit/src/java/controller/recruiter/GeminiAISuggestion.java</file>
+            <file>file:/C:/Users/buimi/Downloads/clonegit/upgit/web/view/user/ViewJobPosting.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/clonegit/upgit/web/view/ViewJobPosting.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/clonegit/upgit/web/view/user/userProfile.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/clonegit/upgit/web/view/user/userHome.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/clonegit/upgit/web/view/common/user/header-user.jsp</file>
         </group>
     </open-files>
 </project-private>

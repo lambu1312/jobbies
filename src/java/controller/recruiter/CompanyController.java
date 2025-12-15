@@ -169,23 +169,49 @@ public class CompanyController extends HttpServlet {
     }
 
     private String editCompanyDoPost(HttpServletRequest request, HttpServletResponse response) {
-        //get ve cac thong tin nhap
-        int id = Integer.parseInt(request.getParameter("companyId"));
-        String name = request.getParameter("name");
-        String location = request.getParameter("location");
-        String description = request.getParameter("description");
-        //tao doi tuong va set 
-        Company company = companyDao.findCompanyById(id);
-        company.setName(name);
-        company.setLocation(location);
-        company.setDescription(description);
-        //cap nhap thong tin
-        companyDao.updateCompany(company);
-        //set vao request de gui sang trang jsp
-        request.setAttribute("company", company);
-        request.setAttribute("success", "Edit successfully!!");
-        //tra ve duong dan
-        return "view/recruiter/editCompany.jsp";
+    //get ve cac thong tin nhap
+    int id = Integer.parseInt(request.getParameter("companyId"));
+    String name = request.getParameter("name");
+    String location = request.getParameter("location");
+    String description = request.getParameter("description");
+    String businessCode = request.getParameter("businessCode");
+    
+    //tao doi tuong va set 
+    Company company = companyDao.findCompanyById(id);
+    
+    // Validate business code nếu có thay đổi
+    if (!businessCode.equals(company.getBusinessCode())) {
+        if (!validate.checkCode(businessCode)) {
+            request.setAttribute("company", company);
+            request.setAttribute("errorCode", "Business code is not valid!!");
+            return "view/recruiter/editCompany.jsp";
+        } else if (companyDao.checkExistBusinessCode(company.getAccountId(), businessCode)) {
+            request.setAttribute("company", company);
+            request.setAttribute("duplicateCode", "Business code is existed !!");
+            return "view/recruiter/editCompany.jsp";
+        }
+        company.setBusinessCode(businessCode);
     }
+    
+    // Xử lý business license image nếu có upload mới
+    String newBusinessLicense = getBusinessLicenseImg("businessLicense", request);
+    if (newBusinessLicense != null && !newBusinessLicense.isEmpty()) {
+        company.setBusinessLicenseImage(newBusinessLicense);
+    }
+    
+    company.setName(name);
+    company.setLocation(location);
+    company.setDescription(description);
+    
+    //cap nhap thong tin
+    companyDao.updateCompany(company);
+    
+    //set vao request de gui sang trang jsp
+    request.setAttribute("company", company);
+    request.setAttribute("success", "Edit successfully!!");
+    
+    //tra ve duong dan
+    return "view/recruiter/editCompany.jsp";
+}
 
 }

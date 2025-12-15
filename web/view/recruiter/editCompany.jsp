@@ -9,7 +9,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <!-- TinyMCE Script -->
-        <script src="https://cdn.tiny.cloud/1/vaugmbxpwey72le9o04xzdbx0pb0cgxv4ysvnlmu1qnlmngd/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+        <script src="https://cdn.tiny.cloud/1/k46pblyymadkun4fz2yvv3hecjh0t04p9dan82kd6xl1jl70/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
         <style>
             :root {
                 --primary-color: #28a745;
@@ -93,6 +93,19 @@
                 margin-right: 0.5rem;
             }
 
+            .alert-danger {
+                background-color: #f8d7da;
+                border-color: #f5c6cb;
+                color: #721c24;
+                font-size: 0.875rem;
+                padding: 0.75rem;
+                border-radius: var(--border-radius);
+            }
+
+            .alert-danger i {
+                margin-right: 0.5rem;
+            }
+
             .img-thumbnail {
                 border-radius: var(--border-radius);
                 padding: 0.25rem;
@@ -133,6 +146,42 @@
                 margin-right: 0.5rem;
             }
 
+            /* Business License Image Container */
+            .license-image-container {
+                position: relative;
+                display: inline-block;
+            }
+
+            .change-image-btn {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background-color: rgba(40, 167, 69, 0.9);
+                color: white;
+                border: none;
+                padding: 0.5rem 1rem;
+                border-radius: var(--border-radius);
+                font-size: 0.875rem;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            }
+
+            .change-image-btn:hover {
+                background-color: rgba(33, 136, 56, 0.95);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            }
+
+            .change-image-btn i {
+                margin-right: 0.25rem;
+            }
+
+            #businessLicense {
+                display: none;
+            }
+
             /* Responsive adjustments */
             @media (max-width: 768px) {
                 .main-content {
@@ -146,6 +195,11 @@
 
                 .row > div {
                     margin-bottom: 1rem;
+                }
+
+                .change-image-btn {
+                    font-size: 0.75rem;
+                    padding: 0.375rem 0.75rem;
                 }
             }
         </style>
@@ -172,8 +226,9 @@
                         </div>
                     </c:if>
                     <c:if test="${empty error}">
-                        <form id="editCompanyForm" action="${pageContext.request.contextPath}/company?action=edit" method="POST">
+                        <form id="editCompanyForm" action="${pageContext.request.contextPath}/company?action=edit" method="POST" enctype="multipart/form-data">
                             <input type="hidden" name="companyId" value="${requestScope.company.getId()}">
+                            
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <label for="companyName" class="form-label">Company Name</label>
@@ -195,18 +250,31 @@
                                 <div class="col-md-6">
                                     <label for="businessCode" class="form-label">Business Code</label>
                                     <input type="text" class="form-control" id="businessCode" name="businessCode" 
-                                           value="${requestScope.company.getBusinessCode()}" readonly>
-                                    <div class="alert alert-warning">
-                                        <i class="fas fa-exclamation-circle"></i> Business code cannot be edited.
-                                    </div>
+                                           value="${requestScope.company.getBusinessCode()}" required>
+                                    <c:if test="${not empty errorCode}">
+                                        <div class="alert alert-danger mt-2">
+                                            <i class="fas fa-exclamation-circle"></i> ${errorCode}
+                                        </div>
+                                    </c:if>
+                                    <c:if test="${not empty duplicateCode}">
+                                        <div class="alert alert-danger mt-2">
+                                            <i class="fas fa-exclamation-circle"></i> ${duplicateCode}
+                                        </div>
+                                    </c:if>
                                 </div>
 
                                 <div class="col-12">
                                     <label class="form-label">Business License</label>
                                     <div class="border rounded p-2 bg-light">
-                                        <img src="${requestScope.company.getBusinessLicenseImage()}" 
-                                             alt="Business License" class="img-thumbnail d-block mx-auto">
+                                        <div class="license-image-container">
+                                            <img src="${requestScope.company.getBusinessLicenseImage()}" 
+                                                 alt="Business License" class="img-thumbnail d-block mx-auto" id="licenseImage">
+                                            <button type="button" class="change-image-btn" onclick="document.getElementById('businessLicense').click()">
+                                                <i class="fas fa-camera"></i> Change Image
+                                            </button>
+                                        </div>
                                     </div>
+                                    <input type="file" id="businessLicense" name="businessLicense" accept="image/*" onchange="previewImage(event)">
                                 </div>
                             </div>
 
@@ -222,20 +290,34 @@
         </div>
 
         <%@ include file="../recruiter/footer-re.jsp" %>
+        
         <script>
+            // TinyMCE initialization
             tinymce.init({
-                selector: 'textarea', // Initialize TinyMCE for all text areas
+                selector: 'textarea',
                 plugins: 'advlist autolink lists link image charmap print preview anchor',
                 toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
-                menubar: true, // Disable the menubar
-                branding: false, // Disable the TinyMCE branding
-                height: 300, // Set the height of the editor
+                menubar: true,
+                branding: false,
+                height: 300,
                 setup: function (editor) {
                     editor.on('change', function () {
-                        tinymce.triggerSave(); // Synchronize TinyMCE content with the form
+                        tinymce.triggerSave();
                     });
                 }
             });
+
+            // Image preview function
+            function previewImage(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        document.getElementById('licenseImage').src = e.target.result;
+                    }
+                    reader.readAsDataURL(file);
+                }
+            }
         </script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     </body>
