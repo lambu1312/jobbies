@@ -121,18 +121,16 @@
             <file>file:/D:/Learning_Document/Term_5/SWP391/Project/swp391-jobseeker/src/java/controller/seeker/HomeSeekerServlet.java</file>
         </group>
         <group>
-            <file>file:/C:/Users/buimi/Downloads/swp/swp391-jobseeker-20251209T052702Z-1-001/swp391-jobseeker/src/java/utils/Email.java</file>
-            <file>file:/C:/Users/buimi/Downloads/swp/swp391-jobseeker-20251209T052702Z-1-001/swp391-jobseeker/src/java/controller/recruiter/InterviewManagementController.java</file>
-            <file>file:/C:/Users/buimi/Downloads/swp/swp391-jobseeker-20251209T052702Z-1-001/swp391-jobseeker/src/java/controller/recruiter/InterviewDetailsController.java</file>
-            <file>file:/C:/Users/buimi/Downloads/swp/swp391-jobseeker-20251209T052702Z-1-001/swp391-jobseeker/src/java/controller/recruiter/ScheduleInterviewServlet.java</file>
-            <file>file:/C:/Users/buimi/Downloads/swp/swp391-jobseeker-20251209T052702Z-1-001/swp391-jobseeker/src/java/controller/recruiter/DetailsJP.java</file>
-            <file>file:/C:/Users/buimi/Downloads/swp/swp391-jobseeker-20251209T052702Z-1-001/swp391-jobseeker/src/java/dao/JobPostingsDAO.java</file>
-            <file>file:/C:/Users/buimi/Downloads/swp/swp391-jobseeker-20251209T052702Z-1-001/swp391-jobseeker/src/java/controller/recruiter/ApplicationSeekersController.java</file>
-            <file>file:/C:/Users/buimi/Downloads/swp/swp391-jobseeker-20251209T052702Z-1-001/swp391-jobseeker/src/java/controller/recruiter/DownloadCVServlet.java</file>
-            <file>file:/C:/Users/buimi/Downloads/swp/swp391-jobseeker-20251209T052702Z-1-001/swp391-jobseeker/src/java/controller/recruiter/JobPost.java</file>
+            <file>file:/C:/SWP391deptrai/jobbies/web/view/authen/login.jsp</file>
+            <file>file:/C:/SWP391deptrai/jobbies/web/view/authen/logout.jsp</file>
+            <file>file:/C:/SWP391deptrai/jobbies/web/view/common/footer.jsp</file>
+            <file>file:/C:/SWP391deptrai/jobbies/web/view/admin/adminHome.jsp</file>
         </group>
         <group>
-            <file>file:/C:/Users/buimi/Downloads/swp/swp391-jobseeker-20251209T052702Z-1-001/swp391-jobseeker/src/java/controller/recruiter/ApplicationSeekersController.java</file>
+            <file>file:/C:/SWP391deptrai/jobbies/web/view/authen/login.jsp</file>
+            <file>file:/C:/SWP391deptrai/jobbies/web/view/authen/logout.jsp</file>
+            <file>file:/C:/SWP391deptrai/jobbies/web/view/common/footer.jsp</file>
+            <file>file:/C:/SWP391deptrai/jobbies/web/view/admin/adminHome.jsp</file>
         </group>
     </open-files>
 </project-private>
