@@ -375,17 +375,17 @@ font-size: 0.95rem;
             <div class="register-container">
                 <div class="register-card">
                     <div class="card-header">
-                        <h4 class="card-title">Tạo 1 tài khoản mới ✨</h4>
-                        <p class="card-subtitle">Chọn loại tài khoản</p>
+                        <h4 class="card-title">Create A Free Account ✨</h4>
+                        <p class="card-subtitle">Choose your Account Type</p>
                     </div>
 
                     <!-- Role Selection -->
                     <div class="role-selection">
                         <button class="role-btn active" data-role="seeker">
-                            <i class="fas fa-user"></i> Người tìm việc
+                            <i class="fas fa-user"></i> Seeker
                         </button>
                         <button class="role-btn" data-role="recruiter">
-                            <i class="fas fa-briefcase"></i> Nhà tuyển dụng
+                            <i class="fas fa-briefcase"></i> Recruiter
                         </button>
                     </div>
 
@@ -395,14 +395,13 @@ font-size: 0.95rem;
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="lastname" class="form-label">Họ</label>
+                            <label for="lastname" class="form-label">Last Name</label>
                             <input type="text" name="lastname" id="lastname" class="form-control"
                                    placeholder="Enter last name" value="${requestScope.lname}" required>
                             <span class="text-danger">${errorLname}</span>
                         </div>
-
-                        <div class="form-group">
-                            <label for="firstname" class="form-label">Tên</label>
+<div class="form-group">
+                            <label for="firstname" class="form-label">First Name</label>
                             <input type="text" name="firstname" id="firstname" class="form-control"
                                    placeholder="Enter first name" value="${requestScope.fname}" required>
                             <span class="text-danger">${errorFname}</span>
@@ -411,15 +410,15 @@ font-size: 0.95rem;
 
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="gender" class="form-label">Giới tính</label>
+                            <label for="gender" class="form-label">Gender</label>
                             <select name="gender" id="gender" class="form-select">
-                                <option value="male" ${gender=='male' ? 'selected' : '' }>Nam</option>
-                                <option value="female" ${gender=='female' ? 'selected' : '' }>Nữ</option>
+                                <option value="male" ${gender=='male' ? 'selected' : '' }>Male</option>
+                                <option value="female" ${gender=='female' ? 'selected' : '' }>Female</option>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="dob" class="form-label">Ngày sinh</label>
+                            <label for="dob" class="form-label">Date of Birth</label>
                             <input type="date" name="dob" id="dob" class="form-control" value="${requestScope.dob}"
                                    required>
                             <span class="text-danger">${errorDob}</span>
@@ -427,7 +426,7 @@ font-size: 0.95rem;
                     </div>
 
                     <div class="form-group">
-                        <label for="username" class="form-label">Tên đăng nhập</label>
+                        <label for="username" class="form-label">Username</label>
                         <input type="text" name="username" id="username" class="form-control"
                                placeholder="Enter username" value="${requestScope.username}" required>
                         <span class="text-danger">${errorUsernameExits}</span>
@@ -435,14 +434,14 @@ font-size: 0.95rem;
                     </div>
 
                     <div class="form-group">
-                        <label for="signemail" class="form-label">Email của bạn</label>
+                        <label for="signemail" class="form-label">Your Email</label>
                         <input type="email" name="email" id="signemail" class="form-control"
                                placeholder="Enter your email" value="${requestScope.email}" required>
                         <span class="text-danger">${errorEmail}</span>
                     </div>
 
                     <div class="form-group">
-                        <label for="password" class="form-label">Mật khẩu</label>
+                        <label for="password" class="form-label">Password</label>
                         <div class="input-group">
                             <input type="password" class="form-control" id="password" name="password"
                                    placeholder="Enter your password" value="${requestScope.password}" required>
@@ -450,15 +449,16 @@ font-size: 0.95rem;
                                 👁️
                             </span>
                         </div>
-                        <small class="form-text">! Mật khẩu phải dài từ 8-20 ký tự, chứa ít nhất 1 chữ và 1 ký tự đặc biệt.</small>
+<small class="form-text">! Password must be 8-20 characters, containing at least one letter and
+                            one special character.</small>
                         <span class="text-danger">${errorPassword}</span>
                     </div>
 
-                    <button type="submit" class="btn-register">Đăng ký 🚀</button>
+                    <button type="submit" class="btn-register">Register 🚀</button>
                 </form>
 
-                <p class="login-link">Đã có tài khoản? <a
-                        href="${pageContext.request.contextPath}/view/authen/login.jsp">Đăng nhập</a></p>
+                <p class="login-link">Have an account? <a
+                        href="${pageContext.request.contextPath}/view/authen/login.jsp">Login</a></p>
             </div>
         </div>
 
@@ -526,3 +526,10 @@ document.getElementById("password").addEventListener("input", function () {
 
 </html>
 
+this.value = this.value.replace(/\s/g, ""); // Remove all spaces
+document.getElementById("password").addEventListener("input", function () {
+this.value = this.value.replace(/\s/g, ""); // Remove all spaces
+});
+</script>
+</body>
+</html>

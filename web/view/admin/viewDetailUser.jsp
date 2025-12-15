@@ -379,10 +379,10 @@
                                                     <!--content-main-->
                                                     <div class="tab-pane fade show active" id="profile" role="tabpanel">
                                                         <c:if test="${requestScope.accountView.getRoleId() == 3}">
-                                                            <h4 class="mb-3 text-center fs-2">Profile Candidate</h4>
+                                                            <h4 class="mb-3 text-center fs-2">Mô tả người tìm việc</h4>
                                                         </c:if>
                                                         <c:if test="${requestScope.accountView.getRoleId() == 2}">
-                                                            <h4 class="mb-3 text-center fs-2">Profile Recruiter</h4>
+                                                            <h4 class="mb-3 text-center fs-2">Mô tả người tuyển dụng</h4>
                                                         </c:if>
 
                                                         <form class="p-4 rounded shadow-sm bg-light">
@@ -412,8 +412,8 @@
                                                                                 data-bs-toggle="modal"
                                                                                 data-bs-target="#educationModal">
                                                                                 <i
-                                                                                    class="fas fa-graduation-cap me-2"></i>Detail
-                                                                                Education
+                                                                                    class="fas fa-graduation-cap me-2"></i>Trình độ
+                                                                                    học vấn
                                                                             </button>
                                                                         </div>
                                                                         <div class="mt-2">
@@ -422,8 +422,8 @@
                                                                                 data-bs-toggle="modal"
                                                                                 data-bs-target="#experienceModal">
                                                                                 <i
-                                                                                    class="fas fa-briefcase me-2"></i>Detail
-                                                                                Experience
+                                                                                    class="fas fa-briefcase me-2"></i>Chi tiết
+                                                                                    kinh nghiệm
                                                                             </button>
                                                                         </div>
                                                                     </c:if>
@@ -434,14 +434,14 @@
                                                                     <div class="row">
                                                                         <div class="col-md-6 mb-3">
                                                                             <label for="lastName"
-                                                                                class="form-label">Last Name</label>
+                                                                                class="form-label">Tên</label>
                                                                             <input type="text" id="lastName"
                                                                                 class="form-control" readonly
                                                                                 value="${requestScope.accountView.lastName}">
                                                                         </div>
                                                                         <div class="col-md-6 mb-3">
                                                                             <label for="firstName"
-                                                                                class="form-label">First Name</label>
+                                                                                class="form-label">Họ</label>
                                                                             <input type="text" id="firstName"
                                                                                 class="form-control" readonly
                                                                                 value="${requestScope.accountView.firstName}">
@@ -450,15 +450,13 @@
 
                                                                     <div class="row">
                                                                         <div class="col-md-6 mb-3">
-                                                                            <label for="phone" class="form-label">Phone
-                                                                                Number</label>
+                                                                            <label for="phone" class="form-label">Số điện thoại</label>
                                                                             <input type="text" id="phone"
                                                                                 class="form-control" readonly
                                                                                 value="${requestScope.accountView.phone}">
                                                                         </div>
                                                                         <div class="col-md-6 mb-3">
-                                                                            <label for="dob" class="form-label">Date of
-                                                                                Birth</label>
+                                                                            <label for="dob" class="form-label">Ngày sinh</label>
                                                                             <input type="date" id="dob"
                                                                                 class="form-control" readonly
                                                                                 value="${requestScope.accountView.dob}">
@@ -468,7 +466,7 @@
                                                                     <div class="row">
                                                                         <div class="col-md-6 mb-3">
                                                                             <label for="genderDisplay"
-                                                                                class="form-label">Gender</label>
+                                                                                class="form-label">Giới tính</label>
                                                                             <input type="text" id="genderDisplay"
                                                                                 class="form-control"
                                                                                 value="${requestScope.accountView.gender == true ? 'Male' : 'Female'}"
@@ -476,7 +474,7 @@
                                                                         </div>
                                                                         <div class="col-md-6 mb-3">
                                                                             <label for="address"
-                                                                                class="form-label">Address</label>
+                                                                                class="form-label">Địa chỉ</label>
                                                                             <input type="text" id="address"
                                                                                 class="form-control" readonly
                                                                                 value="${requestScope.accountView.address}">
@@ -493,7 +491,7 @@
                                                                         </div>
                                                                         <div class="col-md-6 mb-3">
                                                                             <label for="createAt"
-                                                                                class="form-label">Create At</label>
+                                                                                class="form-label">Ngày tạo</label>
                                                                             <input type="text" id="createAt"
                                                                                 class="form-control" readonly
                                                                                 value="${requestScope.accountView.createAt}">
@@ -507,13 +505,13 @@
                                                                 <c:if test="${requestScope.accountView.roleId == 3}">
                                                                     <button type="button" class="btn btn-info"
                                                                         onclick="location.href = '${pageContext.request.contextPath}/candidates'">
-                                                                        <i class="fas fa-arrow-left me-2"></i>Back
+                                                                        <i class="fas fa-arrow-left me-2"></i>Trở lại
                                                                     </button>
                                                                 </c:if>
                                                                 <c:if test="${requestScope.accountView.roleId == 2}">
                                                                     <button type="button" class="btn btn-info"
                                                                         onclick="location.href = '${pageContext.request.contextPath}/recruiters'">
-                                                                        <i class="fas fa-arrow-left me-2"></i>Back
+                                                                        <i class="fas fa-arrow-left me-2"></i>Trở lại
                                                                     </button>
                                                                 </c:if>
                                                             </div>
@@ -528,8 +526,8 @@
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title" id="educationModalLabel">
                                                                         <i
-                                                                            class="fas fa-graduation-cap me-2"></i>Education
-                                                                        Details
+                                                                            class="fas fa-graduation-cap me-2"></i>Trình độ
+                                                                            học vấn
                                                                     </h5>
                                                                     <button type="button" class="btn-close"
                                                                         data-bs-dismiss="modal"
@@ -545,12 +543,12 @@
                                                                         <table class="table table-bordered text-center">
                                                                             <thead class="table-light">
                                                                                 <tr>
-                                                                                    <th>Institution</th>
-                                                                                    <th>Degree</th>
-                                                                                    <th>Field Of Study</th>
-                                                                                    <th>Start Date</th>
-                                                                                    <th>End Date</th>
-                                                                                    <th>Certificate</th>
+                                                                                    <th>Tổ chức</th>
+                                                                                    <th>Bằng cấp</th>
+                                                                                    <th>Ngành học</th>
+                                                                                    <th>Ngày bắt đầu</th>
+                                                                                    <th>Ngày kết thúc</th>
+                                                                                    <th>Ảnh chứng nhận</th>
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody>
@@ -585,8 +583,7 @@
                                                                                     </tr>
                                                                                     <% } }else{ %>
                                                                                         <tr>
-                                                                                            <td colspan="6">No education
-                                                                                                found.</td>
+                                                                                            <td colspan="6">Không tìm thấy</td>
                                                                                         </tr>
                                                                                         <%}%>
                                                                             </tbody>
@@ -594,7 +591,7 @@
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Close</button>
+                                                                        data-bs-dismiss="modal">Đóng</button>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -607,8 +604,7 @@
                                                             <div class="modal-content">
                                                                 <div class="modal-header">
                                                                     <h5 class="modal-title" id="experienceModalLabel">
-                                                                        <i class="fas fa-briefcase me-2"></i>Experience
-                                                                        Details
+                                                                        <i class="fas fa-briefcase me-2"></i>Chi tiết kinh nghiệm
                                                                     </h5>
                                                                     <button type="button" class="btn-close"
                                                                         data-bs-dismiss="modal"
@@ -623,11 +619,11 @@
                                                                         <table class="table table-bordered text-center">
                                                                             <thead class="table-light">
                                                                                 <tr>
-                                                                                    <th>Company</th>
-                                                                                    <th>Job Title</th>
-                                                                                    <th>Start Date</th>
-                                                                                    <th>End Date</th>
-                                                                                    <th>Description</th>
+                                                                                    <th>Công ty</th>
+                                                                                    <th>Vị trí công việc</th>
+                                                                                    <th>Ngày bắt đầu</th>
+                                                                                    <th>Ngày kết thúc</th>
+                                                                                    <th>Mô tả</th>
                                                                                 </tr>
                                                                             </thead>
                                                                             <tbody>
@@ -658,8 +654,7 @@
                                                                                     </tr>
                                                                                     <% } }else{ %>
                                                                                         <tr>
-                                                                                            <td colspan="5">No
-                                                                                                experience found.</td>
+                                                                                            <td colspan="5">Không tìm thấy</td>
                                                                                         </tr>
                                                                                         <%}%>
                                                                             </tbody>
@@ -667,7 +662,7 @@
                                                                 </div>
                                                                 <div class="modal-footer">
                                                                     <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Close</button>
+                                                                        data-bs-dismiss="modal">Đóng</button>
                                                                 </div>
                                                             </div>
                                                         </div>

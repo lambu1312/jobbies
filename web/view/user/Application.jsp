@@ -59,10 +59,6 @@
                 background-color: #dc3545;
                 border-color: #dc3545;
             }
-            .text-center{
-                color:#fff;
-            }
-
         </style>
     </head>
     <body>
@@ -84,7 +80,7 @@
                 <div class="alert alert-success" role="alert">
                     ${successApplication}
                 </div>
-            </c:if>
+</c:if>
 
             <!-- Applications Table -->
             <c:if test="${not empty applications}">
@@ -129,7 +125,7 @@
                                                 <c:when test="${app.status == 1}">
                                                     <span class="badge bg-danger"><i class="fa fa-times-circle"></i> Rejected</span>
                                                 </c:when>
-                                                <c:when test="${app.status == 0}">
+<c:when test="${app.status == 0}">
                                                     <span class="badge bg-secondary"><i class="fa fa-ban"></i> Cancelled</span>
                                                 </c:when>
                                             </c:choose>
@@ -168,7 +164,7 @@
                                     </div>
                                     <form action="${pageContext.request.contextPath}/application" method="post">
                                         <div class="modal-body">
-                                            <p>Are you sure you want to cancel this application?</p>
+<p>Are you sure you want to cancel this application?</p>
                                             <input type="hidden" name="action" value="cancel-application">
                                             <input type="hidden" name="applicationId" value="${app.applicationID}">
                                             <input type="hidden" name="status" value="0">
@@ -222,6 +218,6 @@
 
         <!-- Bootstrap and JavaScript -->
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     </body>
 </html>

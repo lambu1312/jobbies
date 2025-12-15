@@ -1,4 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <div class="modern-sidebar" style="width: 280px; position: fixed; top: 0; left: 0; height: 100vh; z-index: 1000;">
     <div class="sidebar-content">
         <div class="rts__logo text-center mb-4">
@@ -13,37 +15,37 @@
             <li class="nav-item">
                 <a href="${pageContext.request.contextPath}/dashboard" class="nav-link" aria-current="page">
                     <span class="nav-icon"><i class="fa-solid fa-house"></i></span>
-                    <span class="nav-text">Dashboard</span>
+                    <span class="nav-text">Bảng tổng kết</span>
                 </a>
             </li>
             <li>
                 <a href="${pageContext.request.contextPath}/candidates" class="nav-link">
                     <span class="nav-icon"><i class="fa-solid fa-users"></i></span>
-                    <span class="nav-text">Candidate Management</span>
+                    <span class="nav-text">Quản lý người tìm việc</span>
                 </a>
             </li>
             <li>
                 <a href="${pageContext.request.contextPath}/recruiters" class="nav-link">
                     <span class="nav-icon"><i class="fa-solid fa-user-tie"></i></span>
-                    <span class="nav-text">Recruiter Management</span>
+                    <span class="nav-text">Quản lý nhà tuyển dụng</span>
                 </a>
             </li>
             <li>
                 <a href="${pageContext.request.contextPath}/companies" class="nav-link">
                     <span class="nav-icon"><i class="fa-solid fa-building"></i></span>
-                    <span class="nav-text">Company Management</span>
+                    <span class="nav-text">Quản lý công ty</span>
                 </a>
             </li>
             <li>
                 <a href="${pageContext.request.contextPath}/job_posting" class="nav-link">
                     <span class="nav-icon"><i class="fa-solid fa-briefcase"></i></span>
-                    <span class="nav-text">Job Postings</span>
+                    <span class="nav-text">Tin đăng tuyển</span>
                 </a>
             </li>
             <li>
                 <a href="${pageContext.request.contextPath}/feedback" class="nav-link">
                     <span class="nav-icon"><i class="fa-solid fa-comment-dots"></i></span>
-                    <span class="nav-text">Feedback</span>
+                    <span class="nav-text">Đánh giá</span>
                 </a>
             </li>
         </ul>
@@ -62,25 +64,25 @@
                 </div>
                 <div class="user-info">
                     <strong class="user-name">${sessionScope.account.getFullName()}</strong>
-                    <span class="user-role">Admin Page</span>
+                    <span class="user-role">Trang quản lý</span>
                 </div>
             </a>
 
             <ul class="dropdown-menu shadow" aria-labelledby="dropdownUser1">
                 <li>
                     <a class="dropdown-item" href="${pageContext.request.contextPath}/dashboard">
-                        <i class="fa-solid fa-house me-2"></i> Dashboard
+                        <i class="fa-solid fa-house me-2"></i> Bảng tổng kết
                     </a>
                 </li>
                 <li>
                     <a class="dropdown-item" href="${pageContext.request.contextPath}/authen?action=change-password">
-                        <i class="fa-solid fa-lock me-2"></i> Change Password
+                        <i class="fa-solid fa-lock me-2"></i> Đổi mật khẩu
                     </a>
                 </li>
                 <li><hr class="dropdown-divider"></li>
                 <li>
                     <a class="dropdown-item logout-item" href="${pageContext.request.contextPath}/view/authen/logout.jsp">
-                        <i class="fa-solid fa-right-from-bracket me-2"></i> Log Out
+                        <i class="fa-solid fa-right-from-bracket me-2"></i> Đăng xuất
                     </a>
                 </li>
             </ul>
@@ -97,6 +99,7 @@
         padding: 2rem 1.5rem;
         overflow-y: auto;
         box-shadow: 2px 0 20px rgba(0, 0, 0, 0.3);
+        font-family: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
     }
 
     .sidebar-content {
@@ -115,6 +118,7 @@
         letter-spacing: 2px;
         text-decoration: none;
         display: inline-block;
+        font-family: 'Inter', sans-serif;
     }
 
     .logo-text:hover {
@@ -149,6 +153,7 @@
         border: 1px solid transparent;
         position: relative;
         overflow: hidden;
+        font-family: 'Inter', sans-serif;
     }
 
     .nav-link::before {
@@ -191,6 +196,8 @@
     .nav-text {
         font-weight: 600;
         font-size: 0.95rem;
+        font-family: 'Inter', sans-serif;
+        white-space: nowrap;
     }
 
     .user-dropdown {
@@ -239,11 +246,13 @@
         color: #fff;
         font-size: 0.95rem;
         font-weight: 700;
+        font-family: 'Inter', sans-serif;
     }
 
     .user-role {
         color: #b8b8d1;
         font-size: 0.8rem;
+        font-family: 'Inter', sans-serif;
     }
 
     .dropdown-menu {
@@ -262,6 +271,7 @@
         border-radius: 10px;
         transition: all 0.3s ease;
         font-weight: 600;
+        font-family: 'Inter', sans-serif;
     }
 
     .dropdown-item:hover {

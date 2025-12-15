@@ -25,7 +25,7 @@
                             </div>
                             <div class="user-info">
                                 <span class="user-name">${sessionScope.account.fullName}</span>
-                                <span class="user-role">Người tìm việc</span>
+                                <span class="user-role">Candidate</span>
                             </div>
                             <i class="fas fa-chevron-down"></i>
                         </button>
@@ -33,38 +33,38 @@
                         <div class="dropdown-menu" id="userDropdownMenu">
                             <a href="${pageContext.request.contextPath}/JobSeekerCheck" class="dropdown-item">
                                 <i class="fas fa-user"></i>
-                                <span>Hồ sơ</span>
+                                <span>Profile</span>
                             </a>
                             <a href="${pageContext.request.contextPath}/cv" class="dropdown-item">
                                 <i class="fas fa-file-alt"></i>
-                                <span>Quản lý CV</span>
+                                <span>Manage CV</span>
                             </a>
                             <a href="${pageContext.request.contextPath}/education" class="dropdown-item">
                                 <i class="fas fa-graduation-cap"></i>
-                                <span>Học nghiệp</span>
+                                <span>Education</span>
                             </a>
                             <a href="${pageContext.request.contextPath}/experience" class="dropdown-item">
                                 <i class="fas fa-briefcase"></i>
-                                <span>Kinh nghiệm</span>
+                                <span>Experience</span>
                             </a>
 <a href="${pageContext.request.contextPath}/application" class="dropdown-item">
                                 <i class="fas fa-paper-plane"></i>
-                                <span>Đơn đăng ký của tôi</span>
+                                <span>My Applications</span>
                             </a>
                             <a href="${pageContext.request.contextPath}/feedbackSeeker" class="dropdown-item">
                                 <i class="fas fa-comment"></i>
-                                <span>Góp ý/Nhận xét</span>
+                                <span>Feedback</span>
                             </a>
                             <a href="${pageContext.request.contextPath}/authen?action=change-password"
                                 class="dropdown-item">
                                 <i class="fas fa-lock"></i>
-                                <span>Đổi mật khẩu</span>
+                                <span>Change Password</span>
                             </a>
                             <div class="dropdown-divider"></div>
                             <a href="${pageContext.request.contextPath}/view/authen/logout.jsp"
                                 class="dropdown-item logout">
                                 <i class="fas fa-sign-out-alt"></i>
-                                <span>Đăng xuất</span>
+                                <span>Log Out</span>
                             </a>
                         </div>
                     </div>

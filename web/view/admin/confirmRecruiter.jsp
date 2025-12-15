@@ -91,13 +91,13 @@
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <h2 class="mt-4 mb-4 table-title">Recruiter Confirm</h2>
+                                    <h2 class="mt-4 mb-4 table-title">Xác nhận tài khoản người tuyển dụng</h2>
                                     <div class="table-responsive">
                                         <!--search recruiter-->
                                         <form action="${pageContext.request.contextPath}/confirm" method="GET">
                                         <div class="d-flex justify-content-center mb-3">
-                                            <input type="text" id="searchRecruiter"  name="searchQuery" class="form-control" style="width: 60%;" placeholder="Search for name...">
-                                            <button type="submit" class="btn btn-primary ms-2">Search</button>
+                                            <input type="text" id="searchRecruiter"  name="searchQuery" class="form-control" style="width: 60%;" placeholder="Tìm theo tên...">
+                                            <button type="submit" class="btn btn-primary ms-2">Tìm</button>
                                         </div>
                                     </form>
 
@@ -105,12 +105,12 @@
                                     <table class="table table-striped table-hover" style="border: 2px">
                                         <thead class="table-success">
                                             <tr>
-                                                <th>Name</th>
-                                                <th>Verify</th>
-                                                <th>Company</th>
-                                                <th>Front Citizen</th>
-                                                <th>Back Citizen</th>
-                                                <th>Position</th>
+                                                <th>Tên</th>
+                                                <th>Xác nhận</th>
+                                                <th>Công ty</th>
+                                                <th>Căn cước công dân (mặt trước)</th>
+                                                <th>Căn cước công dân (mặt sau)</th>
+                                                <th>Vị trí</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -191,7 +191,7 @@
                                     <!--button back-->
                                     <div class="d-flex justify-content-start mt-3 mb-3">
                                         <a href="recruiters" class="btn btn-success">
-                                            <i class="fas fa-arrow-left me-2"></i>Back
+                                            <i class="fas fa-arrow-left me-2"></i>Trở lại
                                         </a>
                                     </div>
                                 </div>
