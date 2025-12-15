@@ -6,8 +6,8 @@
 
                 <div class="nav-links" id="navLinks">
                     <a href="${pageContext.request.contextPath}/home">Việc làm</a>
-                    <a href="#">Tạo CV</a>
-                    <a href="#">Cẩm nang</a>
+                    <a href="${pageContext.request.contextPath}/cv">Tạo CV</a>
+                    <a href="${pageContext.request.contextPath}/">Cẩm nang</a>
 
                     <c:choose>
                         <c:when test="${empty sessionScope.account}">
