@@ -1,11 +1,5 @@
-<%-- 
-    Document   : ViewJobPosting
-    Created on : Oct 17, 2024, 2:10:58 PM
-    Author     : vanct
---%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -477,7 +471,9 @@ box-shadow: 0 10px 40px rgba(57, 255, 20, 0.4);
                     <div class="card-body">
 <p>${jobPost.description}</p>
                     </div>
-                </div>
+                </aside>
+            </div>
+        </c:if>
 
                 <!-- Job Requirements -->
                 <div class="card shadow-sm">

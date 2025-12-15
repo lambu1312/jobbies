@@ -77,10 +77,6 @@
         </style>
     </head>
     <body>
-        <!-- header area -->
-        <jsp:include page="../common/admin/header-admin.jsp"></jsp:include>
-            <!-- header area end -->
-
             <!-- content area -->
             <div class="container-fluid">
                 <div class="row">
