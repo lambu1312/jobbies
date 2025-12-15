@@ -65,7 +65,7 @@
             <!-- Header Area End -->
 
             <div class="container mb-5 mt-5">
-                <h1 class="text-center">My Favourite Job Posting</h1>
+                <h1 class="text-center">Bài đăng tuyển dụng yêu thích của tôi</h1>
 
             <c:if test="${not empty errorFavourJP}">
                 <div class="alert alert-danger" role="alert">
@@ -83,8 +83,8 @@
                 <table class="table table-bordered">
                     <thead class="thead-light">
                         <tr>
-                            <th>Job Title</th>
-                            <th>Action</th>
+                            <th>Chức danh công việc</th>
+                            <th>Hoạt động</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -97,13 +97,13 @@
                                             class="btn btn-info btn-sm" 
                                             onclick="window.location.href = '${pageContext.request.contextPath}/jobPostingDetail?action=details&idJP=${fjp.jobPostingID}'"
                                             <c:if test="${favourJPMap[fjp.favourJPID] == 'Violate'}">disabled</c:if>>
-                                                <i class="fa-solid fa-eye"></i> View
+                                                <i class="fa-solid fa-eye"></i> Xem
                                             </button> 
                                             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteFavourJPModal-${fjp.favourJPID}">
-                                                <i class="fa fa-trash"></i> Unlike
+                                                <i class="fa fa-trash"></i> Xóa Thích
                                             </button>
                                                 <c:if test="${favourJPMap[fjp.favourJPID] == 'Violate'}">
-                                        <span class="badge bg-warning text-dark"><i class="fa-solid fa-triangle-exclamation"></i> This job posting is violated!</span>
+                                        <span class="badge bg-warning text-dark"><i class="fa-solid fa-triangle-exclamation"></i> Thông báo tuyển dụng này vi phạm quy định!</span>
                                     </c:if>
                                     </td>
                                     
@@ -114,18 +114,18 @@
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="deleteFavourJPModal-${fjp.favourJPID}">Unlike Job Posting</h5>
+                                        <h5 class="modal-title" id="deleteFavourJPModal-${fjp.favourJPID}">Bỏ Bài Đăng Tuyển Dụng</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <form action="${pageContext.request.contextPath}/FavourJobPosting" method="post">
                                         <div class="modal-body">
-                                            <p>Are you sure you want to unlike this job posting?</p>
+                                            <p>Bạn có chắc chắn muốn bỏ thích tin tuyển dụng này không?</p>
                                             <input type="hidden" name="action" value="delete-favourJP">
                                             <input type="hidden" name="favourJPId" value="${fjp.favourJPID}">
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-danger">Confirm Unlike</button>
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                            <button type="submit" class="btn btn-danger">Xác nhận Không thích</button>
                                         </div>
                                     </form>
                                 </div>
