@@ -1,360 +1,709 @@
-<%-- 
-    Document   : viewDetailSeekers
-    Created on : Oct 8, 2024, 4:56:46 PM
-    Author     : Admin
---%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="model.Education"%>
-<%@page import="model.WorkExperience"%>
-<%@page import="model.JobSeekers"%>
-<%@page import="dao.EducationDAO"%>
-<%@page import="dao.WorkExperienceDAO"%>
-<%@page import="dao.JobSeekerDAO"%>
-<%@page import="java.util.List"%>
-<!DOCTYPE html>
-<html lang="en">
-    
-    <head>
-        <!--css-->
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <%@page contentType="text/html" pageEncoding="UTF-8" %>
+        <%@page import="model.Education" %>
+            <%@page import="model.WorkExperience" %>
+                <%@page import="model.JobSeekers" %>
+                    <%@page import="dao.EducationDAO" %>
+                        <%@page import="dao.WorkExperienceDAO" %>
+                            <%@page import="dao.JobSeekerDAO" %>
+                                <%@page import="java.util.List" %>
+                                    <!DOCTYPE html>
+                                    <html lang="en">
 
-        <!-- Add custom styles -->
-        <style>
-            .seeker-status.active {
-                color: green; /* Active seekers in green */
-                font-weight: bold;
-            }
-            .seeker-status.inactive {
-                color: red; /* Inactive seekers in red */
-                font-weight: bold;
-            }
-        </style>
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    </head>
-    <body>
-        <!-- header area -->
-        <jsp:include page="../common/admin/header-admin.jsp"></jsp:include>
-            <!-- header area end -->
+                                    <head>
+                                        <meta charset="UTF-8">
+                                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                                        <title>Profile Detail - Jobbies</title>
 
-            <!-- content area -->
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-3">
-                        <!--Side bar-->
-                    <jsp:include page="../common/admin/sidebar-admin.jsp"></jsp:include>
-                        <!--side bar-end-->
-                    </div>
+                                        <!--css-->
+                                        <link
+                                            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+                                            rel="stylesheet">
+                                        <link rel="stylesheet"
+                                            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
+                                        <!-- Custom styles -->
+                                        <style>
+                                            * {
+                                                margin: 0;
+                                                padding: 0;
+                                                box-sizing: border-box;
+                                            }
 
-                    <div class="col-md-9">
+                                            body {
+                                                font-family: 'Segoe UI', system-ui, sans-serif;
+                                                background: #f8f9fa !important;
+                                                color: #212529;
+                                                overflow-x: hidden;
+                                                min-height: 100vh;
+                                            }
 
-                        <!--content-main can fix-->
-                        <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                        <c:if test="${requestScope.accountView.getRoleId() == 3}">
-                            <h4 class="mb-3 text-center fs-2">Profile Seeker</h4>
-                        </c:if>
-                        <c:if test="${requestScope.accountView.getRoleId() == 2}">
-                            <h4 class="mb-3 text-center fs-2">Profile Recruiter</h4>
-                        </c:if>
+                                            /* Column Layout */
+                                            .col-md-3 {
+                                                padding: 0;
+                                            }
 
-                        <form class="p-4 rounded shadow-sm bg-light">
-                            <!-- Avatar và Thông tin người dùng -->
-                            <!-- Avatar và Thông tin người dùng -->
-                            <div class="d-flex align-items-start">
-                                <!-- Avatar -->
-                                <div class="me-4 text-start">
-                                    <c:if test="${empty requestScope.accountView.avatar}">
-                                        <img src="${pageContext.request.contextPath}/assets/img/dashboard/avatar-mail.png" alt="Avatar" class="rounded-circle" width="150" height="150">
-                                    </c:if>
-                                    <c:if test="${!empty requestScope.accountView.avatar}">
-                                        <img src="${requestScope.accountView.avatar}" alt="Avatar" class="rounded-circle" width="150" height="150">
-                                    </c:if>
-                                    <!-- Nút Xem Chi Tiết Giáo Dục và Kinh Nghiệm -->
-                                    <c:if test="${requestScope.accountView.getRoleId() == 3}">
-                                        <div class="mt-3">
-                                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#educationModal">
-                                                Detail Education
-                                            </button>
-                                        </div>
-                                        <div class="mt-2">
-                                            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#experienceModal">
-                                                Detail Experience
-                                            </button>
-                                        </div>
-                                    </c:if>
-                                </div>
+                                            .col-md-9 {
+                                                padding: 2rem;
+                                                background: #ffffff;
+                                                min-height: 100vh;
+                                            }
 
-                                <!-- Thông tin người dùng -->
-                                <div class="w-100">
-                                    <div class="row">
-                                        <!-- Full Name -->
-                                        <div class="col-md-6 mb-3">
-                                            <label for="lastName" class="form-label">Last Name</label>
-                                            <input type="text" id="lastName" class="form-control" placeholder="Last Name" required readonly value="${requestScope.accountView.lastName}">
-                                        </div>
-                                        <!-- First Name -->
-                                        <div class="col-md-6 mb-3">
-                                            <label for="firstName" class="form-label">First Name</label>
-                                            <input type="text" id="firstName" class="form-control" placeholder="First Name" required readonly value="${requestScope.accountView.firstName}">
-                                        </div>
-                                    </div>
+                                            /* Page Title */
+                                            h4.fs-2 {
+                                                background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
+                                                -webkit-background-clip: text;
+                                                -webkit-text-fill-color: transparent;
+                                                font-weight: 900;
+                                                margin-bottom: 2rem;
+                                                text-align: center;
+                                            }
 
-                                    <div class="row">
-                                        <!-- Phone -->
-                                        <div class="col-md-6 mb-3">
-                                            <label for="phone" class="form-label">Phone Number</label>
-                                            <input type="text" id="phone" class="form-control" placeholder="+84" required readonly value="${requestScope.accountView.phone}">
-                                        </div>
-                                        <!-- Date of Birth -->
-                                        <div class="col-md-6 mb-3">
-                                            <label for="dob" class="form-label">Date of Birth</label>
-                                            <input type="date" id="dob" class="form-control" required readonly value="${requestScope.accountView.dob}">
-                                        </div>
-                                    </div>
+                                            /* Profile Form Container */
+                                            .bg-light {
+                                                background: #ffffff !important;
+                                                border: 2px solid #dee2e6 !important;
+                                                border-radius: 20px !important;
+                                                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+                                            }
 
-                                    <div class="row">
-                                        <!-- Gender -->
-                                        <div class="col-md-6 mb-3">
-                                            <label for="genderDisplay" class="form-label">Gender</label>
-                                            <input type="text" id="genderDisplay" class="form-control" value="${requestScope.accountView.gender == true ? 'Male' : 'Female'}" readonly>
-                                        </div>
-                                        <!-- Address -->
-                                        <div class="col-md-6 mb-3">
-                                            <label for="address" class="form-label">Address</label>
-                                            <input type="text" id="address" class="form-control" placeholder="Your Address" required readonly value="${requestScope.accountView.address}">
-                                        </div>
-                                    </div>
+                                            /* Avatar Styling */
+                                            .rounded-circle {
+                                                border: 3px solid #c471f5 !important;
+                                                box-shadow: 0 4px 15px rgba(196, 113, 245, 0.3) !important;
+                                                object-fit: cover;
+                                            }
 
-                                    <div class="row">
-                                        <!-- Email -->
-                                        <div class="col-md-6 mb-3">
-                                            <label for="email" class="form-label">Email</label>
-                                            <input type="email" id="email" class="form-control" placeholder="jobpath@gmail.com" required readonly value="${requestScope.accountView.email}">
-                                        </div>
-                                        <!-- Create At -->
-                                        <div class="col-md-6 mb-3">
-                                            <label for="createAt" class="form-label">Create At</label>
-                                            <input type="text" id="createAt" class="form-control" required readonly value="${requestScope.accountView.createAt}">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                                            /* Form Labels */
+                                            .form-label {
+                                                color: #495057;
+                                                font-weight: 600;
+                                                font-size: 0.9rem;
+                                                margin-bottom: 0.5rem;
+                                            }
 
-                            <!-- Back Button -->
-                            <div class="text-center mt-4">
-                                <c:if test="${requestScope.accountView.roleId == 3}">
-                                    <button type="button" class="btn btn-info" onclick="location.href = '${pageContext.request.contextPath}/seekers'">Back</button>
-                                </c:if>
-                                <c:if test="${requestScope.accountView.roleId == 2}">
-                                    <button type="button" class="btn btn-info" onclick="location.href = '${pageContext.request.contextPath}/recruiters'">Back</button>
-                                </c:if>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- Modal để hiển thị thông tin Education -->
-                    <div class="modal fade" id="educationModal" tabindex="-1" aria-labelledby="educationModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="educationModalLabel">Education Details</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <!-- Table hiển thị thông tin Education -->
-                                    <c:set var="accountId" value="${requestScope.accountView.getId()}" />
-                                    <!--tạo các đối tượng cần dùng-->
-                                    <% 
-                                        Education education = new Education();
-                                        EducationDAO educationDao = new EducationDAO();
-                                        JobSeekers jobSeeker = new JobSeekers();
-                                        JobSeekerDAO jobSeekerDao = new JobSeekerDAO();
-                                    %>
-                                    <table class="table table-bordered text-center">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th>Institution</th>
-                                                <th>Degree</th>
-                                                <th>Field Of Study</th>
-                                                <th>Start Date</th>
-                                                <th>End Date</th>
-                                                <th>Certificate</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <!--lay ve education theo accountId-->
-                                            <%
-                                                //lay ve id cua jobseeker theo accountid
-                                                int accountId = (Integer) pageContext.getAttribute("accountId");
-                                                jobSeeker = jobSeekerDao.findJobSeekerIDByAccountID(String.valueOf(accountId));
-                                                if(jobSeeker != null){
-                                                List<Education> listEdu = educationDao.findEducationbyJobSeekerID(jobSeeker.getJobSeekerID());
-                                                for(Education edu: listEdu){
-                                                
-                                                
-                                                // duyet listEdu
-                                            %>
-                                            <tr>
-                                                <td>
-                                                    <%= edu.getInstitution()%>
-                                                </td>
-                                                <td><%= edu.getDegree()%></td>
-                                                <td><%= edu.getFieldOfStudy()%></td>
-                                                <td><%= edu.getStartDate()%></td>
-                                                <td><%= edu.getEndDate()%></td>
-                                                <td>
-                                                    <img src="<%= edu.getDegreeImg() %>" alt="Certificate" style="max-width: 100px; height: auto;">
-                                                </td>
-                                            </tr>
-                                            <%
+                                            /* Form Inputs */
+                                            .form-control {
+                                                background: #f8f9fa !important;
+                                                border: 1px solid #dee2e6 !important;
+                                                border-radius: 10px !important;
+                                                color: #212529 !important;
+                                                padding: 0.75rem 1rem !important;
+                                                font-size: 0.95rem;
+                                                transition: all 0.3s;
+                                            }
+
+                                            .form-control:focus {
+                                                background: #ffffff !important;
+                                                border-color: #c471f5 !important;
+                                                box-shadow: 0 0 0 0.2rem rgba(196, 113, 245, 0.15) !important;
+                                                outline: none;
+                                            }
+
+                                            .form-control:read-only {
+                                                background: #e9ecef !important;
+                                                cursor: not-allowed;
+                                            }
+
+                                            /* Buttons */
+                                            .btn-success {
+                                                background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+                                                border: none !important;
+                                                border-radius: 12px !important;
+                                                padding: 0.6rem 1.5rem !important;
+                                                font-weight: 700 !important;
+                                                color: #ffffff !important;
+                                                transition: all 0.3s !important;
+                                                box-shadow: 0 3px 12px rgba(40, 167, 69, 0.3) !important;
+                                                width: 100%;
+                                            }
+
+                                            .btn-success:hover {
+                                                transform: translateY(-2px) !important;
+                                                box-shadow: 0 5px 18px rgba(40, 167, 69, 0.4) !important;
+                                            }
+
+                                            .btn-info {
+                                                background: linear-gradient(135deg, #7ee8fa 0%, #5ec9db 100%) !important;
+                                                border: none !important;
+                                                border-radius: 12px !important;
+                                                padding: 0.7rem 2rem !important;
+                                                font-weight: 700 !important;
+                                                color: #000000 !important;
+                                                transition: all 0.3s !important;
+                                                box-shadow: 0 3px 12px rgba(126, 232, 250, 0.3) !important;
+                                            }
+
+                                            .btn-info:hover {
+                                                transform: translateY(-2px) !important;
+                                                box-shadow: 0 5px 18px rgba(126, 232, 250, 0.4) !important;
+                                            }
+
+                                            .btn-secondary {
+                                                background: #6c757d !important;
+                                                border: none !important;
+                                                border-radius: 10px !important;
+                                                padding: 0.6rem 1.5rem !important;
+                                                font-weight: 600 !important;
+                                                transition: all 0.3s !important;
+                                            }
+
+                                            .btn-secondary:hover {
+                                                background: #5a6268 !important;
+                                                transform: translateY(-2px) !important;
+                                            }
+
+                                            .btn-primary {
+                                                background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%) !important;
+                                                border: none !important;
+                                                color: #ffffff !important;
+                                            }
+
+                                            /* Modal Styling */
+                                            .modal-content {
+                                                border: 2px solid #dee2e6 !important;
+                                                border-radius: 20px !important;
+                                                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15) !important;
+                                            }
+
+                                            .modal-header {
+                                                background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%) !important;
+                                                color: #ffffff !important;
+                                                border-radius: 18px 18px 0 0 !important;
+                                                border-bottom: none !important;
+                                            }
+
+                                            .modal-title {
+                                                font-weight: 700;
+                                                font-size: 1.3rem;
+                                                color: #ffffff !important;
+                                            }
+
+                                            .modal-body {
+                                                padding: 2rem;
+                                                background: #ffffff;
+                                            }
+
+                                            .modal-footer {
+                                                border-top: 1px solid #dee2e6 !important;
+                                                padding: 1.5rem;
+                                            }
+
+                                            .btn-close {
+                                                filter: brightness(0) invert(1);
+                                            }
+
+                                            /* Table in Modal */
+                                            .table {
+                                                margin-bottom: 0;
+                                            }
+
+                                            .table-bordered {
+                                                border: 2px solid #dee2e6 !important;
+                                                border-radius: 12px !important;
+                                                overflow: hidden;
+                                            }
+
+                                            .table-light th {
+                                                background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%) !important;
+                                                color: #ffffff !important;
+                                                font-weight: 700;
+                                                text-transform: uppercase;
+                                                font-size: 0.85rem;
+                                                letter-spacing: 0.5px;
+                                                padding: 1rem;
+                                                border: none !important;
+                                            }
+
+                                            .table tbody td {
+                                                color: #212529 !important;
+                                                padding: 1rem;
+                                                vertical-align: middle;
+                                                border-color: #dee2e6 !important;
+                                            }
+
+                                            .table tbody tr:hover {
+                                                background: #f8f4ff;
+                                            }
+
+                                            /* Certificate Image in Table */
+                                            .table img {
+                                                max-width: 100px !important;
+                                                height: auto !important;
+                                                border-radius: 8px;
+                                                border: 2px solid #dee2e6;
+                                                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                                                transition: all 0.3s;
+                                                cursor: pointer;
+                                            }
+
+                                            .table img:hover {
+                                                transform: scale(1.1);
+                                                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                                                z-index: 10;
+                                            }
+
+                                            /* Back to Top Button */
+                                            #rts-back-to-top {
+                                                position: fixed !important;
+                                                bottom: 20px !important;
+                                                right: 20px !important;
+                                                background: linear-gradient(135deg, #c471f5, #fa71cd) !important;
+                                                border: none !important;
+                                                border-radius: 50% !important;
+                                                width: 50px !important;
+                                                height: 50px !important;
+                                                display: flex !important;
+                                                align-items: center !important;
+                                                justify-content: center !important;
+                                                box-shadow: 0 4px 15px rgba(196, 113, 245, 0.4) !important;
+                                                cursor: pointer !important;
+                                                transition: all 0.3s !important;
+                                                z-index: 999 !important;
+                                                color: #ffffff !important;
+                                            }
+
+                                            #rts-back-to-top:hover {
+                                                transform: translateY(-5px) !important;
+                                                box-shadow: 0 6px 20px rgba(196, 113, 245, 0.5) !important;
+                                            }
+
+                                            /* Loading Animation */
+                                            .loader-wrapper {
+                                                position: fixed;
+                                                top: 0;
+                                                left: 0;
+                                                width: 100%;
+                                                height: 100%;
+                                                background: #ffffff;
+                                                display: flex;
+                                                align-items: center;
+                                                justify-content: center;
+                                                z-index: 9999;
+                                            }
+
+                                            .loader {
+                                                width: 50px;
+                                                height: 50px;
+                                                border: 4px solid #f3f3f3;
+                                                border-top-color: #c471f5;
+                                                border-radius: 50%;
+                                                animation: spin 1s linear infinite;
+                                            }
+
+                                            @keyframes spin {
+                                                to {
+                                                    transform: rotate(360deg);
                                                 }
-                                              }else{
-                                            %>    
-                                            <tr>
-                                                <td colspan="6">No education found.</td>
-                                            </tr>
-                                            <%}%> 
+                                            }
 
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>   
-                    <!-- Modal để hiển thị thông tin Experience -->
-                    <div class="modal fade" id="experienceModal" tabindex="-1" aria-labelledby="experienceModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="experienceModalLabel">Experience Details</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <!-- Table hiển thị thông tin Experience -->
-                                    <c:set var="accountId" value="${requestScope.accountView.getId()}" />
-                                    <% 
-                                        // Gọi các đối tượng và phương thức cần thiết để lấy danh sách kinh nghiệm
-                                        WorkExperience experience = new WorkExperience();
-                                        WorkExperienceDAO experienceDao = new WorkExperienceDAO();
-                                        
-                                    %>
-                                    <table class="table table-bordered text-center">
-                                        <thead class="table-light">
-                                            <tr>
-                                                <th>Company</th>
-                                                <th>Job title</th>
-                                                <th>Start Date</th>
-                                                <th>End Date</th>
-                                                <th>Description</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <%
-                                                //lay ve id cua jobseeker theo accountid
-                                                
-                                                jobSeeker = jobSeekerDao.findJobSeekerIDByAccountID(String.valueOf(accountId));
-                                                if(jobSeeker != null){
-                                                List<WorkExperience> listExperience = experienceDao.findWorkExperiencesbyJobSeekerID(jobSeeker.getJobSeekerID());
-                                                for(WorkExperience ex: listExperience){
-                                                
-                                                
-                                                // duyet listEdu
-                                            %>
-                                            <tr>
-                                                <td>
-                                                    <%= ex.getCompanyName()%>
-                                                </td>
-                                                <td><%= ex.getJobTitle()%></td>
-                                                <td><%= ex.getStartDate()%></td>
-                                                <td><%= ex.getEndDate()%></td>
-                                                <td><%= ex.getDescription()%></td>
-                                            </tr>
-                                            <%
+                                            /* Profile Info Section */
+                                            .d-flex.align-items-start {
+                                                gap: 2rem;
+                                            }
+
+                                            .me-4 {
+                                                min-width: 150px;
+                                            }
+
+                                            /* Custom Scrollbar */
+                                            ::-webkit-scrollbar {
+                                                width: 10px;
+                                            }
+
+                                            ::-webkit-scrollbar-track {
+                                                background: #f1f1f1;
+                                            }
+
+                                            ::-webkit-scrollbar-thumb {
+                                                background: linear-gradient(135deg, #c471f5, #fa71cd);
+                                                border-radius: 10px;
+                                            }
+
+                                            ::-webkit-scrollbar-thumb:hover {
+                                                background: linear-gradient(135deg, #fa71cd, #c471f5);
+                                            }
+
+                                            /* Empty State */
+                                            .table tbody tr td[colspan] {
+                                                color: #6c757d !important;
+                                                font-style: italic;
+                                                padding: 2rem;
+                                            }
+
+                                            /* Responsive Design */
+                                            @media (max-width: 768px) {
+                                                .col-md-9 {
+                                                    padding: 1rem;
                                                 }
-                                              }else{
-                                            %>    
-                                            <tr>
-                                                <td colspan="6">No experience found.</td>
-                                            </tr>
-                                            <%}%> 
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Back to Top Button -->
-                    <button type="button" class="btn btn-primary position-fixed" id="rts-back-to-top" style="bottom: 20px; right: 20px;">
-                        <i class="fas fa-arrow-up"></i>
-                    </button>
+                                                .d-flex.align-items-start {
+                                                    flex-direction: column;
+                                                }
 
-                    <!-- Footer -->
+                                                .me-4 {
+                                                    width: 100%;
+                                                    text-align: center;
+                                                    margin-bottom: 1.5rem;
+                                                }
 
-                </div>
-            </div>
-        </div>
+                                                .rounded-circle {
+                                                    width: 120px !important;
+                                                    height: 120px !important;
+                                                }
 
+                                                h4.fs-2 {
+                                                    font-size: 1.5rem !important;
+                                                }
 
+                                                .btn-success,
+                                                .btn-info {
+                                                    width: 100%;
+                                                    margin-bottom: 0.5rem;
+                                                }
+                                            }
+                                        </style>
+                                    </head>
 
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas" aria-labelledby="offcanvasLabel">
-            <div class="offcanvas-header p-0 mb-5 mt-4">
-                <a href="index.html" class="offcanvas-title" id="offcanvasLabel">
-                    <img src="${pageContext.request.contextPath}/assets/img/logo/header__one.svg" alt="logo">
-                </a> 
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <!-- login offcanvas -->
-            <div class="mb-4 d-block d-sm-none">
-                <div class="header__right__btn d-flex justify-content-center gap-3">
-                    <!--                    <a href="#" class="small__btn no__fill__btn border-6 font-xs" aria-label="Login Button" data-bs-toggle="modal" data-bs-target="#loginModal"> <i class="rt-login"></i>Sign In</a>-->
-                    <a href="#" class="small__btn d-xl-flex fill__btn border-6 font-xs" aria-label="Job Posting Button">Add Job</a>
-                </div>
-            </div>
-            <div class="offcanvas-body p-0">
-                <div class="rts__offcanvas__menu overflow-hidden">
-                    <div class="offcanvas__menu"></div>
-                </div>
-                <p class="max-auto font-20 fw-medium text-center text-decoration-underline mt-4">Our Social Links</p>
-                <div class="rts__social d-flex justify-content-center gap-3 mt-3">
-                    <a href="https://facebook.com"  aria-label="facebook">
-                        <i class="fa-brands fa-facebook"></i>
-                    </a>
-                    <a href="https://instagram.com"  aria-label="instagram">
-                        <i class="fa-brands fa-instagram"></i>
-                    </a>
-                    <a href="https://linkedin.com"  aria-label="linkedin">
-                        <i class="fa-brands fa-linkedin"></i>
-                    </a>
-                    <a href="https://pinterest.com"  aria-label="pinterest">
-                        <i class="fa-brands fa-pinterest"></i>
-                    </a>
-                    <a href="https://youtube.com"  aria-label="youtube">
-                        <i class="fa-brands fa-youtube"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <!-- THEME PRELOADER START -->
-        <div class="loader-wrapper">
-            <div class="loader">
-            </div>
-            <div class="loader-section section-left"></div>
-            <div class="loader-section section-right"></div>
-        </div>
-        <!-- THEME PRELOADER END -->
-        <button type="button" class="rts__back__top" id="rts-back-to-top">
-            <i class="fas fa-arrow-up"></i>
-        </button>
-        <!-- all plugin js -->
-        <jsp:include page="../common/admin/common-js-admin.jsp"></jsp:include>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+                                    <body>
+                                        <!-- content area -->
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div class="col-md-3">
+                                                    <!--Side bar-->
+                                                    <jsp:include page="../common/admin/sidebar-admin.jsp"></jsp:include>
+                                                    <!--side bar-end-->
+                                                </div>
+
+                                                <div class="col-md-9">
+                                                    <!--content-main-->
+                                                    <div class="tab-pane fade show active" id="profile" role="tabpanel">
+                                                        <c:if test="${requestScope.accountView.getRoleId() == 3}">
+                                                            <h4 class="mb-3 text-center fs-2">Profile Candidate</h4>
+                                                        </c:if>
+                                                        <c:if test="${requestScope.accountView.getRoleId() == 2}">
+                                                            <h4 class="mb-3 text-center fs-2">Profile Recruiter</h4>
+                                                        </c:if>
+
+                                                        <form class="p-4 rounded shadow-sm bg-light">
+                                                            <!-- Avatar và Thông tin người dùng -->
+                                                            <div class="d-flex align-items-start">
+                                                                <!-- Avatar -->
+                                                                <div class="me-4 text-start">
+                                                                    <c:if
+                                                                        test="${empty requestScope.accountView.avatar}">
+                                                                        <img src="${pageContext.request.contextPath}/assets/img/dashboard/avatar-mail.png"
+                                                                            alt="Avatar" class="rounded-circle"
+                                                                            width="150" height="150">
+                                                                    </c:if>
+                                                                    <c:if
+                                                                        test="${!empty requestScope.accountView.avatar}">
+                                                                        <img src="${requestScope.accountView.avatar}"
+                                                                            alt="Avatar" class="rounded-circle"
+                                                                            width="150" height="150">
+                                                                    </c:if>
+
+                                                                    <!-- Nút Xem Chi Tiết -->
+                                                                    <c:if
+                                                                        test="${requestScope.accountView.getRoleId() == 3}">
+                                                                        <div class="mt-3">
+                                                                            <button type="button"
+                                                                                class="btn btn-success"
+                                                                                data-bs-toggle="modal"
+                                                                                data-bs-target="#educationModal">
+                                                                                <i
+                                                                                    class="fas fa-graduation-cap me-2"></i>Detail
+                                                                                Education
+                                                                            </button>
+                                                                        </div>
+                                                                        <div class="mt-2">
+                                                                            <button type="button"
+                                                                                class="btn btn-success"
+                                                                                data-bs-toggle="modal"
+                                                                                data-bs-target="#experienceModal">
+                                                                                <i
+                                                                                    class="fas fa-briefcase me-2"></i>Detail
+                                                                                Experience
+                                                                            </button>
+                                                                        </div>
+                                                                    </c:if>
+                                                                </div>
+
+                                                                <!-- Thông tin người dùng -->
+                                                                <div class="w-100">
+                                                                    <div class="row">
+                                                                        <div class="col-md-6 mb-3">
+                                                                            <label for="lastName"
+                                                                                class="form-label">Last Name</label>
+                                                                            <input type="text" id="lastName"
+                                                                                class="form-control" readonly
+                                                                                value="${requestScope.accountView.lastName}">
+                                                                        </div>
+                                                                        <div class="col-md-6 mb-3">
+                                                                            <label for="firstName"
+                                                                                class="form-label">First Name</label>
+                                                                            <input type="text" id="firstName"
+                                                                                class="form-control" readonly
+                                                                                value="${requestScope.accountView.firstName}">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="row">
+                                                                        <div class="col-md-6 mb-3">
+                                                                            <label for="phone" class="form-label">Phone
+                                                                                Number</label>
+                                                                            <input type="text" id="phone"
+                                                                                class="form-control" readonly
+                                                                                value="${requestScope.accountView.phone}">
+                                                                        </div>
+                                                                        <div class="col-md-6 mb-3">
+                                                                            <label for="dob" class="form-label">Date of
+                                                                                Birth</label>
+                                                                            <input type="date" id="dob"
+                                                                                class="form-control" readonly
+                                                                                value="${requestScope.accountView.dob}">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="row">
+                                                                        <div class="col-md-6 mb-3">
+                                                                            <label for="genderDisplay"
+                                                                                class="form-label">Gender</label>
+                                                                            <input type="text" id="genderDisplay"
+                                                                                class="form-control"
+                                                                                value="${requestScope.accountView.gender == true ? 'Male' : 'Female'}"
+                                                                                readonly>
+                                                                        </div>
+                                                                        <div class="col-md-6 mb-3">
+                                                                            <label for="address"
+                                                                                class="form-label">Address</label>
+                                                                            <input type="text" id="address"
+                                                                                class="form-control" readonly
+                                                                                value="${requestScope.accountView.address}">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="row">
+                                                                        <div class="col-md-6 mb-3">
+                                                                            <label for="email"
+                                                                                class="form-label">Email</label>
+                                                                            <input type="email" id="email"
+                                                                                class="form-control" readonly
+                                                                                value="${requestScope.accountView.email}">
+                                                                        </div>
+                                                                        <div class="col-md-6 mb-3">
+                                                                            <label for="createAt"
+                                                                                class="form-label">Create At</label>
+                                                                            <input type="text" id="createAt"
+                                                                                class="form-control" readonly
+                                                                                value="${requestScope.accountView.createAt}">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <!-- Back Button -->
+                                                            <div class="text-center mt-4">
+                                                                <c:if test="${requestScope.accountView.roleId == 3}">
+                                                                    <button type="button" class="btn btn-info"
+                                                                        onclick="location.href = '${pageContext.request.contextPath}/candidates'">
+                                                                        <i class="fas fa-arrow-left me-2"></i>Back
+                                                                    </button>
+                                                                </c:if>
+                                                                <c:if test="${requestScope.accountView.roleId == 2}">
+                                                                    <button type="button" class="btn btn-info"
+                                                                        onclick="location.href = '${pageContext.request.contextPath}/recruiters'">
+                                                                        <i class="fas fa-arrow-left me-2"></i>Back
+                                                                    </button>
+                                                                </c:if>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+
+                                                    <!-- Education Modal -->
+                                                    <div class="modal fade" id="educationModal" tabindex="-1"
+                                                        aria-labelledby="educationModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-lg">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="educationModalLabel">
+                                                                        <i
+                                                                            class="fas fa-graduation-cap me-2"></i>Education
+                                                                        Details
+                                                                    </h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <c:set var="accountId"
+                                                                        value="${requestScope.accountView.getId()}" />
+                                                                    <% Education education=new Education(); EducationDAO
+                                                                        educationDao=new EducationDAO(); JobSeekers
+                                                                        jobSeeker=new JobSeekers(); JobSeekerDAO
+                                                                        jobSeekerDao=new JobSeekerDAO(); %>
+                                                                        <table class="table table-bordered text-center">
+                                                                            <thead class="table-light">
+                                                                                <tr>
+                                                                                    <th>Institution</th>
+                                                                                    <th>Degree</th>
+                                                                                    <th>Field Of Study</th>
+                                                                                    <th>Start Date</th>
+                                                                                    <th>End Date</th>
+                                                                                    <th>Certificate</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <% int accountId=(Integer)
+                                                                                    pageContext.getAttribute("accountId");
+                                                                                    jobSeeker=jobSeekerDao.findJobSeekerIDByAccountID(String.valueOf(accountId));
+                                                                                    if(jobSeeker !=null){
+                                                                                    List<Education> listEdu =
+                                                                                    educationDao.findEducationbyJobSeekerID(jobSeeker.getJobSeekerID());
+                                                                                    for(Education edu: listEdu){
+                                                                                    %>
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            <%= edu.getInstitution()%>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= edu.getDegree()%>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= edu.getFieldOfStudy()%>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= edu.getStartDate()%>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= edu.getEndDate()%>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <img src="<%= edu.getDegreeImg() %>"
+                                                                                                alt="Certificate">
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <% } }else{ %>
+                                                                                        <tr>
+                                                                                            <td colspan="6">No education
+                                                                                                found.</td>
+                                                                                        </tr>
+                                                                                        <%}%>
+                                                                            </tbody>
+                                                                        </table>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Experience Modal -->
+                                                    <div class="modal fade" id="experienceModal" tabindex="-1"
+                                                        aria-labelledby="experienceModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-lg">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="experienceModalLabel">
+                                                                        <i class="fas fa-briefcase me-2"></i>Experience
+                                                                        Details
+                                                                    </h5>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <c:set var="accountId"
+                                                                        value="${requestScope.accountView.getId()}" />
+                                                                    <% WorkExperience experience=new WorkExperience();
+                                                                        WorkExperienceDAO experienceDao=new
+                                                                        WorkExperienceDAO(); %>
+                                                                        <table class="table table-bordered text-center">
+                                                                            <thead class="table-light">
+                                                                                <tr>
+                                                                                    <th>Company</th>
+                                                                                    <th>Job Title</th>
+                                                                                    <th>Start Date</th>
+                                                                                    <th>End Date</th>
+                                                                                    <th>Description</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                <% jobSeeker=jobSeekerDao.findJobSeekerIDByAccountID(String.valueOf(accountId));
+                                                                                    if(jobSeeker !=null){
+                                                                                    List<WorkExperience> listExperience
+                                                                                    =
+                                                                                    experienceDao.findWorkExperiencesbyJobSeekerID(jobSeeker.getJobSeekerID());
+                                                                                    for(WorkExperience ex:
+                                                                                    listExperience){
+                                                                                    %>
+                                                                                    <tr>
+                                                                                        <td>
+                                                                                            <%= ex.getCompanyName()%>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= ex.getJobTitle()%>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= ex.getStartDate()%>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= ex.getEndDate()%>
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <%= ex.getDescription()%>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <% } }else{ %>
+                                                                                        <tr>
+                                                                                            <td colspan="5">No
+                                                                                                experience found.</td>
+                                                                                        </tr>
+                                                                                        <%}%>
+                                                                            </tbody>
+                                                                        </table>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Close</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Back to Top Button -->
+                                                    <button type="button" class="btn btn-primary" id="rts-back-to-top">
+                                                        <i class="fas fa-arrow-up"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- THEME PRELOADER -->
+                                        <div class="loader-wrapper">
+                                            <div class="loader"></div>
+                                        </div>
+
+                                        <!-- Scripts -->
+                                        <jsp:include page="../common/admin/common-js-admin.jsp"></jsp:include>
+                                        <script
+                                            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+                                        <script
+                                            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+
+                                        <script>
+                                            // Hide loader when page loads
+                                            window.addEventListener('load', function () {
+                                                document.querySelector('.loader-wrapper').style.display = 'none';
+                                            });
+
+                                            // Back to top button
+                                            document.getElementById('rts-back-to-top').addEventListener('click', function () {
+                                                window.scrollTo({ top: 0, behavior: 'smooth' });
+                                            });
+                                        </script>
+                                    </body>
+
+                                    </html>
