@@ -1,6 +1,10 @@
+<<<<<<<< HEAD:DB_NewV.sql
+
+========
 USE [JobSeeker]
 GO
 /****** Object:  Table [dbo].[Account]    Script Date: 09/12/2025 3:29:53 CH ******/
+>>>>>>>> tuanbmhe181513:database/DB_NewV6.sql
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -165,18 +169,31 @@ CREATE TABLE [dbo].[JobPostings](
 	[ClosingDate] [date] NULL,
 	[Job_Posting_CategoryID] [int] NULL,
 	[Status] [nvarchar](20) NULL,
+<<<<<<<< HEAD:DB_NewV.sql
+	[WorkTypes] [nvarchar] (20) NOT NULL,
+	[WorkModel] [nvarchar] (20) NOT NULL,
+========
+>>>>>>>> tuanbmhe181513:database/DB_NewV6.sql
  CONSTRAINT [PK__JobPosti__350AABE90A500774] PRIMARY KEY CLUSTERED 
 (
 	[JobPostingID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
+<<<<<<<< HEAD:DB_NewV.sql
+/****** Object:  Table [dbo].[JobSeeker1]    Script Date: 09/12/2025 3:29:53 CH ******/
+========
 /****** Object:  Table [dbo].[JobSeekers]    Script Date: 09/12/2025 3:29:53 CH ******/
+>>>>>>>> tuanbmhe181513:database/DB_NewV6.sql
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+<<<<<<<< HEAD:DB_NewV.sql
+CREATE TABLE [dbo].[JobSeeker1](
+========
 CREATE TABLE [dbo].[JobSeekers](
+>>>>>>>> tuanbmhe181513:database/DB_NewV6.sql
 	[JobSeekerID] [int] IDENTITY(1,1) NOT NULL,
 	[AccountID] [int] NULL,
 PRIMARY KEY CLUSTERED 
@@ -272,6 +289,68 @@ SET IDENTITY_INSERT [dbo].[Applications] ON
 INSERT [dbo].[Applications] ([ApplicationID], [JobPostingID], [JobSeekerID], [CVID], [Status], [AppliedDate]) VALUES (1, 1106, 1, 1, 2, CAST(N'2025-12-09' AS Date))
 SET IDENTITY_INSERT [dbo].[Applications] OFF
 GO
+<<<<<<<< HEAD:DB_NewV.sql
+SET IDENTITY_INSERT [dbo].[Company] ON;
+
+INSERT [dbo].[Company]
+([id], [name], [description], [location], [verificationStatus], [accountId], [BusinessLicenseImage], [BusinessCode])
+VALUES
+(1034, N'Công nghệ Tiên Phong', 
+ N'<p>Doanh nghiệp hàng đầu trong lĩnh vực giải pháp công nghệ và phát triển phần mềm.</p>',
+ N'New York, NY', 1, 5, N'/JobSeeker//images/7309693.jpg', N'09909'),
+
+(1035, N'Xanh Trái Đất', 
+ N'Sản xuất sản phẩm thân thiện môi trường và giải pháp phát triển bền vững.',
+ N'San Francisco, CA', 0, 6, N'/JobSeeker//images/7309693.jpg', N'09910'),
+
+(1036, N'Y Tế HealthFirst', 
+ N'Cung cấp dịch vụ chăm sóc sức khỏe và các sản phẩm y tế chất lượng.',
+ N'Chicago, IL', 1, 7, N'/JobSeeker//images/7309693.jpg', N'01190'),
+
+(1037, N'EduPlus', 
+ N'Dịch vụ giáo dục, đào tạo kỹ năng chuyên nghiệp cho người đi làm.',
+ N'Boston, MA', 1, 8, N'/JobSeeker//images/7309693.jpg', N'09190'),
+
+(1038, N'FinServe Corp', 
+ N'Dịch vụ tài chính, đầu tư và tư vấn chuyên nghiệp.',
+ N'New York, NY', 0, 9, N'/JobSeeker//images/7309693.jpg', N'11090'),
+
+(1039, N'Ẩm Thực Hảo Hạng', 
+ N'Cung cấp thực phẩm cao cấp và dịch vụ tổ chức tiệc.',
+ N'Austin, TX', 1, 10, N'/JobSeeker//images/7309693.jpg', N'00900'),
+
+(1040, N'QuickFix IT Solutions', 
+ N'Dịch vụ hỗ trợ CNTT và an ninh mạng cho doanh nghiệp.',
+ N'Seattle, WA', 1, 11, N'/JobSeeker//images/7309693.jpg', N'08980'),
+
+(1041, N'Thời Trang Đô Thị', 
+ N'Kinh doanh thời trang và phụ kiện phong cách hiện đại.',
+ N'Los Angeles, CA', 0, 12, N'/JobSeeker//images/7309693.jpg', N'08910'),
+
+(1042, N'AquaPure Water', 
+ N'Giải pháp lọc nước tinh khiết và cung cấp nước uống sạch.',
+ N'Phoenix, AZ', 1, 13, N'/JobSeeker//images/7309693.jpg', N'09180'),
+
+(1043, N'Elite Fitness', 
+ N'Hệ thống phòng gym và chăm sóc sức khỏe cao cấp.',
+ N'Miami, FL', 0, 14, N'/JobSeeker//images/7309693.jpg', N'01119'),
+
+(1044, N'Nội Thất HomeStyle', 
+ N'Thiết kế nội thất và cung cấp giải pháp trang trí nhà ở.',
+ N'Houston, TX', 1, 15, N'/JobSeeker//images/7309693.jpg', N'08181'),
+
+(1045, N'Năng Lượng Tương Lai', 
+ N'Giải pháp năng lượng tái tạo – trọng tâm vào điện mặt trời.',
+ N'Denver, CO', 1, 16, N'/JobSeeker//images/7309693.jpg', N'08790'),
+
+(1046, N'Đại Học FPT',
+ N'<p>Trường Đại học FPT – Đào tạo nguồn nhân lực chất lượng cao.</p>',
+ N'Thạch Thất – Hòa Lạc – Hà Nội', 1, 30, N'/JobSeeker//images/7309693.jpg', N'99999');
+
+SET IDENTITY_INSERT [dbo].[Company] OFF;
+GO
+
+========
 SET IDENTITY_INSERT [dbo].[Company] ON 
 
 INSERT [dbo].[Company] ([id], [name], [description], [location], [verificationStatus], [accountId], [BusinessLicenseImage], [BusinessCode]) VALUES (1034, N'Tech Innovations Inc.', N'<p>A leading company in technology solutions and software development.</p>', N'New York, NY', 1, 5, N'/JobSeeker//images/7309693.jpg', N'09909')
@@ -289,11 +368,111 @@ INSERT [dbo].[Company] ([id], [name], [description], [location], [verificationSt
 INSERT [dbo].[Company] ([id], [name], [description], [location], [verificationStatus], [accountId], [BusinessLicenseImage], [BusinessCode]) VALUES (1046, N'FPT University', N'<p>Trường Đại Học FPT</p>', N'Thạch Thất/Hòa Lạc/Hà Nội ', 1, 30, N'/JobSeeker//images/7309693.jpg', N'99999')
 SET IDENTITY_INSERT [dbo].[Company] OFF
 GO
+>>>>>>>> tuanbmhe181513:database/DB_NewV6.sql
 SET IDENTITY_INSERT [dbo].[CVs] ON 
 
 INSERT [dbo].[CVs] ([CVID], [JobSeekerID], [FilePath], [UploadDate], [LastUpdated]) VALUES (1, 1, N'/JobSeeker/cvFiles/LuuYKhithiPE_PRN.pdf', CAST(N'2025-12-09T00:00:00.0000000' AS DateTime2), CAST(N'2025-12-09T15:23:53.8166667' AS DateTime2))
 SET IDENTITY_INSERT [dbo].[CVs] OFF
 GO
+<<<<<<<< HEAD:DB_NewV.sql
+SET IDENTITY_INSERT [dbo].[Job_Posting_Category] ON;
+
+INSERT [dbo].[Job_Posting_Category] ([id], [name], [status]) VALUES (12, N'Công nghệ thông tin', 1);
+INSERT [dbo].[Job_Posting_Category] ([id], [name], [status]) VALUES (13, N'Kinh doanh & Tài chính', 1);
+INSERT [dbo].[Job_Posting_Category] ([id], [name], [status]) VALUES (14, N'Y tế & Chăm sóc sức khỏe', 1);
+INSERT [dbo].[Job_Posting_Category] ([id], [name], [status]) VALUES (15, N'Giáo dục & Đào tạo', 1);
+INSERT [dbo].[Job_Posting_Category] ([id], [name], [status]) VALUES (16, N'Nhân sự & Tuyển dụng', 1);
+INSERT [dbo].[Job_Posting_Category] ([id], [name], [status]) VALUES (17, N'Marketing & Bán hàng', 1);
+INSERT [dbo].[Job_Posting_Category] ([id], [name], [status]) VALUES (18, N'Vận hành & Logistics', 1);
+INSERT [dbo].[Job_Posting_Category] ([id], [name], [status]) VALUES (19, N'Kỹ thuật & Kỹ sư', 1);
+INSERT [dbo].[Job_Posting_Category] ([id], [name], [status]) VALUES (20, N'Nghiên cứu & Phát triển', 1);
+INSERT [dbo].[Job_Posting_Category] ([id], [name], [status]) VALUES (21, N'Sáng tạo & Thiết kế', 1);
+
+SET IDENTITY_INSERT [dbo].[Job_Posting_Category] OFF;
+GO
+
+SET IDENTITY_INSERT [dbo].[JobPostings] ON;
+
+INSERT INTO [dbo].[JobPostings]
+(JobPostingID, RecruiterID, Title, Description, Requirements,
+ MinSalary, MaxSalary, Currency, Location,
+ PostedDate, ClosingDate, Job_Posting_CategoryID, Status,
+ WorkTypes, WorkModel)
+VALUES
+(1096, 17, N'Kỹ sư Phần mềm',
+ N'Tìm kiếm Kỹ sư Phần mềm có chuyên môn để gia nhập đội ngũ CNTT của chúng tôi.',
+ N'Tốt nghiệp Công nghệ thông tin hoặc các ngành liên quan. Kinh nghiệm từ 3 năm trở lên.',
+ 500, 1000, 'USD', N'Hà Nội, Việt Nam',
+ '2023-01-15', '2023-05-15', 12, 'Open',
+ N'Full-time', N'Hybrid'),
+
+(1097, 19, N'Chuyên viên Phân tích Dữ liệu',
+ N'Tìm kiếm Chuyên viên Phân tích Dữ liệu có khả năng tư duy tốt cho đội BI.',
+ N'Tốt nghiệp ngành Phân tích dữ liệu, Thống kê hoặc liên quan. Kinh nghiệm từ 2 năm trở lên.',
+ 200, 800, 'USD', N'Hồ Chí Minh, Việt Nam',
+ '2023-01-01', '2023-06-01', 12, 'Closed',
+ N'Full-time', N'Onsite'),
+
+(1098, 20, N'Quản lý Marketing',
+ N'Tìm kiếm Quản lý Marketing sáng tạo, dẫn dắt các chiến dịch tiếp thị số.',
+ N'Tốt nghiệp Marketing hoặc các ngành liên quan. Kinh nghiệm từ 5 năm trở lên.',
+ 1000, 1500, 'USD', N'Đà Nẵng, Việt Nam',
+ '2023-02-01', '2023-07-01', 17, 'Open',
+ N'Full-time', N'Hybrid'),
+
+(1099, 22, N'Quản lý Dự án',
+ N'Tìm kiếm Quản lý Dự án có kinh nghiệm để giám sát dự án phát triển phần mềm mới.',
+ N'Ưu tiên có chứng chỉ PMP. Kinh nghiệm từ 7 năm trở lên trong quản lý dự án.',
+ 1700, 2000, 'USD', N'Cần Thơ, Việt Nam',
+ '2023-03-01', '2023-08-01', 12, 'Closed',
+ N'Full-time', N'Onsite'),
+
+(1100, 24, N'Chuyên viên Thiết kế Đồ họa',
+ N'Tìm kiếm Nhà thiết kế đồ họa sáng tạo để gia nhập đội ngũ thiết kế của chúng tôi.',
+ N'Tốt nghiệp Thiết kế đồ họa hoặc ngành liên quan. Kinh nghiệm từ 3 năm trở lên.',
+ 1000, 2000, 'USD', N'Hải Phòng, Việt Nam',
+ '2023-02-01', '2023-09-01', 21, 'Open',
+ N'Full-time', N'Remote'),
+
+(1101, 25, N'Chuyên viên Nhân sự',
+ N'Tìm kiếm Chuyên viên Nhân sự hỗ trợ đội ngũ đang phát triển.',
+ N'Tốt nghiệp Quản trị nhân lực hoặc ngành liên quan. Kinh nghiệm từ 2 năm trở lên.',
+ 2000, 3000, 'USD', N'Bình Dương, Việt Nam',
+ '2023-07-01', '2023-10-01', 16, 'Closed',
+ N'Contract', N'Hybrid'),
+
+(1102, 27, N'Nhân viên Kinh doanh',
+ N'Tìm kiếm Nhân viên Kinh doanh năng động gia nhập đội bán hàng.',
+ N'Tốt nghiệp Kinh doanh hoặc ngành liên quan. Kinh nghiệm từ 1 năm trở lên.',
+ 40000, 60000, 'USD', N'Đồng Nai, Việt Nam',
+ '2023-09-01', '2023-11-01', 13, 'Open',
+ N'Full-time', N'Onsite'),
+
+(1103, 28, N'Quản lý Vận hành',
+ N'Tìm kiếm Quản lý vận hành có kinh nghiệm tối ưu chuỗi logistics.',
+ N'Tốt nghiệp Quản trị kinh doanh hoặc ngành liên quan. Kinh nghiệm từ 5 năm trở lên.',
+ 45000, 50000, 'USD', N'Quảng Ninh, Việt Nam',
+ '2023-04-05', '2023-09-05', 12, 'Open',
+ N'Full-time', N'Onsite'),
+
+(1104, 17, N'Lập trình viên Web',
+ N'Tìm kiếm Lập trình viên Web tham gia phát triển hệ thống CNTT.',
+ N'Tốt nghiệp CNTT hoặc liên quan. Kinh nghiệm tối thiểu 2 năm.',
+ 55000, 60000, 'USD', N'Huế, Việt Nam',
+ '2023-12-01', '2024-01-01', 12, 'Open',
+ N'Full-time', N'Remote'),
+
+(1105, 19, N'Chuyên viên Phân tích Tài chính',
+ N'Tìm kiếm Chuyên viên Phân tích tài chính tỉ mỉ, gia nhập đội ngũ Finance.',
+ N'Tốt nghiệp Tài chính/Kế toán. Kinh nghiệm 3 năm trở lên.',
+ 1200, 1800, 'USD', N'Hải Dương, Việt Nam',
+ '2024-01-01', '2024-02-01', 13, 'Open',
+ N'Full-time', N'Hybrid');
+
+SET IDENTITY_INSERT [dbo].[JobPostings] OFF;
+GO
+
+========
 SET IDENTITY_INSERT [dbo].[Job_Posting_Category] ON 
 
 INSERT [dbo].[Job_Posting_Category] ([id], [name], [status]) VALUES (12, N'Information Technology', 1)
@@ -321,6 +500,7 @@ INSERT [dbo].[JobPostings] ([JobPostingID], [RecruiterID], [Title], [Description
 INSERT [dbo].[JobPostings] ([JobPostingID], [RecruiterID], [Title], [Description], [Requirements], [MinSalary], [MaxSalary], [Currency], [Location], [PostedDate], [ClosingDate], [Job_Posting_CategoryID], [Status]) VALUES (1104, 17, N'Web Developer', N'Seeking a skilled Web Developer to join our IT team.', N'Bachelor''s degree in Computer Science or related field. 2+ years of experience.', CAST(55000.00 AS Decimal(10, 2)), CAST(6000.00 AS Decimal(10, 2)), N'USD', N'San Francisco, CA', CAST(N'2023-12-01' AS Date), CAST(N'2024-01-01' AS Date), 12, N'Open')
 INSERT [dbo].[JobPostings] ([JobPostingID], [RecruiterID], [Title], [Description], [Requirements], [MinSalary], [MaxSalary], [Currency], [Location], [PostedDate], [ClosingDate], [Job_Posting_CategoryID], [Status]) VALUES (1105, 19, N'Financial Analyst', N'Seeking a detail-oriented Financial Analyst to join our Finance team.', N'Bachelor''s degree in Finance or Accounting. 3+ years of experience.', CAST(1200.00 AS Decimal(10, 2)), CAST(1800.00 AS Decimal(10, 2)), N'USD', N'New York City, NY', CAST(N'2024-01-01' AS Date), CAST(N'2024-02-01' AS Date), 13, N'Open')
 INSERT [dbo].[JobPostings] ([JobPostingID], [RecruiterID], [Title], [Description], [Requirements], [MinSalary], [MaxSalary], [Currency], [Location], [PostedDate], [ClosingDate], [Job_Posting_CategoryID], [Status]) VALUES (1106, 17, N'React Developer', N'<p><strong>Overview:</strong></p>
+>>>>>>>> tuanbmhe181513:database/DB_NewV6.sql
 <p>We are seeking a highly skilled and passionate React Developer to join our dynamic product development team. In this role, you will be instrumental in crafting intuitive, high-performance, and visually appealing user interfaces for our flagship web applications. You will work closely with UX/UI designers, product managers, and backend engineers to translate complex requirements into elegant, user-centric solutions, driving engagement and enhancing the overall product experience. Your expertise in React.js will be critical in building scalable and maintainable front-end systems that deliver exceptional value to our users.</p>
 <p><strong>Responsibilities:</strong></p>
 <ul>
@@ -360,6 +540,15 @@ INSERT [dbo].[JobPostings] ([JobPostingID], [RecruiterID], [Title], [Description
 <li>Commitment to writing clean, maintainable, and high-quality code.</li>
 </ul>
 </li>
+<<<<<<<< HEAD:DB_NewV.sql
+</ul>, CAST(1000.00 AS Decimal(10, 2)), CAST(2000.00 AS Decimal(10, 2)), N'VND', N'HN', CAST(N'2025-12-09' AS Date), CAST(N'2025-12-12' AS Date), 18, N'Open')
+SET IDENTITY_INSERT [dbo].[JobPostings] OFF
+GO
+SET IDENTITY_INSERT [dbo].[JobSeeker1] ON 
+
+INSERT [dbo].[JobSeeker1] ([JobSeekerID], [AccountID]) VALUES (1, 20)
+SET IDENTITY_INSERT [dbo].[JobSeeker1] OFF
+========
 </ul>', CAST(1000.00 AS Decimal(10, 2)), CAST(2000.00 AS Decimal(10, 2)), N'VND', N'HN', CAST(N'2025-12-09' AS Date), CAST(N'2025-12-12' AS Date), 18, N'Open')
 SET IDENTITY_INSERT [dbo].[JobPostings] OFF
 GO
@@ -367,6 +556,7 @@ SET IDENTITY_INSERT [dbo].[JobSeekers] ON
 
 INSERT [dbo].[JobSeekers] ([JobSeekerID], [AccountID]) VALUES (1, 20)
 SET IDENTITY_INSERT [dbo].[JobSeekers] OFF
+>>>>>>>> tuanbmhe181513:database/DB_NewV6.sql
 GO
 SET IDENTITY_INSERT [dbo].[Recruiters] ON 
 
@@ -401,7 +591,11 @@ ALTER TABLE [dbo].[Account] ADD  CONSTRAINT [UQ__Account__F3DBC572418299EE] UNIQ
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 GO
 /****** Object:  Index [UQ__JobSeeke__349DA5879DC13888]    Script Date: 09/12/2025 3:29:53 CH ******/
+<<<<<<<< HEAD:DB_NewV.sql
+ALTER TABLE [dbo].[JobSeeker1] ADD UNIQUE NONCLUSTERED 
+========
 ALTER TABLE [dbo].[JobSeekers] ADD UNIQUE NONCLUSTERED 
+>>>>>>>> tuanbmhe181513:database/DB_NewV6.sql
 (
 	[AccountID] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
@@ -449,16 +643,34 @@ REFERENCES [dbo].[JobPostings] ([JobPostingID])
 GO
 ALTER TABLE [dbo].[Applications] CHECK CONSTRAINT [FK_Applications_JobPostings]
 GO
+<<<<<<<< HEAD:DB_NewV.sql
+ALTER TABLE [dbo].[Applications]  WITH CHECK ADD  CONSTRAINT [FK_Applications_JobSeeker1] FOREIGN KEY([JobSeekerID])
+REFERENCES [dbo].[JobSeeker1] ([JobSeekerID])
+GO
+ALTER TABLE [dbo].[Applications] CHECK CONSTRAINT [FK_Applications_JobSeeker1]
+========
 ALTER TABLE [dbo].[Applications]  WITH CHECK ADD  CONSTRAINT [FK_Applications_JobSeekers] FOREIGN KEY([JobSeekerID])
 REFERENCES [dbo].[JobSeekers] ([JobSeekerID])
 GO
 ALTER TABLE [dbo].[Applications] CHECK CONSTRAINT [FK_Applications_JobSeekers]
+>>>>>>>> tuanbmhe181513:database/DB_NewV6.sql
 GO
 ALTER TABLE [dbo].[Company]  WITH CHECK ADD  CONSTRAINT [FK_Company_Account] FOREIGN KEY([accountId])
 REFERENCES [dbo].[Account] ([id])
 GO
 ALTER TABLE [dbo].[Company] CHECK CONSTRAINT [FK_Company_Account]
 GO
+<<<<<<<< HEAD:DB_NewV.sql
+ALTER TABLE [dbo].[CVs]  WITH CHECK ADD  CONSTRAINT [FK_CVs_JobSeeker1] FOREIGN KEY([JobSeekerID])
+REFERENCES [dbo].[JobSeeker1] ([JobSeekerID])
+GO
+ALTER TABLE [dbo].[CVs] CHECK CONSTRAINT [FK_CVs_JobSeeker1]
+GO
+ALTER TABLE [dbo].[Education]  WITH CHECK ADD  CONSTRAINT [FK_Education_JobSeeker1] FOREIGN KEY([JobSeekerID])
+REFERENCES [dbo].[JobSeeker1] ([JobSeekerID])
+GO
+ALTER TABLE [dbo].[Education] CHECK CONSTRAINT [FK_Education_JobSeeker1]
+========
 ALTER TABLE [dbo].[CVs]  WITH CHECK ADD  CONSTRAINT [FK_CVs_JobSeekers] FOREIGN KEY([JobSeekerID])
 REFERENCES [dbo].[JobSeekers] ([JobSeekerID])
 GO
@@ -468,16 +680,24 @@ ALTER TABLE [dbo].[Education]  WITH CHECK ADD  CONSTRAINT [FK_Education_JobSeeke
 REFERENCES [dbo].[JobSeekers] ([JobSeekerID])
 GO
 ALTER TABLE [dbo].[Education] CHECK CONSTRAINT [FK_Education_JobSeekers]
+>>>>>>>> tuanbmhe181513:database/DB_NewV6.sql
 GO
 ALTER TABLE [dbo].[FavourJobPosting]  WITH CHECK ADD  CONSTRAINT [FK_FavourJobPosting_JobPostings] FOREIGN KEY([JobPostingID])
 REFERENCES [dbo].[JobPostings] ([JobPostingID])
 GO
 ALTER TABLE [dbo].[FavourJobPosting] CHECK CONSTRAINT [FK_FavourJobPosting_JobPostings]
 GO
+<<<<<<<< HEAD:DB_NewV.sql
+ALTER TABLE [dbo].[FavourJobPosting]  WITH CHECK ADD  CONSTRAINT [FK_FavourJobPosting_JobSeeker1] FOREIGN KEY([JobSeekerID])
+REFERENCES [dbo].[JobSeeker1] ([JobSeekerID])
+GO
+ALTER TABLE [dbo].[FavourJobPosting] CHECK CONSTRAINT [FK_FavourJobPosting_JobSeeker1]
+========
 ALTER TABLE [dbo].[FavourJobPosting]  WITH CHECK ADD  CONSTRAINT [FK_FavourJobPosting_JobSeekers] FOREIGN KEY([JobSeekerID])
 REFERENCES [dbo].[JobSeekers] ([JobSeekerID])
 GO
 ALTER TABLE [dbo].[FavourJobPosting] CHECK CONSTRAINT [FK_FavourJobPosting_JobSeekers]
+>>>>>>>> tuanbmhe181513:database/DB_NewV6.sql
 GO
 ALTER TABLE [dbo].[Feedback]  WITH CHECK ADD  CONSTRAINT [FK_Feedback_Account] FOREIGN KEY([AccountID])
 REFERENCES [dbo].[Account] ([id])
@@ -494,10 +714,17 @@ REFERENCES [dbo].[Job_Posting_Category] ([id])
 GO
 ALTER TABLE [dbo].[JobPostings] CHECK CONSTRAINT [FK_JobPostings_Job_Posting_Category]
 GO
+<<<<<<<< HEAD:DB_NewV.sql
+ALTER TABLE [dbo].[JobSeeker1]  WITH CHECK ADD  CONSTRAINT [FK_JobSeeker1_Account] FOREIGN KEY([AccountID])
+REFERENCES [dbo].[Account] ([id])
+GO
+ALTER TABLE [dbo].[JobSeeker1] CHECK CONSTRAINT [FK_JobSeeker1_Account]
+========
 ALTER TABLE [dbo].[JobSeekers]  WITH CHECK ADD  CONSTRAINT [FK_JobSeekers_Account] FOREIGN KEY([AccountID])
 REFERENCES [dbo].[Account] ([id])
 GO
 ALTER TABLE [dbo].[JobSeekers] CHECK CONSTRAINT [FK_JobSeekers_Account]
+>>>>>>>> tuanbmhe181513:database/DB_NewV6.sql
 GO
 ALTER TABLE [dbo].[Recruiters]  WITH CHECK ADD  CONSTRAINT [FK_Recruiters_Account] FOREIGN KEY([AccountID])
 REFERENCES [dbo].[Account] ([id])
@@ -509,10 +736,17 @@ REFERENCES [dbo].[Company] ([id])
 GO
 ALTER TABLE [dbo].[Recruiters] CHECK CONSTRAINT [FK_Recruiters_Companies]
 GO
+<<<<<<<< HEAD:DB_NewV.sql
+ALTER TABLE [dbo].[Work_Experience]  WITH CHECK ADD  CONSTRAINT [FK_Work_Experience_JobSeeker1] FOREIGN KEY([JobSeekerID])
+REFERENCES [dbo].[JobSeeker1] ([JobSeekerID])
+GO
+ALTER TABLE [dbo].[Work_Experience] CHECK CONSTRAINT [FK_Work_Experience_JobSeeker1]
+========
 ALTER TABLE [dbo].[Work_Experience]  WITH CHECK ADD  CONSTRAINT [FK_Work_Experience_JobSeekers] FOREIGN KEY([JobSeekerID])
 REFERENCES [dbo].[JobSeekers] ([JobSeekerID])
 GO
 ALTER TABLE [dbo].[Work_Experience] CHECK CONSTRAINT [FK_Work_Experience_JobSeekers]
+>>>>>>>> tuanbmhe181513:database/DB_NewV6.sql
 GO
 ALTER TABLE [dbo].[Applications]  WITH CHECK ADD  CONSTRAINT [CK_Applications] CHECK  (([Status]=(3) OR [Status]=(2) OR [Status]=(1) OR [Status]=(0)))
 GO
