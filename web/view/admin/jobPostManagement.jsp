@@ -1,5 +1,7 @@
 <%-- 
-    Admin Job Posting Management Page
+    Document   : adminHome
+    Created on : Sep 15, 2024, 4:26:38 PM
+    Author     : Admin
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -12,817 +14,542 @@
 <%@page import="dao.Job_Posting_CategoryDAO"%>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quản Lý Bài Đăng Công Việc - Admin</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- TinyMCE -->
-    <script src="https://cdn.tiny.cloud/1/vaugmbxpwey72le9o04xzdbx0pb0cgxv4ysvnlmu1qnlmngd/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    
+    <head>
+        <!--css-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+        <!-- TinyMCE Script -->
+        <script src="https://cdn.tiny.cloud/1/vaugmbxpwey72le9o04xzdbx0pb0cgxv4ysvnlmu1qnlmngd/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+        <!-- Add custom styles -->
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background-color: #f5f7fa;
-            color: #1a1a1a;
-        }
-
-        /* Tab Navigation */
-        .nav-tabs {
-            border-bottom: 2px solid #e0e0e0;
-        }
-
-        .nav-tabs .nav-link {
-            color: #666;
-            font-weight: 600;
-            border: none;
-            border-bottom: 3px solid transparent;
-            padding: 12px 20px;
-            transition: all 0.3s ease;
-        }
-
-        .nav-tabs .nav-link:hover {
-            color: #c471f5;
-            border-bottom-color: #c471f5;
-        }
-
-        .nav-tabs .nav-link.active {
-            color: #c471f5;
-            border-bottom-color: #c471f5;
-            background-color: transparent;
-        }
-
-        /* Section Headers */
-        h6.fw-medium {
-            color: #1a1a1a;
-            font-weight: 700 !important;
-            margin-bottom: 30px !important;
-            background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* Form Labels */
-        .form-label {
-            font-weight: 600;
-            color: #333;
-            font-size: 14px;
-        }
-
-        /* Select/Input Fields */
-        .form-select,
-        .form-control {
-            border: 1.5px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 10px 12px;
-            background-color: #f8f9fa;
-            color: #1a1a1a;
-            font-size: 14px;
-            transition: all 0.3s ease;
-        }
-
-        .form-select:focus,
-        .form-control:focus {
-            border-color: #c471f5;
-            background-color: #fff;
-            box-shadow: 0 0 15px rgba(196, 113, 245, 0.2);
-        }
-
-        .form-select option {
-            background-color: #fff;
-            color: #1a1a1a;
-        }
-
-        /* Search Button */
-        .btn-primary {
-            background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
-            border: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(196, 113, 245, 0.3);
-        }
-
-        /* Tables */
-        .table {
-            color: #1a1a1a;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .table thead th {
-            background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
-            color: white;
-            font-weight: 600;
-            border: none;
-            padding: 15px;
-        }
-
-        .table tbody td {
-            padding: 12px 15px;
-            border-color: #e0e0e0;
-            color: #333;
-        }
-
-        .table tbody tr:hover {
-            background-color: rgba(196, 113, 245, 0.05);
-        }
-
-        /* Badges */
-        .badge {
-            padding: 8px 12px;
-            font-weight: 600;
-            border-radius: 6px;
-        }
-
-        .bg-success {
-            background-color: #28a745 !important;
-        }
-
-        .bg-danger {
-            background-color: #dc3545 !important;
-        }
-
-        .bg-warning {
-            background-color: #ffc107 !important;
-            color: #000 !important;
-        }
-
-        /* Buttons */
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 13px;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-        }
-
-        .btn-info {
-            background-color: #0da5c0;
-            border-color: #0da5c0;
-            color: white;
-        }
-
-        .btn-info:hover {
-            background-color: #0a8fa5;
-            transform: translateY(-2px);
-        }
-
-        .btn-warning {
-            background-color: #ffc107;
-            border-color: #ffc107;
-            color: #000;
-        }
-
-        .btn-warning:hover {
-            background-color: #e0a800;
-            transform: translateY(-2px);
-        }
-
-        .btn-danger {
-            background-color: #dc3545;
-            border-color: #dc3545;
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background-color: #c82333;
-            transform: translateY(-2px);
-        }
-
-        .btn-success {
-            background-color: #28a745;
-            border-color: #28a745;
-            color: white;
-        }
-
-        .btn-success:hover {
-            background-color: #218838;
-            transform: translateY(-2px);
-        }
-
-        /* Add Button */
-        .btn-success.btn-lg {
-            background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
-            border: none;
-            font-weight: 600;
-            padding: 10px 20px;
-        }
-
-        .btn-success.btn-lg:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(196, 113, 245, 0.3);
-        }
-
-        /* Pagination */
-        .pagination {
-            gap: 8px;
-        }
-
-        .page-link {
-            background-color: #fff;
-            border: 1.5px solid #e0e0e0;
-            color: #c471f5;
-            font-weight: 600;
-            border-radius: 6px;
-            transition: all 0.3s ease;
-        }
-
-        .page-link:hover {
-            background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
-            color: white;
-            border-color: transparent;
-        }
-
-        .page-item.active .page-link {
-            background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
-            border-color: transparent;
-            color: white;
-        }
-
-        /* Modal Styling */
-        .modal-header {
-            background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
-            color: white;
-            border: none;
-        }
-
-        .modal-header .btn-close {
-            filter: brightness(0) invert(1);
-        }
-
-        .modal-body {
-            color: #1a1a1a;
-        }
-
-        /* Toast */
-        .toast-header {
-            font-weight: 600;
-            border: none;
-        }
-
-        .toast-body {
-            color: #1a1a1a;
-        }
-
-        /* Input Group */
-        .input-group .form-control {
-            border-right: none;
-        }
-
-        .input-group .btn-primary {
-            border-radius: 0 8px 8px 0;
-        }
-
-        /* Text Right */
-        .text-right {
-            text-align: right;
-            margin-bottom: 20px;
-        }
-
-        /* Add Category Button */
-        .text-right .btn-success {
-            background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
-            border: none;
-            color: white;
-            font-weight: 600;
-            padding: 10px 20px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .text-right .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(196, 113, 245, 0.4);
-            color: white;
-            text-decoration: none;
-        }
-
-        /* Danh Mục Section */
-        .table thead.table-primary th {
-            background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%) !important;
-            color: white !important;
-        }
-
-        /* Modal Improvements */
-        .modal-content {
-            border: 1px solid rgba(196, 113, 245, 0.2);
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .modal-header {
-            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .modal-footer {
-            border-top: 1px solid #e0e0e0;
-        }
-
-        .modal-title {
-            font-weight: 700;
-            letter-spacing: 0.5px;
-        }
-
-        /* Form Group in Modal */
-        .modal-body .form-group {
-            margin-bottom: 20px;
-        }
-
-        .modal-body .form-label {
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: 600;
-        }
-
-        .modal-body .form-control {
-            border: 1.5px solid #e0e0e0;
-            border-radius: 8px;
-            padding: 10px 12px;
-            color: #1a1a1a;
-            transition: all 0.3s ease;
-        }
-
-        .modal-body .form-control:focus {
-            border-color: #c471f5;
-            background-color: #fff;
-            box-shadow: 0 0 15px rgba(196, 113, 245, 0.2);
-        }
-
-        /* Modal Buttons */
-        .modal-footer .btn-secondary {
-            background-color: #e0e0e0;
-            color: #333;
-            border: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .modal-footer .btn-secondary:hover {
-            background-color: #d0d0d0;
-            transform: translateY(-2px);
-        }
-
-        .modal-footer .btn-success {
-            background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
-            border: none;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .modal-footer .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(196, 113, 245, 0.3);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .form-label {
-                font-size: 13px;
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <style>
+            .table-bordered thead th {
+                background-color: #28a745; /* Màu xanh lá cây */
+                color: #ffffff; /* Màu trắng cho chữ để dễ đọc */
             }
+        </style>
+    </head>
+    <body>
+        <!-- header area -->
+        <jsp:include page="../common/admin/header-admin.jsp"></jsp:include>
+            <!-- header area end -->
 
-            .table {
-                font-size: 12px;
-            }
+            <!-- content area -->
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-2">
+                        <!--Side bar-->
+                    <jsp:include page="../common/admin/sidebar-admin.jsp"></jsp:include>
+                        <!--side bar-end-->
+                    </div>
 
-            .btn-sm {
-                padding: 5px 10px;
-                font-size: 12px;
-            }
 
-            h6.fw-medium {
-                font-size: 1.3rem;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Header -->
-    <jsp:include page="../common/admin/header-admin.jsp"></jsp:include>
+                    <div class="col-md-10">
 
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            <div class="col-md-2">
-                <jsp:include page="../common/admin/sidebar-admin.jsp"></jsp:include>
-            </div>
+                        <!--content-main can fix-->
+                        <div class="container-fluid p-4">
 
-            <!-- Main Content -->
-            <div class="col-md-10">
-                <div class="container-fluid p-4">
-                    <!-- Tab Navigation -->
-                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link active" id="jobPostingTab" data-bs-toggle="tab" href="#jobPostingContent" role="tab">
-                                <i class="fas fa-briefcase me-2"></i>Quản Lý Bài Đăng
-                            </a>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link" id="categoryTab" data-bs-toggle="tab" href="#categoryContent" role="tab">
-                                <i class="fas fa-list me-2"></i>Danh Mục
-                            </a>
-                        </li>
-                    </ul>
+                            <!-- Tab Navigation -->
+                            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link active" id="jobPostingTab" data-bs-toggle="tab" href="#jobPostingContent" role="tab" aria-controls="jobPostingContent" aria-selected="true">Job Posting</a>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <a class="nav-link" id="categoryTab" data-bs-toggle="tab" href="#categoryContent" role="tab" aria-controls="categoryContent" aria-selected="false">Category</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="myTabContent">
+                                <!-- Job Posting Tab -->
+                                <div class="tab-pane fade show active" id="jobPostingContent" role="tabpanel" aria-labelledby="jobPostingTab">
+                                    <!-- Nội dung Job Posting Management ở đây -->
+                                    <div class="container-fluid p-4">
+                                        <h6 class="fw-medium mb-30 text-center fs-2">JOB POSTING MANAGEMENT</h6>
+                                        <!-- Filter Section -->
+                                        <form action="job_posting" method="get" id="filterForm">
+                                            <div class="row mb-4">
+                                                <div class="col-md-2">
+                                                    <label for="statusFilter" class="form-label">Status</label>
+                                                    <select id="statusFilter" class="form-select" name="filterStatus" onchange="document.getElementById('filterForm').submit();">
+                                                        <option value="all" ${param.filterStatus == 'all' ? 'selected' : ''}>All</option>
+                                                    <option value="open" ${param.filterStatus == 'open' ? 'selected' : ''}>Open</option>
+                                                    <option value="closed" ${param.filterStatus == 'closed' ? 'selected' : ''}>Closed</option>
+                                                    <option value="violate" ${param.filterStatus == 'violate' ? 'selected' : ''}>Violate</option>
+                                                </select>
+                                            </div>
 
-                    <div class="tab-content" id="myTabContent">
-                        <!-- Job Posting Tab -->
-                        <div class="tab-pane fade show active" id="jobPostingContent" role="tabpanel">
-                            <div class="container-fluid p-4">
-                                <h6 class="fw-medium mb-30 text-center fs-2">QUẢN LÝ BÀI ĐĂNG CÔNG VIỆC</h6>
+                                            <div class="col-md-2">
+                                                <label for="salaryFilter" class="form-label">Salary</label>
+                                                <select id="salaryFilter" class="form-select" name="filterSalary" onchange="document.getElementById('filterForm').submit();">
+                                                    <option value="all" ${param.filterSalary == 'all' ? 'selected' : ''}>All</option>
+                                                    <option value="0-1000" ${param.filterSalary == '0-1000' ? 'selected' : ''}>0-1000 USD</option>
+                                                    <option value="1000+" ${param.filterSalary == '1000+' ? 'selected' : ''}>1000+ USD</option>
+                                                    <option value="2000+" ${param.filterSalary == '2000+' ? 'selected' : ''}>2000+ USD</option>
+                                                </select>
+                                            </div>
 
-                                <!-- Filter Section -->
-                                <form action="job_posting" method="get" id="filterForm" class="mb-4">
-                                    <div class="row g-3">
-                                        <div class="col-md-2">
-                                            <label class="form-label">Trạng Thái</label>
-                                            <select class="form-select" name="filterStatus" onchange="document.getElementById('filterForm').submit();">
-                                                <option value="all" ${param.filterStatus == 'all' ? 'selected' : ''}>Tất Cả</option>
-                                                <option value="open" ${param.filterStatus == 'open' ? 'selected' : ''}>Mở</option>
-                                                <option value="closed" ${param.filterStatus == 'closed' ? 'selected' : ''}>Đóng</option>
-                                                <option value="violate" ${param.filterStatus == 'violate' ? 'selected' : ''}>Vi Phạm</option>
-                                            </select>
-                                        </div>
+                                            <div class="col-md-3">
+                                                <label for="postDateFilter" class="form-label">Post Date</label>
+                                                <input type="date" id="postDateFilter" class="form-control" name="filterDate" value="${param.filterDate}" onchange="document.getElementById('filterForm').submit();">
+                                            </div>
 
-                                        <div class="col-md-2">
-                                            <label class="form-label">Lương</label>
-                                            <select class="form-select" name="filterSalary" onchange="document.getElementById('filterForm').submit();">
-                                                <option value="all" ${param.filterSalary == 'all' ? 'selected' : ''}>Tất Cả</option>
-                                                <option value="0-1000" ${param.filterSalary == '0-1000' ? 'selected' : ''}>0-1000 USD</option>
-                                                <option value="1000+" ${param.filterSalary == '1000+' ? 'selected' : ''}>1000+ USD</option>
-                                                <option value="2000+" ${param.filterSalary == '2000+' ? 'selected' : ''}>2000+ USD</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <label class="form-label">Ngày Đăng</label>
-                                            <input type="date" class="form-control" name="filterDate" value="${param.filterDate}" onchange="document.getElementById('filterForm').submit();">
-                                        </div>
-
-                                        <div class="col-md-5">
-                                            <label class="form-label">Tìm Kiếm</label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" name="search" placeholder="Tìm theo người tạo..." value="${param.search}">
-                                                <button class="btn btn-primary" type="submit">
-                                                    <i class="fas fa-search"></i> Tìm
-                                                </button>
+                                            <div class="col-md-5">
+                                                <label for="searchInput" class="form-label">Search</label>
+                                                <div class="input-group">
+                                                    <input type="text" id="searchInput" class="form-control" name="search" placeholder="Created By" value="${param.search}">
+                                                    <button type="submit" class="btn btn-primary" id="searchButton">Search</button>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
 
-                                <!-- Notifications -->
-                                <div class="toast-container position-fixed top-0 end-0 p-3">
-                                    <div id="successToast" class="toast" role="alert">
-                                        <div class="toast-header bg-success text-white">
-                                            <strong class="me-auto">Thành Công</strong>
-                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+                                    <!-- Job Posting Management Table -->
+                                    <div class="table-responsive">
+                                        <!--nofication-->
+                                        <div class="toast-container position-fixed top-0 end-0 p-3">
+                                            <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                                <div class="toast-header bg-success text-white">
+                                                    <strong class="me-auto">Success</strong>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                                                </div>
+                                                <div class="toast-body" id="successToastBody"></div>
+                                            </div>
+
+                                            <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                                <div class="toast-header bg-danger text-white">
+                                                    <strong class="me-auto">Error</strong>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                                                </div>
+                                                <div class="toast-body" id="errorToastBody"></div>
+                                            </div>
                                         </div>
-                                        <div class="toast-body" id="successToastBody"></div>
-                                    </div>
-
-                                    <div id="errorToast" class="toast" role="alert">
-                                        <div class="toast-header bg-danger text-white">
-                                            <strong class="me-auto">Lỗi</strong>
-                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
-                                        </div>
-                                        <div class="toast-body" id="errorToastBody"></div>
-                                    </div>
-                                </div>
-
-                                <!-- Table -->
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Người Tạo</th>
-                                                <th>Tiêu Đề</th>
-                                                <th>Lương</th>
-                                                <th>Địa Điểm</th>
-                                                <th>Danh Mục</th>
-                                                <th>Trạng Thái</th>
-                                                <th>Ngày Đăng</th>
-                                                <th>Hành Động</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <%
-                                                Account account = new Account();
-                                                Recruiters recruiters = new Recruiters();
-                                                Job_Posting_Category jobCate = new Job_Posting_Category();
-                                                AccountDAO accDao = new AccountDAO();
-                                                RecruitersDAO reDao = new RecruitersDAO();
-                                                Job_Posting_CategoryDAO jobCateDao = new Job_Posting_CategoryDAO();
-                                            %>
-                                            <c:forEach items="${jobPostingsList}" var="jobPost">
-                                                <c:set var="recruiterId" value="${jobPost.getRecruiterID()}"/>
-                                                <c:set var="cateId" value="${jobPost.getJob_Posting_CategoryID()}"/>
+                                        <!--nofication-end-->
+                                        <table class="table table-bordered table-striped">
+                                            <thead class="table-success">
                                                 <tr>
-                                                    <td>
-                                                        <%
+                                                    <th>Create By</th>
+                                                    <th>Title</th>
+                                                    <th>Salary</th>
+                                                    <th>Location</th>
+                                                    <th>Category</th>
+                                                    <th>Status</th>
+                                                    <th>Post Date</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <%
+                                                    //tao cac doi tuong
+                                                    Account account = new Account();
+                                                    Recruiters recruiters = new Recruiters();
+                                                    Job_Posting_Category jobCate = new Job_Posting_Category();
+                                                    //tao cac DAO
+                                                    AccountDAO accDao = new AccountDAO();
+                                                    RecruitersDAO reDao = new RecruitersDAO();
+                                                    Job_Posting_CategoryDAO jobCateDao = new Job_Posting_CategoryDAO();
+                                                %>
+                                                <c:forEach items="${jobPostingsList}" var="jobPost">
+                                                    <c:set var="recruiterId" value="${jobPost.getRecruiterID()}"/>
+                                                    <c:set var="cateId" value="${jobPost.getJob_Posting_CategoryID()}"/>
+                                                    <!-- Sample Data -->
+                                                    <tr>
+                                                        <td>
+                                                            <%
                                                             int recruiterId = (Integer) pageContext.getAttribute("recruiterId");
+                                                            //tim recruiter theo id
                                                             recruiters = reDao.findById(String.valueOf(recruiterId));
                                                             account = accDao.findUserById(recruiters.getAccountID());
-                                                            String accountName = account != null ? account.getFullName() : "N/A";
-                                                        %>
-                                                        <%= accountName %>
-                                                    </td>
-                                                    <td>${jobPost.getTitle()}</td>
-                                                    <td>${jobPost.getMinSalary()} - ${jobPost.getMaxSalary()} USD</td>
-                                                    <td>${jobPost.getLocation()}</td>
-                                                    <td>
-                                                        <%
-                                                            int cateId = (Integer) pageContext.getAttribute("cateId");
-                                                            jobCate = jobCateDao.findJob_Posting_CategoryByID(cateId);
-                                                            String cateName = jobCate != null ? jobCate.getName() : "N/A";
-                                                        %>
-                                                        <%= cateName %>
-                                                    </td>
-                                                    <td>
-                                                        <c:choose>
-                                                            <c:when test="${jobPost.getStatus() == 'Open'}">
-                                                                <span class="badge bg-success">Mở</span>
-                                                            </c:when>
-                                                            <c:when test="${jobPost.getStatus() == 'Closed'}">
-                                                                <span class="badge bg-danger">Đóng</span>
-                                                            </c:when>
-                                                            <c:when test="${jobPost.getStatus() == 'Violate'}">
-                                                                <span class="badge bg-warning">Vi Phạm</span>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <span class="badge bg-secondary">${jobPost.getStatus()}</span>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </td>
-                                                    <td>${jobPost.getPostedDate()}</td>
-                                                    <td>
-                                                        <form action="job_posting" method="POST" style="display:inline;">
-                                                            <input type="hidden" name="action" value="view">
-                                                            <input type="hidden" name="jobPostID" value="${jobPost.getJobPostingID()}">
-                                                            <button type="submit" class="btn btn-info btn-sm" title="Xem Chi Tiết">
-                                                                <i class="fas fa-eye"></i>
-                                                            </button>
-                                                        </form>
+                                                            String accountName = "";
+                                                            if(account != null){
+                                                                accountName = account.getFullName();
+                                                                }
+                                                            %>
+                                                            <%= accountName%>
+                                                        </td>
+                                                        <td>${jobPost.getTitle()}</td>
+                                                        <td>${jobPost.getMinSalary()} - ${jobPost.getMaxSalary()}(USD)</td>
+                                                        <td>${jobPost.getLocation()}</td>
+                                                        <td>
+                                                            <%
+                                                                int cateId = (Integer) pageContext.getAttribute("cateId");
+                                                                jobCate = jobCateDao.findJob_Posting_CategoryByID(cateId);
+                                                                String cateName = "";
+                                                                if(jobCate != null){
+                                                                    cateName = jobCate.getName();
+                                                                }
+                                                            %>
+                                                            <%= cateName%>
+                                                        </td>
+                                                        <td>
+                                                            <c:choose>
+                                                                <c:when test="${jobPost.getStatus() == 'Open'}">
+                                                                    <span class="badge bg-success">Open</span>
+                                                                </c:when>
+                                                                <c:when test="${jobPost.getStatus() == 'Closed'}">
+                                                                    <span class="badge bg-danger">Closed</span>
+                                                                </c:when>
+                                                                <c:when test="${jobPost.getStatus() == 'Violate'}">
+                                                                    <span class="badge bg-warning text-dark">Violate</span>
+                                                                </c:when>
+                                                                <c:otherwise>
+                                                                    <span class="badge bg-secondary">${jobPost.getStatus()}</span>
+                                                                </c:otherwise>
+                                                            </c:choose>
+                                                        </td>
+                                                        <td>${jobPost.getPostedDate()}</td>
+                                                        <td>
+                                                            <form action="job_posting" method="POST" style="display:inline;">
+                                                                <input type="hidden" name="action" value="view">
+                                                                <input type="hidden" name="jobPostID" value="${jobPost.getJobPostingID()}">
+                                                                <button type="submit" class="btn btn-info btn-sm">
+                                                                    <i class="fas fa-eye"></i> 
+                                                                </button>
+                                                            </form>
 
-                                                        <button type="button" class="btn btn-warning btn-sm" 
-                                                            onclick="openResolvedModal(${jobPost.getJobPostingID()})"
-                                                            <c:if test="${jobPost.getStatus() == 'Violate'}">disabled</c:if>
-                                                            title="Báo Vi Phạm">
-                                                            <i class="fas fa-exclamation-triangle"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>
+
+                                                            <button 
+                                                                type="button" 
+                                                                class="btn btn-warning btn-sm" 
+                                                                onclick="openResolvedModal(${jobPost.getJobPostingID()})"
+                                                                <c:if test="${jobPost.getStatus() == 'Violate'}">disabled</c:if>
+                                                                    >
+                                                                    <i class="fas fa-exclamation-triangle"></i>
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                        <!-- Thêm các hàng dữ liệu khác tại đây -->
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
-
                                 <!-- Pagination -->
-                                <nav aria-label="Page navigation" class="mt-4">
-                                    <ul class="pagination justify-content-center">
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination justify-content-center" id="pagination">
                                         <c:if test="${pageControl.getPage() > 1}">
                                             <li class="page-item">
-                                                <a class="page-link" href="${pageControl.getUrlPattern()}page=${pageControl.getPage()-1}">
-                                                    <i class="fas fa-chevron-left"></i> Trước
+                                                <a
+                                                    class="page-link"
+                                                    href="${pageControl.getUrlPattern()}page=${pageControl.getPage()-1}"
+                                                    aria-label="Previous"
+                                                    >
+                                                    <span aria-hidden="true">&laquo; Previous</span>
                                                 </a>
                                             </li>
                                         </c:if>
-
-                                        <c:set var="startPage" value="${pageControl.getPage() - 2 > 0 ? pageControl.getPage() - 2 : 1}"/>
-                                        <c:set var="endPage" value="${startPage + 4 <= pageControl.getTotalPages() ? startPage + 4 : pageControl.getTotalPages()}"/>
-
+                                        <!-- Tính toán để chỉ hiển thị 5 trang tại một thời điểm -->
+                                        <c:set
+                                            var="startPage"
+                                            value="${pageControl.getPage() - 2 > 0 ? pageControl.getPage() - 2 : 1}"
+                                            />
+                                        <c:set
+                                            var="endPage"
+                                            value="${startPage + 4 <= pageControl.getTotalPages() ? startPage + 4 : pageControl.getTotalPages()}"
+                                            />
+                                        <!-- Nút để quay lại nhóm trang trước (nếu có) -->
                                         <c:if test="${startPage > 1}">
                                             <li class="page-item">
-                                                <a class="page-link" href="${pageControl.getUrlPattern()}page=${startPage-1}">...</a>
+                                                <a
+                                                    class="page-link"
+                                                    href="${pageControl.getUrlPattern()}page=${startPage-1}"
+                                                    >...</a
+                                                >
                                             </li>
                                         </c:if>
-
+                                        <!-- Hiển thị các trang trong khoảng từ startPage đến endPage -->
                                         <c:forEach var="i" begin="${startPage}" end="${endPage}">
-                                            <li class="page-item ${i == pageControl.getPage() ? 'active' : ''}">
-                                                <a class="page-link" href="${pageControl.getUrlPattern()}page=${i}">${i}</a>
+                                            <li
+                                                class="page-item <c:if test='${i == pageControl.getPage()}'>active</c:if>"
+                                                    >
+                                                    <a
+                                                        class="page-link"
+                                                        href="${pageControl.getUrlPattern()}page=${i}"
+                                                    >${i}</a
+                                                >
                                             </li>
                                         </c:forEach>
-
+                                        <!-- Nút để chuyển sang nhóm trang tiếp theo (nếu có) -->
                                         <c:if test="${endPage < pageControl.getTotalPages()}">
                                             <li class="page-item">
-                                                <a class="page-link" href="${pageControl.getUrlPattern()}page=${endPage + 1}">...</a>
+                                                <a
+                                                    class="page-link"
+                                                    href="${pageControl.getUrlPattern()}page=${endPage + 1}"
+                                                    >...</a
+                                                >
                                             </li>
                                         </c:if>
-
+                                        <!-- Nút Next để đi đến nhóm trang tiếp theo -->
                                         <c:if test="${pageControl.getPage() < pageControl.getTotalPages()}">
                                             <li class="page-item">
-                                                <a class="page-link" href="${pageControl.getUrlPattern()}page=${pageControl.getPage() + 1}">
-                                                    Sau <i class="fas fa-chevron-right"></i>
+                                                <a
+                                                    class="page-link"
+                                                    href="${pageControl.getUrlPattern()}page=${pageControl.getPage() + 1}"
+                                                    aria-label="Next"
+                                                    >
+                                                    <span aria-hidden="true">Next &raquo;</span>
                                                 </a>
                                             </li>
                                         </c:if>
                                     </ul>
                                 </nav>
                             </div>
-                        </div>
+                            <!--job posting tab end-->
+                            <!-- Category Management Tab Content -->
+                            <div class="tab-pane fade" id="categoryContent" role="tabpanel" aria-labelledby="categoryTab">
+                                <div class="container-fluid p-4">
+                                    <h6 class="fw-medium mb-30 text-center fs-2">CATEGORY MANAGEMENT</h6>
+                                    <!--nofication-->
 
-                        <!-- Category Tab -->
-                        <div class="tab-pane fade" id="categoryContent" role="tabpanel">
-                            <div class="container-fluid p-4">
-                                <h6 class="fw-medium mb-30 text-center fs-2">QUẢN LÝ DANH MỤC</h6>
 
-                                <!-- Add Category Button -->
-                                <div class="text-right mb-3">
-                                    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
-                                        <i class="fas fa-plus me-2"></i>Thêm Danh Mục
-                                    </button>
-                                </div>
 
-                                <!-- Notifications -->
-                                <div class="toast-container position-fixed top-0 end-0 p-3">
-                                    <div id="duplicateToast" class="toast" role="alert">
-                                        <div class="toast-header bg-danger text-white">
-                                            <strong class="me-auto">Lỗi</strong>
-                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
-                                        </div>
-                                        <div class="toast-body" id="duplicateToastBody">${duplicate}</div>
+                                    <!-- Add Category Button -->
+                                    <div class="text-right mb-3">
+                                        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
+                                            Add Category
+                                        </button>
                                     </div>
+                                    <!-- Category Management Table -->
+                                    <div class="table-responsive">
+                                        <div class="toast-container position-fixed top-0 end-0 p-3">
+                                            <!-- Toast for duplicate -->
+                                            <div id="duplicateToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                                <div class="toast-header bg-danger text-white">
+                                                    <strong class="me-auto">Error</strong>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                                                </div>
+                                                <div class="toast-body" id="duplicateToastBody">
+                                                    ${duplicate}
+                                                </div>
+                                            </div>
 
-                                    <div id="duplicateEditToast" class="toast" role="alert">
-                                        <div class="toast-header bg-danger text-white">
-                                            <strong class="me-auto">Lỗi</strong>
-                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+                                            <!-- Toast for duplicateEdit -->
+                                            <div id="duplicateEditToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                                <div class="toast-header bg-danger text-white">
+                                                    <strong class="me-auto">Error</strong>
+                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                                                </div>
+                                                <div class="toast-body" id="duplicateEditToastBody">
+                                                    ${duplicateEdit}
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="toast-body" id="duplicateEditToastBody">${duplicateEdit}</div>
-                                    </div>
-                                </div>
 
-                                <!-- Table -->
-                                <div class="table-responsive">
-                                    <table class="table table-bordered table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>Tên Danh Mục</th>
-                                                <th>Hành Động</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <c:forEach items="${categoryList}" var="category">
-                                                <c:if test="${category.isStatus() == true}">
-                                                    <tr>
-                                                        <td>${category.getName()}</td>
-                                                        <td>
-                                                            <button type="button" class="btn btn-warning btn-sm" 
-                                                                onclick="openEditCategoryModal(${category.getId()}, '${category.getName()}')">
-                                                                <i class="fas fa-edit"></i>
-                                                            </button>
-                                                            <form action="job_posting" method="POST" style="display:inline;">
-                                                                <input type="hidden" name="action" value="deleteCate">
-                                                                <input type="hidden" name="categoryId" value="${category.getId()}">
-                                                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Xác nhận xóa?')">
-                                                                    <i class="fas fa-trash-alt"></i>
+                                        <table class="table table-bordered table-striped">
+                                            <thead class="table-primary">
+                                                <tr>
+                                                    <th>Category Name</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <c:forEach items="${categoryList}" var="category">
+                                                    <c:if test="${category.isStatus() == true}">
+                                                        <tr>
+                                                            <td>${category.getName()}</td>
+                                                            <td>
+                                                                <!-- Edit and Delete buttons for each category -->
+                                                                <button type="button" class="btn btn-warning btn-sm" onclick="openEditCategoryModal(${category.getId()}, '${category.getName()}')">
+                                                                    <i class="fas fa-edit"></i>
                                                                 </button>
+                                                                <form action="job_posting" method="POST" style="display:inline;">
+                                                                    <input type="hidden" name="action" value="deleteCate">
+                                                                    <input type="hidden" name="categoryId" value="${category.getId()}">
+                                                                    <button type="submit" class="btn btn-danger btn-sm">
+                                                                        <i class="fas fa-trash-alt"></i>
+                                                                    </button>
+                                                                </form>
+                                                            </td>
+                                                        </tr>
+                                                    </c:if>
+                                                </c:forEach>
+                                                <!-- Modal-Edit-Cate -->
+                                            <div class="modal fade" id="editCategoryModal" tabindex="-1" role="dialog" aria-labelledby="editCategoryModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="editCategoryModalLabel">Edit Category</h5>
+
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form id="editCategoryForm" action="job_posting" method="POST">
+                                                                <input type="hidden" name="action" value="editCate">
+                                                                <input type="hidden" name="categoryId" id="editCategoryId">
+                                                                <div class="form-group">
+                                                                    <label for="newCategoryName">New Category Name</label>
+                                                                    <input type="text" name="newCategoryName" class="form-control" id="newCategoryName" required>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                                    <button type="submit" class="btn btn-success">Save</button>
+                                                                </div>
                                                             </form>
-                                                        </td>
-                                                    </tr>
-                                                </c:if>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Modal for Add Category -->
+                                            <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="addCategoryModalLabel">Add Category</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <form id="addCategoryForm" action="job_posting" method="POST">
+                                                                <input type="hidden" name="action" value="addCate">
+                                                                <div class="form-group">
+                                                                    <label for="newCategoryName">Category Name</label>
+                                                                    <input type="text" name="cateName" class="form-control" id="newCategoryName" required>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                                    <button type="submit" class="btn btn-success">Add</button>
+                                                                </div>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>                
                     </div>
                 </div>
+
+
+                <!-- Footer -->
+
             </div>
         </div>
     </div>
-
-    <!-- Edit Category Modal -->
-    <div class="modal fade" id="editCategoryModal" tabindex="-1">
+    <!-- Modal for Violate Action -->
+    <div class="modal fade" id="resolvedModal" tabindex="-1" aria-labelledby="resolvedModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Chỉnh Sửa Danh Mục</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title" id="resolvedModalLabel">Violate Content</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form action="job_posting" method="POST">
                     <div class="modal-body">
-                        <input type="hidden" name="action" value="editCate">
-                        <input type="hidden" name="categoryId" id="editCategoryId">
-                        <div class="form-group">
-                            <label for="newCategoryName" class="form-label">Tên Danh Mục Mới</label>
-                            <input type="text" name="newCategoryName" class="form-control" id="newCategoryName" required>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                        <button type="submit" class="btn btn-success">Lưu</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add Category Modal -->
-    <div class="modal fade" id="addCategoryModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Thêm Danh Mục</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <form action="job_posting" method="POST">
-                    <div class="modal-body">
-                        <input type="hidden" name="action" value="addCate">
-                        <div class="form-group">
-                            <label for="cateName" class="form-label">Tên Danh Mục</label>
-                            <input type="text" name="cateName" class="form-control" id="cateName" required>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                        <button type="submit" class="btn btn-success">Thêm</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- Violate Modal -->
-    <div class="modal fade" id="resolvedModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Báo Vi Phạm</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <form action="job_posting" method="POST">
-                    <div class="modal-body">
+                        <input type="hidden" id="resolved-feedback-id" name="jobPostID" value="">
                         <input type="hidden" name="action" value="violate">
-                        <input type="hidden" name="jobPostID" id="resolved-feedback-id">
-                        <div class="form-group">
-                            <label for="resolved-response" class="form-label">Nội Dung Thông Báo Vi Phạm</label>
+                        <div class="mb-3">
+                            <label for="resolved-response" class="form-label">Enter notification of violating job posting:</label>
                             <textarea class="form-control" id="resolved-response" name="response" rows="4" required></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-                        <button type="submit" class="btn btn-success">Gửi</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-success">Send</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Scripts -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
 
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas" aria-labelledby="offcanvasLabel">
+        <div class="offcanvas-header p-0 mb-5 mt-4">
+            <a href="index.html" class="offcanvas-title" id="offcanvasLabel">
+                <img src="${pageContext.request.contextPath}/assets/img/logo/header__one.svg" alt="logo">
+            </a> 
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <!-- login offcanvas -->
+        <div class="mb-4 d-block d-sm-none">
+            <div class="header__right__btn d-flex justify-content-center gap-3">
+                <!--                    <a href="#" class="small__btn no__fill__btn border-6 font-xs" aria-label="Login Button" data-bs-toggle="modal" data-bs-target="#loginModal"> <i class="rt-login"></i>Sign In</a>-->
+                <a href="#" class="small__btn d-xl-flex fill__btn border-6 font-xs" aria-label="Job Posting Button">Add Job</a>
+            </div>
+        </div>
+        <div class="offcanvas-body p-0">
+            <div class="rts__offcanvas__menu overflow-hidden">
+                <div class="offcanvas__menu"></div>
+            </div>
+            <p class="max-auto font-20 fw-medium text-center text-decoration-underline mt-4">Our Social Links</p>
+            <div class="rts__social d-flex justify-content-center gap-3 mt-3">
+                <a href="https://facebook.com"  aria-label="facebook">
+                    <i class="fa-brands fa-facebook"></i>
+                </a>
+                <a href="https://instagram.com"  aria-label="instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="https://linkedin.com"  aria-label="linkedin">
+                    <i class="fa-brands fa-linkedin"></i>
+                </a>
+                <a href="https://pinterest.com"  aria-label="pinterest">
+                    <i class="fa-brands fa-pinterest"></i>
+                </a>
+                <a href="https://youtube.com"  aria-label="youtube">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!-- THEME PRELOADER START -->
+    <div class="loader-wrapper">
+        <div class="loader">
+        </div>
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+    </div>
+    <!-- THEME PRELOADER END -->
+    <button type="button" class="rts__back__top" id="rts-back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+    <!-- all plugin js -->
+    <jsp:include page="../common/admin/common-js-admin.jsp"></jsp:include>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+    </body>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     <script>
         function openResolvedModal(jobPostId) {
             document.getElementById('resolved-feedback-id').value = jobPostId;
             new bootstrap.Modal(document.getElementById('resolvedModal')).show();
         }
 
-        function openEditCategoryModal(categoryId, categoryName) {
-            document.getElementById('editCategoryId').value = categoryId;
-            document.getElementById('newCategoryName').value = categoryName;
-            new bootstrap.Modal(document.getElementById('editCategoryModal')).show();
-        }
-
-        document.getElementById('resolvedModal').addEventListener('hidden.bs.modal', function() {
+        // Clear form when modals are hidden
+        document.getElementById('resolvedModal').addEventListener('hidden.bs.modal', function () {
             document.getElementById('resolved-response').value = '';
         });
-
+    </script>
+    <script>
+        // Function to show success toast
         function showSuccessToast(message) {
+            const successToast = document.getElementById('successToast');
             const successToastBody = document.getElementById('successToastBody');
+
             successToastBody.textContent = message;
-            new bootstrap.Toast(document.getElementById('successToast')).show();
+            const toast = new bootstrap.Toast(successToast);
+            toast.show();
         }
 
+        // Function to show error toast
         function showErrorToast(message) {
+            const errorToast = document.getElementById('errorToast');
             const errorToastBody = document.getElementById('errorToastBody');
+
             errorToastBody.textContent = message;
-            new bootstrap.Toast(document.getElementById('errorToast')).show();
+            const toast = new bootstrap.Toast(errorToast);
+            toast.show();
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
+        // Check for success message
+        document.addEventListener('DOMContentLoaded', function () {
             const successMessage = '${success}';
             const errorMessage = '${error}';
-            const duplicateMessage = '${duplicate}';
-            const duplicateEditMessage = '${duplicateEdit}';
 
             if (successMessage && successMessage.trim() !== '') {
                 showSuccessToast(successMessage);
@@ -831,47 +558,88 @@
             if (errorMessage && errorMessage.trim() !== '') {
                 showErrorToast(errorMessage);
             }
-
-            if (duplicateMessage && duplicateMessage.trim() !== '') {
-                document.getElementById('duplicateToastBody').innerHTML = duplicateMessage;
-                new bootstrap.Toast(document.getElementById('duplicateToast')).show();
-            }
-
-            if (duplicateEditMessage && duplicateEditMessage.trim() !== '') {
-                document.getElementById('duplicateEditToastBody').innerHTML = duplicateEditMessage;
-                new bootstrap.Toast(document.getElementById('duplicateEditToast')).show();
-            }
-
-            // Restore active tab
-            const activeTab = localStorage.getItem('activeTab');
-            if (activeTab) {
-                const tabElement = document.getElementById(activeTab);
-                if (tabElement) {
-                    new bootstrap.Tab(tabElement).show();
-                }
-            }
         });
-
-        // Save active tab
-        document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
-            tab.addEventListener('shown.bs.tab', function(event) {
+</script>
+<script>
+    // Đặt sự kiện lắng nghe cho các tab
+    document.addEventListener('DOMContentLoaded', function () {
+        const tabTriggers = document.querySelectorAll('[data-bs-toggle="tab"]');
+        tabTriggers.forEach(tab => {
+            tab.addEventListener('shown.bs.tab', function (event) {
                 localStorage.setItem('activeTab', event.target.id);
             });
         });
 
-        // Initialize TinyMCE
-        tinymce.init({
-            selector: 'textarea',
-            plugins: 'advlist autolink lists link image charmap print preview anchor',
-            toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
-            branding: false,
-            height: 300,
-            setup: function(editor) {
-                editor.on('change', function() {
-                    tinymce.triggerSave();
-                });
-            }
-        });
-    </script>
-</body>
+        // Kiểm tra tab nào đã được lưu và kích hoạt nó
+        const activeTab = localStorage.getItem('activeTab');
+        if (activeTab) {
+            const tabElement = document.getElementById(activeTab);
+            const tab = new bootstrap.Tab(tabElement);
+            tab.show();
+        }
+    });
+</script>
+<script>
+    function openEditCategoryModal(categoryId, categoryName) {
+        // Điền thông tin vào modal
+        document.getElementById('editCategoryId').value = categoryId;
+        document.getElementById('newCategoryName').value = categoryName;
+
+        // Mở modal
+        $('#editCategoryModal').modal('show');
+    }
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Hiển thị Toast cho duplicate nếu không rỗng
+        if ("${duplicate}" !== "") {
+            document.getElementById('duplicateToastBody').innerHTML = "${duplicate}";
+            var duplicateToast = new bootstrap.Toast(document.getElementById('duplicateToast'));
+            duplicateToast.show();
+        }
+
+        // Hiển thị Toast cho duplicateEdit nếu không rỗng
+        if ("${duplicateEdit}" !== "") {
+            document.getElementById('duplicateEditToastBody').innerHTML = "${duplicateEdit}";
+            var duplicateEditToast = new bootstrap.Toast(document.getElementById('duplicateEditToast'));
+            duplicateEditToast.show();
+        }
+    });
+</script>
+<script>
+    tinymce.init({
+        selector: 'textarea', // Initialize TinyMCE for all text areas
+        plugins: 'advlist autolink lists link image charmap print preview anchor',
+        toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
+        menubar: true, // Disable the menubar
+        branding: false, // Disable the TinyMCE branding
+        height: 300, // Set the height of the editor
+        setup: function (editor) {
+            editor.on('change', function () {
+                tinymce.triggerSave(); // Synchronize TinyMCE content with the form
+            });
+        }
+    });
+</script>
+
+<script>
+    tinymce.init({
+        selector: 'textarea', // Initialize TinyMCE for all text areas
+        plugins: 'advlist autolink lists link image charmap print preview anchor',
+        toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
+        menubar: true, // Disable the menubar
+        branding: false, // Disable the TinyMCE branding
+        height: 300, // Set the height of the editor
+        setup: function (editor) {
+            editor.on('change', function () {
+                tinymce.triggerSave(); // Synchronize TinyMCE content with the form
+            });
+        }
+    });
+</script>
+
+
+
+
+
 </html>
