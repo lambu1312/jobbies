@@ -6,9 +6,9 @@
 
                 <div class="nav-links" id="navLinks">
                     <a href="${pageContext.request.contextPath}/HomeSeeker">Trang chủ</a>
-                    <a href="#">Tạo CV</a>
-                    <a href="#">Cẩm nang</a>
+                    <a href="${pageContext.request.contextPath}/cv">Tạo CV</a>
                     <a href="${pageContext.request.contextPath}/FavourJobPosting">Yêu thích</a>
+                    <a href="${pageContext.request.contextPath}/application">Trạng Thái Xin Việc</a>
 
                     <div class="user-dropdown">
                         <button class="user-dropdown-toggle" id="userDropdownBtn">
@@ -107,6 +107,7 @@
                 transition: all 0.3s;
                 white-space: nowrap;
                 flex-shrink: 0;
+                display:flex-start;
             }
 
             .logo:hover {

@@ -13,8 +13,14 @@
         <style>
             /* Custom styles */
             body {
-                background-color: #f4f4f9;
+                font-family: 'Inter', system-ui, sans-serif;
+                background: linear-gradient(135deg, #0a0015 0%, #1a0b2e 50%, #16213e 100%);
+                color: #fff;
+                overflow-x: hidden;
+                overflow-y: auto;
+                min-height: 100vh;
             }
+
             h1 {
                 font-size: 2.5rem;
                 font-weight: bold;
@@ -53,6 +59,10 @@
                 background-color: #dc3545;
                 border-color: #dc3545;
             }
+            .text-center{
+                color:#fff;
+            }
+
         </style>
     </head>
     <body>
