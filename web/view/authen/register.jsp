@@ -108,7 +108,7 @@
                 backdrop-filter: blur(20px);
                 border: 1px solid rgba(255, 255, 255, 0.1);
                 border-radius: 30px;
-                padding: 3rem 2.5rem;
+padding: 3rem 2.5rem;
                 box-shadow: 0 20px 60px rgba(196, 113, 245, 0.3);
                 position: relative;
                 animation: slideUp 0.6s ease-out;
@@ -210,7 +210,7 @@
 
             .form-control,
             .form-select {
-                width: 100%;
+width: 100%;
                 padding: 0.85rem 1.1rem;
                 background: rgba(255, 255, 255, 0.08);
                 border: 1px solid rgba(255, 255, 255, 0.2);
@@ -315,7 +315,7 @@
             .login-link {
                 text-align: center;
                 color: #b8b8d1;
-                font-size: 0.95rem;
+font-size: 0.95rem;
                 margin-top: 1.5rem;
             }
 
@@ -400,8 +400,7 @@
                                    placeholder="Enter last name" value="${requestScope.lname}" required>
                             <span class="text-danger">${errorLname}</span>
                         </div>
-
-                        <div class="form-group">
+<div class="form-group">
                             <label for="firstname" class="form-label">First Name</label>
                             <input type="text" name="firstname" id="firstname" class="form-control"
                                    placeholder="Enter first name" value="${requestScope.fname}" required>
@@ -450,7 +449,7 @@
                                 👁️
                             </span>
                         </div>
-                        <small class="form-text">! Password must be 8-20 characters, containing at least one letter and
+<small class="form-text">! Password must be 8-20 characters, containing at least one letter and
                             one special character.</small>
                         <span class="text-danger">${errorPassword}</span>
                     </div>
@@ -519,8 +518,7 @@
             document.getElementById("username").addEventListener("input", function () {
                 this.value = this.value.replace(/\s/g, "");
             });
-
-            document.getElementById("password").addEventListener("input", function () {
+document.getElementById("password").addEventListener("input", function () {
                 this.value = this.value.replace(/\s/g, "");
             });
         </script>

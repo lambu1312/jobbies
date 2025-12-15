@@ -193,7 +193,7 @@ transform: translateY(30px);
                 margin-bottom: 1.5rem;
             }
 .form-label {
-                display: block;
+display: block;
                 color: #b8b8d1;
                 font-weight: 600;
                 margin-bottom: 0.5rem;

@@ -47,7 +47,7 @@
                                 <i class="fas fa-briefcase"></i>
                                 <span>Experience</span>
                             </a>
-                            <a href="${pageContext.request.contextPath}/application" class="dropdown-item">
+<a href="${pageContext.request.contextPath}/application" class="dropdown-item">
                                 <i class="fas fa-paper-plane"></i>
                                 <span>My Applications</span>
                             </a>
@@ -125,7 +125,7 @@
                 text-decoration: none;
                 font-weight: 600;
                 transition: all 0.3s;
-                position: relative;
+position: relative;
                 white-space: nowrap;
             }
 
@@ -227,7 +227,7 @@
                 visibility: hidden;
                 transform: translateY(-10px);
                 transition: all 0.3s;
-                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
             }
 
             .user-dropdown.active .dropdown-menu {
@@ -329,8 +329,7 @@
                     transition: right 0.3s;
                     overflow-y: auto;
                 }
-
-                .nav-links.active {
+.nav-links.active {
                     right: 0;
                 }
 
