@@ -109,8 +109,7 @@
             position: relative;
             z-index: 10;
         }
-
-        /* Ensure table takes available space */
+/* Ensure table takes available space */
         .table-wrapper {
             flex: 1;
         }
@@ -217,7 +216,7 @@
         .search-box {
             width: 250px;
             padding: 10px 14px;
-            border: 1.5px solid #c471f5;
+border: 1.5px solid #c471f5;
             border-right: none;
             border-radius: 8px 0 0 8px;
             font-size: 14px;
@@ -327,8 +326,7 @@
             background-color: #c471f5;
             transform: scale(1.1);
         }
-
-        .btn-action.text-info {
+.btn-action.text-info {
             color: #0da5c0;
         }
 
@@ -447,7 +445,7 @@
             .btn-add-job {
                 width: 100%;
                 justify-content: center;
-            }
+}
 
             .filter-buttons {
                 width: 100%;
@@ -547,7 +545,7 @@
 
                 <!-- Search bar -->
                 <form action="${pageContext.request.contextPath}/jobPost" method="get" class="search-container">
-                    <input type="text" name="searchJP" class="search-box" placeholder="Tìm kiếm theo tiêu đề..." />
+<input type="text" name="searchJP" class="search-box" placeholder="Tìm kiếm theo tiêu đề..." />
                     <button type="submit" class="search-button">
                         <i class="fas fa-search"></i>
                     </button>
@@ -603,7 +601,7 @@
 
                                 <td>
                                     <a href="${pageContext.request.contextPath}/detailsJP?action=details&idJP=${i.getJobPostingID()}" class="btn-action" title="Xem chi tiết">
-                                        <i class="fas fa-eye"></i>
+<i class="fas fa-eye"></i>
                                     </a>
 
                                     <c:choose>
@@ -655,7 +653,7 @@
 
                     <!-- Calculate page range -->
                     <c:set var="startPage" value="${currentPage - 2 > 0 ? currentPage - 2 : 1}" />
-                    <c:set var="endPage" value="${startPage + 4 <= totalPages ? startPage + 4 : totalPages}" />
+<c:set var="endPage" value="${startPage + 4 <= totalPages ? startPage + 4 : totalPages}" />
 
                     <!-- Jump to previous group -->
                     <c:if test="${startPage > 1}">

@@ -6,9 +6,9 @@
 
                 <div class="nav-links" id="navLinks">
                     <a href="${pageContext.request.contextPath}/HomeSeeker">Trang chủ</a>
-                    <a href="#">Tạo CV</a>
-                    <a href="#">Cẩm nang</a>
+                    <a href="${pageContext.request.contextPath}/cv">Tạo CV</a>
                     <a href="${pageContext.request.contextPath}/FavourJobPosting">Yêu thích</a>
+                    <a href="${pageContext.request.contextPath}/application">Trạng Thái Xin Việc</a>
 
                     <div class="user-dropdown">
                         <button class="user-dropdown-toggle" id="userDropdownBtn">
@@ -47,7 +47,7 @@
                                 <i class="fas fa-briefcase"></i>
                                 <span>Kinh nghiệm</span>
                             </a>
-                            <a href="${pageContext.request.contextPath}/application" class="dropdown-item">
+<a href="${pageContext.request.contextPath}/application" class="dropdown-item">
                                 <i class="fas fa-paper-plane"></i>
                                 <span>Đơn đăng ký của tôi</span>
                             </a>
@@ -107,6 +107,7 @@
                 transition: all 0.3s;
                 white-space: nowrap;
                 flex-shrink: 0;
+                display:flex-start;
             }
 
             .logo:hover {
@@ -125,7 +126,7 @@
                 text-decoration: none;
                 font-weight: 600;
                 transition: all 0.3s;
-                position: relative;
+position: relative;
                 white-space: nowrap;
             }
 
@@ -227,7 +228,7 @@
                 visibility: hidden;
                 transform: translateY(-10px);
                 transition: all 0.3s;
-                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
             }
 
             .user-dropdown.active .dropdown-menu {
@@ -329,8 +330,7 @@
                     transition: right 0.3s;
                     overflow-y: auto;
                 }
-
-                .nav-links.active {
+.nav-links.active {
                     right: 0;
                 }
 
