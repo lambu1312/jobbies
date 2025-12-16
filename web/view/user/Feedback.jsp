@@ -87,7 +87,7 @@
                     <thead class="thead">
                         <tr>
                             <th>Content</th>
-                            <th>Status</th>
+<!--                            <th>Status</th>-->
                             <th>Job Title</th>
                             <th>Action</th>
                         </tr>
@@ -101,22 +101,7 @@
                         <c:if test="${feedback.getStatus() != 4}">
                             <tr>
                                 <td>${feedback.getContentFeedback()}</td>
-                                <td class="text-center">
-                                    <c:choose>
-                                        <c:when test="${feedback.getStatus() == 1}">
-                                            <span class="badge bg-info">Pending</span>
-                                        </c:when>
-                                        <c:when test="${feedback.getStatus() == 2}">
-                                            <span class="badge bg-success">Resolved</span>
-                                        </c:when>
-                                        <c:when test="${feedback.getStatus() == 3}">
-                                            <span class="badge bg-secondary ">Reject</span>
-                                        </c:when>
-                                        <c:otherwise>
-                                            <span class="badge bg-warning">Delete</span>
-                                        </c:otherwise>
-                                    </c:choose>
-                                </td>
+                              
                                 <td>
                                     <c:set var="jobPostId" value="${feedback.getJobPostingID()}"/>
                                     <%
