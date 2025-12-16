@@ -6,9 +6,14 @@
 
                 <div class="nav-links" id="navLinks">
                     <a href="${pageContext.request.contextPath}/home">Việc làm</a>
+<<<<<<< HEAD
                     <a href="${pageContext.request.contextPath}/cv/list">Tạo CV</a>
                    <a href="${pageContext.request.contextPath}/FavourJobPosting">Yêu thích</a>
                     <a href="${pageContext.request.contextPath}/application">Trạng Thái Xin Việc</a>
+=======
+                    <a href="${pageContext.request.contextPath}/cv">Tạo CV</a>
+                    <a href="${pageContext.request.contextPath}/">Cẩm nang</a>
+>>>>>>> abe434f2440d1100ebf075c1a32336fe4846224c
 
                     <c:choose>
                         <c:when test="${empty sessionScope.account}">

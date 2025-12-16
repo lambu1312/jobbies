@@ -123,7 +123,7 @@
     .hero-section {
         position: relative;
         z-index: 10 !important;
-text-align: center;
+        text-align: center;
         padding: 4rem 2rem 2rem;
         margin-top: 100px;
     }
@@ -246,7 +246,7 @@ text-align: center;
         padding: 12px 16px;
         font-size: 15px;
         min-height: 45px;
-}
+    }
 
     .salary-separator {
         color: #b8b8d1;
@@ -377,7 +377,7 @@ text-align: center;
     }
 
     .bg-success {
-background: linear-gradient(135deg, #39ff14, #7ee8fa) !important;
+        background: linear-gradient(135deg, #39ff14, #7ee8fa) !important;
         color: #000 !important;
     }
 
@@ -515,7 +515,7 @@ background: linear-gradient(135deg, #39ff14, #7ee8fa) !important;
 
     <div class="pixel-decoration deco-1">✨</div>
     <div class="pixel-decoration deco-2">💎</div>
-<div class="pixel-decoration deco-3">🚀</div>
+    <div class="pixel-decoration deco-3">🚀</div>
 
     <!-- Header -->
     <jsp:include page="../view/common/header-area.jsp"/>
@@ -576,7 +576,7 @@ background: linear-gradient(135deg, #39ff14, #7ee8fa) !important;
                         <div>
                             <label class="form-label">Địa điểm</label>
                             <select name="filterLocation" class="form-select">
-<option value="">Tất cả</option>
+                                <option value="">Tất cả</option>
                                 <c:forEach var="lc" items="${locations}">
                                     <option value="${lc.locationID}"
                                             ${lc.locationID == param.filterLocation ? 'selected' : ''}>
@@ -632,7 +632,7 @@ background: linear-gradient(135deg, #39ff14, #7ee8fa) !important;
 
                         <!-- Date To -->
                         <div>
-<label class="form-label">Đến ngày</label>
+                            <label class="form-label">Đến ngày</label>
                             <input type="date" name="dateTo" class="form-control" value="${param.dateTo}">
                         </div>
 
@@ -686,7 +686,7 @@ background: linear-gradient(135deg, #39ff14, #7ee8fa) !important;
                                             <div class="mb-3">
                                                 <span class="badge bg-success">
                                                     <i class="fas fa-dollar-sign"></i>
-${job.getMinSalary()} - ${job.getMaxSalary()}
+                                                    ${job.getMinSalary()} - ${job.getMaxSalary()}
                                                 </span>
                                             </div>
                                             <p class="text-muted mb-0">
@@ -747,7 +747,8 @@ ${job.getMinSalary()} - ${job.getMaxSalary()}
         function createStars() {
             const starsContainer = document.getElementById('stars');
             const numberOfStars = 150;
-for (let i = 0; i < numberOfStars; i++) {
+
+            for (let i = 0; i < numberOfStars; i++) {
                 const star = document.createElement('div');
                 star.className = 'star';
                 star.style.left = Math.random() * 100 + '%';

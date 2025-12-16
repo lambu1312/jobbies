@@ -1,9 +1,3 @@
-<%-- 
-    Document   : adminHome
-    Created on : Sep 15, 2024, 4:26:38 PM
-    Author     : Admin
---%>
-
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="dao.CompanyDAO"%>
@@ -20,60 +14,317 @@
 
         <!-- Add custom styles -->
         <style>
-            .seeker-status.active {
-                color: green; /* Active seekers in green */
-                font-weight: bold;
-            }
-            .seeker-status.inactive {
-                color: red; /* Inactive seekers in red */
-                font-weight: bold;
-            }
-            .table-responsive {
-                margin-top: 20px;
-            }
-            .verify-badge {
-                font-size: 1.2em;
-            }
-            .verify-badge.verified {
-                color: green;
-            }
-            .verify-badge.unverified {
-                color: red;
-            }
-            .table-title {
-                text-align: center;
-                margin-bottom: 20px;
-            }
-            .btn-verify {
-                padding: 5px 10px;
-                margin: 0 5px;
-                border: none;
-                cursor: pointer;
-                border-radius: 50%;
-            }
-            .btn-confirm {
-                background-color: #28a745;
-                color: white;
-            }
-            .btn-reject {
-                background-color: #dc3545;
-                color: white;
-            }
-            .notification-box {
-                padding: 15px;
-                border-radius: 5px;
-                margin: 20px 0;
-                font-size: 16px;
-                font-weight: bold;
-                text-align: center;
-            }
+        /* Confirmation Page - White Background Theme */
 
-            .notification-box.error {
-                background-color: #f8d7da; /* Nền đỏ nhạt */
-                color: #721c24; /* Màu chữ đỏ đậm */
-                border: 1px solid #f5c6cb; /* Viền đỏ nhạt */
-            }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
+body {
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    background: #f8f9fa !important;
+    color: #212529;
+    overflow-x: hidden;
+    min-height: 100vh;
+}
+
+/* Main Content Area */
+.container-fluid {
+    position: relative;
+    z-index: 10;
+}
+
+/* Fix column layout */
+.col-md-2 {
+    padding: 0;
+}
+
+.col-md-10 {
+    padding: 2rem;
+    background: #ffffff;
+    min-height: 100vh;
+}
+
+/* Page Title */
+.table-title {
+    background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 900;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+/* Search Section */
+#searchRecruiter {
+    background: #ffffff !important;
+    border: 2px solid #dee2e6 !important;
+    border-radius: 30px !important;
+    color: #212529 !important;
+    padding: 1rem 2rem !important;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+#searchRecruiter:focus {
+    border-color: #c471f5 !important;
+    box-shadow: 0 0 0 0.2rem rgba(196, 113, 245, 0.25) !important;
+    background: #ffffff !important;
+}
+
+#searchRecruiter::placeholder {
+    color: #6c757d;
+}
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%) !important;
+    border: none !important;
+    border-radius: 30px !important;
+    padding: 1rem 2rem !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    transition: all 0.3s !important;
+    box-shadow: 0 4px 15px rgba(196, 113, 245, 0.3) !important;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(196, 113, 245, 0.4) !important;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+    border: none !important;
+    border-radius: 30px !important;
+    padding: 1rem 2rem !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    transition: all 0.3s !important;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3) !important;
+}
+
+.btn-success:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4) !important;
+}
+
+/* Table Styling */
+.table-responsive {
+    margin-top: 20px;
+    overflow-x: auto;
+}
+
+.table {
+    background: #ffffff !important;
+    border: 2px solid #dee2e6 !important;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.table-success {
+    background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%) !important;
+}
+
+.table-success th {
+    color: #ffffff !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 1.2rem;
+    border: none !important;
+    font-size: 0.9rem;
+}
+
+.table tbody {
+    background: #ffffff;
+}
+
+.table tbody tr {
+    border-bottom: 1px solid #e9ecef !important;
+    transition: all 0.2s;
+}
+
+.table tbody tr:hover {
+    background: #f8f4ff;
+}
+
+.table tbody td {
+    color: #212529 !important;
+    padding: 1.2rem;
+    vertical-align: middle;
+    border: none !important;
+}
+
+/* Image Thumbnails */
+.img-thumbnail {
+    border: 2px solid #dee2e6 !important;
+    border-radius: 10px !important;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.img-thumbnail:hover {
+    transform: scale(1.05);
+    border-color: #c471f5 !important;
+    box-shadow: 0 4px 15px rgba(196, 113, 245, 0.3);
+}
+
+/* Verify Buttons */
+.btn-verify {
+    padding: 8px 12px;
+    margin: 0 5px;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 1rem;
+    transition: all 0.3s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-confirm {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+}
+
+.btn-confirm:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.4);
+}
+
+.btn-reject {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+}
+
+.btn-reject:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.4);
+}
+
+/* Notification Box */
+.notification-box {
+    padding: 15px;
+    border-radius: 15px;
+    margin: 20px 0;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.notification-box.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 2px solid #f5c6cb;
+}
+
+/* Modal Styling */
+.modal-content {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
+    color: #ffffff;
+    border-radius: 15px 15px 0 0;
+    padding: 1.5rem;
+}
+
+.modal-title {
+    font-weight: 700;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+.btn-close {
+    background-color: #ffffff;
+    opacity: 1;
+    border-radius: 50%;
+}
+
+/* Back to Top Button */
+.rts__back__top {
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    background: linear-gradient(135deg, #c471f5, #fa71cd) !important;
+    border: none !important;
+    border-radius: 50% !important;
+    width: 50px !important;
+    height: 50px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 15px rgba(196, 113, 245, 0.4) !important;
+    cursor: pointer !important;
+    transition: all 0.3s !important;
+    z-index: 999 !important;
+    color: #ffffff !important;
+}
+
+.rts__back__top:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 6px 20px rgba(196, 113, 245, 0.5) !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #c471f5, #fa71cd);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #fa71cd, #c471f5);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .col-md-10 {
+        padding: 1rem;
+    }
+
+    #searchRecruiter {
+        width: 100% !important;
+        margin-bottom: 0.5rem;
+    }
+
+    .table {
+        font-size: 0.85rem;
+    }
+
+    .table-title {
+        font-size: 1.5rem !important;
+    }
+
+    .btn-verify {
+        padding: 6px 10px;
+        font-size: 0.9rem;
+    }
+
+    .notification-box {
+        font-size: 14px;
+        padding: 12px;
+    }
+}
         </style>
     </head>
     <body>

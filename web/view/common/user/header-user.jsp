@@ -10,6 +10,7 @@
             <a href="${pageContext.request.contextPath}/FavourJobPosting">Yêu thích</a>
             <a href="${pageContext.request.contextPath}/application">Trạng Thái Xin Việc</a>
 
+<<<<<<< HEAD
             <div class="user-dropdown">
                 <button class="user-dropdown-toggle" id="userDropdownBtn">
                     <div class="user-avatar">
@@ -22,6 +23,65 @@
                                 <img src="${sessionScope.account.avatar}" alt="Avatar">
                             </c:otherwise>
                         </c:choose>
+=======
+                    <div class="user-dropdown">
+                        <button class="user-dropdown-toggle" id="userDropdownBtn">
+                            <div class="user-avatar">
+                                <c:choose>
+                                    <c:when test="${empty sessionScope.account.avatar}">
+                                        <img src="${pageContext.request.contextPath}/assets/img/dashboard/avatar-mail.png"
+                                            alt="Avatar">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img src="${sessionScope.account.avatar}" alt="Avatar">
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                            <div class="user-info">
+                                <span class="user-name">${sessionScope.account.fullName}</span>
+                                <span class="user-role">Candidate</span>
+                            </div>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+
+                        <div class="dropdown-menu" id="userDropdownMenu">
+                            <a href="${pageContext.request.contextPath}/JobSeekerCheck" class="dropdown-item">
+                                <i class="fas fa-user"></i>
+                                <span>Profile</span>
+                            </a>
+                            <a href="${pageContext.request.contextPath}/cv" class="dropdown-item">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Manage CV</span>
+                            </a>
+                            <a href="${pageContext.request.contextPath}/education" class="dropdown-item">
+                                <i class="fas fa-graduation-cap"></i>
+                                <span>Education</span>
+                            </a>
+                            <a href="${pageContext.request.contextPath}/experience" class="dropdown-item">
+                                <i class="fas fa-briefcase"></i>
+                                <span>Experience</span>
+                            </a>
+<a href="${pageContext.request.contextPath}/application" class="dropdown-item">
+                                <i class="fas fa-paper-plane"></i>
+                                <span>My Applications</span>
+                            </a>
+                            <a href="${pageContext.request.contextPath}/feedbackSeeker" class="dropdown-item">
+                                <i class="fas fa-comment"></i>
+                                <span>Feedback</span>
+                            </a>
+                            <a href="${pageContext.request.contextPath}/authen?action=change-password"
+                                class="dropdown-item">
+                                <i class="fas fa-lock"></i>
+                                <span>Change Password</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="${pageContext.request.contextPath}/view/authen/logout.jsp"
+                                class="dropdown-item logout">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Log Out</span>
+                            </a>
+                        </div>
+>>>>>>> abe434f2440d1100ebf075c1a32336fe4846224c
                     </div>
                     <div class="user-info">
                         <span class="user-name">${sessionScope.account.fullName}</span>
