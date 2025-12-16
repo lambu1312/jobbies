@@ -6,8 +6,9 @@
 
                 <div class="nav-links" id="navLinks">
                     <a href="${pageContext.request.contextPath}/home">Việc làm</a>
-                    <a href="#">Tạo CV</a>
-                    <a href="#">Cẩm nang</a>
+                    <a href="${pageContext.request.contextPath}/cv/list">Tạo CV</a>
+                   <a href="${pageContext.request.contextPath}/FavourJobPosting">Yêu thích</a>
+                    <a href="${pageContext.request.contextPath}/application">Trạng Thái Xin Việc</a>
 
                     <c:choose>
                         <c:when test="${empty sessionScope.account}">
@@ -45,7 +46,7 @@
 
                                 <div class="dropdown-menu" id="userDropdownMenu">
                                     <a href="${pageContext.request.contextPath}/Dashboard" class="dropdown-item">
-                                        <i class="fas fa-tachometer-alt"></i>
+<i class="fas fa-tachometer-alt"></i>
                                         <span>Dashboard</span>
                                     </a>
                                     <a href="${pageContext.request.contextPath}/view/recruiter/viewRecruiterProfile.jsp" class="dropdown-item">
@@ -127,7 +128,7 @@
                 height: 2px;
                 background: linear-gradient(135deg, #c471f5, #fa71cd);
                 transition: width 0.3s;
-            }
+}
 
             .nav-links>a:hover {
                 color: #c471f5;
@@ -229,7 +230,7 @@
                 padding: 0.5rem;
                 opacity: 0;
                 visibility: hidden;
-                transform: translateY(-10px);
+transform: translateY(-10px);
                 transition: all 0.3s;
                 box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
             }
@@ -329,8 +330,7 @@
                 .nav-links>a::after {
                     display: none;
                 }
-
-                .cta-button {
+.cta-button {
                     width: 100%;
                 }
 

@@ -13,7 +13,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
-            body {
+                body {
                 font-family: 'Inter', system-ui, sans-serif;
                 background: linear-gradient(135deg, #0a0015 0%, #1a0b2e 50%, #16213e 100%);
                 color: #fff;
@@ -85,9 +85,6 @@
             .text-center{
                 color:#fff;
             }
-            .btn btn-success{
-                background-color:#c471f5;
-            }
         </style>
     </head>
     <body>
@@ -96,7 +93,7 @@
             <!-- Header area end -->
 
             <div class="container mt-5 mb-5">
-                <h1 class="text-center">Quản Lý CV</h1>
+                <h1 class="text-center">Manage Your CV</h1>
 
                 <!-- Display success or error messages -->
 
@@ -130,7 +127,7 @@
                     <!-- Display View CV button -->
                     <div class="d-grid gap-2 mb-1">
                         <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#updateCVModal">
-                            Cập Nhập CV
+                            Update CV
                         </button>
                     </div>
                     <div class="mb-4">
@@ -146,11 +143,11 @@
                     <!-- Form to upload CV if not present -->
                     <form action="${pageContext.request.contextPath}/cv?action=upload-cv" method="post" enctype="multipart/form-data">
                         <div class="mb-3">
-                            <label for="cvFile" class="form-label">Cập Nhập CV</label>
+                            <label for="cvFile" class="form-label">Upload CV</label>
                             <input type="file" class="form-control" id="cvFile" name="cvUploadFile" accept=".pdf" required>
                         </div>
                         <span style="color: green">Note: <strong>Upload file less than 10MB (or 10 240KB)</strong></span><br/>
-                        <button type="submit" class="btn btn-success">Cập Nhập CV</button>
+                        <button type="submit" class="btn btn-success">Upload CV</button>
                     </form>
                 </c:if>
             </c:if>
@@ -161,14 +158,14 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header bg-success text-white">
-                        <h2 class="modal-title fs-5" id="exampleModalLabel">Cập Nhật CV</h2>
+                        <h2 class="modal-title fs-5" id="exampleModalLabel">Update CV</h2>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form action="${pageContext.request.contextPath}/cv?action=update-cv" method="post" enctype="multipart/form-data">
                         <div class="modal-body">
 
                             <div class="mb-3">
-                                <label for="cvFile" class="form-label">Cập Nhật CV</label>
+                                <label for="cvFile" class="form-label">Update CV</label>
                                 <input type="file" class="form-control" id="cvFile" name="cvFileU" accept=".pdf" required>
                             </div>
                             <span style="color: green">Note: <strong>Upload file less than 10MB (or 10 240KB)</strong></span>
@@ -176,7 +173,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-success">Cập Nhật CV</button>
+                            <button type="submit" class="btn btn-success">Update CV</button>
                         </div>
                     </form>
                 </div>

@@ -1,12 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1">
+        <file>
+            <url>web/view/recruiter/deactivateAccount.jsp</url>
+            <bookmark id="1">
+                <name/>
+                <line>0</line>
+                <key/>
+            </bookmark>
+        </file>
+    </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/Swp391/web/view/admin/seekerManagement.jsp</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/Swp391/src/java/controller/admin/SeekerAdminController.java</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/Swp391/web/view/admin/recruiterManagement.jsp</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/Swp391/src/java/controller/admin/RecruiterAdminController.java</file>
+            <file>file:/E:/jobbiesa/jobbies/src/java/model/CV.java</file>
+            <file>file:/E:/jobbiesa/jobbies/src/java/controller/candidate/ApplicationServlet.java</file>
+            <file>file:/E:/jobbiesa/jobbies/web/view/user/CV.jsp</file>
+            <file>file:/E:/jobbiesa/jobbies/src/java/dao/AccountDAO.java</file>
+            <file>file:/E:/jobbiesa/jobbies/web/view/user/FavourJobPosting.jsp</file>
+            <file>file:/E:/jobbiesa/jobbies/src/java/controller/candidate/FavourJobPostingServlet.java</file>
+            <file>file:/E:/jobbiesa/jobbies/web/view/user/Feedback.jsp</file>
+            <file>file:/E:/jobbiesa/jobbies/web/view/user/ApplicationDetail.jsp</file>
+            <file>file:/E:/jobbiesa/jobbies/src/java/controller/CvEditServlet.java</file>
+            <file>file:/E:/jobbiesa/jobbies/src/java/controller/CvSaveServlet.java</file>
+            <file>file:/E:/jobbiesa/jobbies/src/java/dao/JobSeekerDAO.java</file>
+            <file>file:/E:/jobbiesa/jobbies/web/view/user/userProfile.jsp</file>
+            <file>file:/E:/jobbiesa/jobbies/web/view/user/ViewJobPosting.jsp</file>
+            <file>file:/E:/jobbiesa/jobbies/src/java/dao/CvDAO.java</file>
+            <file>file:/E:/jobbiesa/jobbies/web/view/common/user/header-user.jsp</file>
+            <file>file:/E:/jobbiesa/jobbies/web/view/home.jsp</file>
+            <file>file:/E:/jobbiesa/jobbies/src/java/controller/CvListServlet.java</file>
+            <file>file:/E:/jobbiesa/jobbies/src/java/controller/DownloadCVServlet.java</file>
+            <file>file:/E:/jobbiesa/jobbies/web/view/user/editUserProfile.jsp</file>
+            <file>file:/E:/jobbiesa/jobbies/web/view/user/userHome.jsp</file>
+            <file>file:/E:/jobbiesa/jobbies/src/java/dao/CvDAO_1.java</file>
+            <file>file:/E:/jobbiesa/jobbies/src/java/controller/CvSetDefaultServlet.java</file>
+            <file>file:/E:/jobbiesa/jobbies/web/view/user/Application.jsp</file>
+            <file>file:/E:/jobbiesa/jobbies/web/view/ViewJobPosting.jsp</file>
+            <file>file:/E:/jobbiesa/jobbies/src/java/dao/ApplicationDAO.java</file>
+            <file>file:/E:/jobbiesa/jobbies/web/view/common/header-area.jsp</file>
         </group>
     </open-files>
 </project-private>

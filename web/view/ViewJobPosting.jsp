@@ -570,6 +570,7 @@
                                                         <h5>Apply for this Job</h5>
                                                     </div>
                                                     <div class="login-notice">
+                                                        <!-- nếu sc thì hiện nút đăng ký và like ko thì hiện you must be login -->
                                                         <p>🔒 You must be logged in with a Seeker role to apply for this
                                                             job.</p>
                                                         <a href="${pageContext.request.contextPath}/authen">
@@ -579,6 +580,7 @@
                                                             </button>
                                                         </a>
                                                     </div>
+                                                            
                                                 </div>
                                             </c:when>
                                             <c:otherwise>

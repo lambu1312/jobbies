@@ -225,6 +225,7 @@
 
                                         <!-- Form and confirmation button (displayed only if no success message) -->
                                         <c:if test="${empty requestScope.joinsuccess}">
+                                            <!<!-- lấy luôn accID bỏ seekID -->
                                             <div class="modal-body">
                                                 <h5>Are you sure you want to join job seeking?</h5>
                                             </div>

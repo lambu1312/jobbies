@@ -59,10 +59,6 @@
                 background-color: #dc3545;
                 border-color: #dc3545;
             }
-            .text-center{
-                color:#fff;
-            }
-
         </style>
     </head>
     <body>

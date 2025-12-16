@@ -11,7 +11,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
             body {
-                background-color: #f4f4f9;
+                background: linear-gradient(135deg, #0a0015 0%, #1a0b2e 50%, #16213e 100%);
             }
             h1 {
                 font-size: 2.5rem;
@@ -74,6 +74,9 @@
                 background-color: #28a745;
                 color: white;
             }
+            .text-center{
+                color: white;
+            }
         </style>
     </head>
     <body>
@@ -87,7 +90,6 @@
                     <thead class="thead">
                         <tr>
                             <th>Content</th>
-                            <th>Status</th>
                             <th>Job Title</th>
                             <th>Action</th>
                         </tr>
@@ -101,7 +103,7 @@
                         <c:if test="${feedback.getStatus() != 4}">
                             <tr>
                                 <td>${feedback.getContentFeedback()}</td>
-                                <td class="text-center">
+<!--                                <td class="text-center">
                                     <c:choose>
                                         <c:when test="${feedback.getStatus() == 1}">
                                             <span class="badge bg-info">Pending</span>
@@ -116,7 +118,7 @@
                                             <span class="badge bg-warning">Delete</span>
                                         </c:otherwise>
                                     </c:choose>
-                                </td>
+                                </td>-->
                                 <td>
                                     <c:set var="jobPostId" value="${feedback.getJobPostingID()}"/>
                                     <%

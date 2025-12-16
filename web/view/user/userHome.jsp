@@ -1,9 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="vi">
-
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,9 +11,7 @@
         <!-- CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-        <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500…700;800;900&family=Poppins:wght@400;600;700;900&display=swap"
-            rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
 
         <style>
             /* CRITICAL: Force navbar and dropdown positioning */
@@ -83,14 +80,11 @@
             }
 
             @keyframes twinkle {
-
-                0%,
-                100% {
+                0%, 100% {
                     opacity: 0.3;
                 }
-
                 50% {
-opacity: 1;
+                    opacity: 1;
                 }
             }
 
@@ -121,12 +115,9 @@ opacity: 1;
             }
 
             @keyframes float {
-
-                0%,
-                100% {
+                0%, 100% {
                     transform: translateY(0px);
                 }
-
                 50% {
                     transform: translateY(-20px);
                 }
@@ -138,8 +129,7 @@ opacity: 1;
                 z-index: 10 !important;
                 text-align: center;
                 padding: 4rem 2rem 2rem;
-                margin-top: 100px;
-                /* Space for fixed header */
+                /*margin-top: 5px; /* Space for fixed header */
             }
 
             .hero-section h1 {
@@ -158,7 +148,6 @@ opacity: 1;
                     opacity: 0;
                     transform: translateY(30px);
                 }
-
                 to {
                     opacity: 1;
                     transform: translateY(0);
@@ -193,7 +182,7 @@ opacity: 1;
                 -webkit-text-fill-color: transparent;
                 background-clip: text;
                 margin-bottom: 1rem;
-font-size: 1.1rem;
+                font-size: 1.1rem;
                 display: flex;
                 align-items: center;
                 gap: 10px;
@@ -294,7 +283,7 @@ font-size: 1.1rem;
                 align-items: center;
                 gap: 8px;
                 padding: 8px 12px;
-background-color: rgba(255, 255, 255, 0.1);
+                background-color: rgba(255, 255, 255, 0.1);
                 border: 1px solid rgba(255, 255, 255, 0.2);
                 border-radius: 8px;
                 cursor: pointer;
@@ -395,7 +384,8 @@ background-color: rgba(255, 255, 255, 0.1);
                 background: linear-gradient(135deg, #39ff14, #7ee8fa) !important;
                 color: #000 !important;
             }
-.text-muted {
+
+            .text-muted {
                 color: #b8b8d1 !important;
                 font-size: 13px;
             }
@@ -499,7 +489,7 @@ background-color: rgba(255, 255, 255, 0.1);
                 }
 
                 .pixel-decoration {
-display: none;
+                    display: none;
                 }
 
                 .salary-inputs-wrapper {
@@ -524,7 +514,6 @@ display: none;
             }
         </style>
     </head>
-
     <body>
         <!-- Stars Background -->
         <div class="stars" id="stars"></div>
@@ -535,13 +524,12 @@ display: none;
         <div class="pixel-decoration deco-3">🚀</div>
 
         <!-- Header -->
-        <jsp:include page="../common/user/header-user.jsp" />
+        <jsp:include page="../common/user/header-user.jsp"/>
 
         <!-- Hero Section -->
         <section class="hero-section">
             <h1>Tìm Công Việc Mơ Ước<br>Của Bạn</h1>
-            <p>Khám phá hàng nghìn cơ hội việc làm từ các công ty hàng đầu. Bắt đầu hành trình sự nghiệp của bạn
-                ngay hôm nay!</p>
+            <p>Khám phá hàng nghìn cơ hội việc làm từ các công ty hàng đầu. Bắt đầu hành trình sự nghiệp của bạn ngay hôm nay!</p>
         </section>
 
         <!-- Filter and Job Listings Section -->
@@ -558,8 +546,8 @@ display: none;
                             <!-- Search -->
                             <div>
                                 <label class="form-label">Tìm kiếm</label>
-                                <input type="text" name="search" class="form-control" placeholder="Vị trí..."
-                                       value="${param.search}">
+                                <input type="text" name="search" class="form-control" 
+                                       placeholder="Vị trí..." value="${param.search}">
                             </div>
 
                             <!-- Category -->
@@ -569,242 +557,249 @@ display: none;
                                     <option value="">Tất cả</option>
                                     <c:forEach var="category" items="${activeCategories}">
                                         <option value="${category.getId()}"
-                                                ${category.getId()==param.filterCategory ? 'selected' : '' }>
+                                                ${category.getId() == param.filterCategory ? 'selected' : ''}>
                                             ${category.getName()}
                                         </option>
                                     </c:forEach>
                                 </select>
                             </div>
-<!-- Job Type -->
+
+<!--                             Job Type 
                             <div>
                                 <label class="form-label">Loại hình</label>
                                 <select name="filterJobType" class="form-select">
                                     <option value="">Tất cả</option>
                                     <c:forEach var="jt" items="${jobTypes}">
-                                        <option value="${jt.jobTypeID}" ${jt.jobTypeID==param.filterJobType
-                                                         ? 'selected' : '' }>
-                                                    ${jt.jobTypeName}
-                                                </option>
-                                        </c:forEach>
-                                    </select>
+                                        <option value="${jt.jobTypeID}"
+                                                ${jt.jobTypeID == param.filterJobType ? 'selected' : ''}>
+                                            ${jt.jobTypeName}
+                                        </option>
+                                    </c:forEach>
+                                </select>
+                            </div>-->
+
+                            <!-- Location -->
+                            <div>
+                                <label class="form-label">Địa điểm</label>
+                                <select name="filterLocation" class="form-select">
+                                    <option value="">Tất cả</option>
+                                    <c:forEach var="lc" items="${locations}">
+                                        <option value="${lc.locationID}"
+                                                ${lc.locationID == param.filterLocation ? 'selected' : ''}>
+                                            ${lc.locationName}
+                                        </option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+
+                            <!-- Salary Min & Max - Cùng một dòng, to hơn -->
+                            <div>
+                                <label class="form-label">Lương</label>
+                                <div style="display: flex; gap: 12px; align-items: center;">
+                                    <input type="number" 
+                                           name="minSalary" 
+                                           id="minSalary" 
+                                           class="form-control" 
+                                           placeholder="Từ" 
+                                           value="${param.minSalary}"
+                                           min="0"
+                                           step="100"
+                                           style="flex: 1; padding: 12px 16px; font-size: 15px;">
+                                    <span style="color: #b8b8d1; font-size: 18px; font-weight: 600;">-</span>
+                                    <input type="number" 
+                                           name="maxSalary" 
+                                           id="maxSalary" 
+                                           class="form-control" 
+                                           placeholder="Đến" 
+                                           value="${param.maxSalary}"
+                                           min="0"
+                                           step="100"
+                                           style="flex: 1; padding: 12px 16px; font-size: 15px;">
                                 </div>
+                            </div>
 
-                                <!-- Location -->
-                                <div>
-                                    <label class="form-label">Địa điểm</label>
-                                    <select name="filterLocation" class="form-select">
-                                        <option value="">Tất cả</option>
-                                        <c:forEach var="lc" items="${locations}">
-                                            <option value="${lc.locationID}" ${lc.locationID==param.filterLocation
-                                                             ? 'selected' : '' }>
-                                                        ${lc.locationName}
-                                                    </option>
-                                            </c:forEach>
-                                        </select>
-                                    </div>
-
-                                    <!-- Salary Min & Max - Cùng một dòng, to hơn -->
-                                    <div>
-                                        <label class="form-label">Lương (triệu)</label>
-                                        <div style="display: flex; gap: 12px; align-items: center;">
-                                            <input type="number" name="minSalary" id="minSalary" class="form-control"
-                                                   placeholder="Từ" value="${param.minSalary}" min="0" step="100"
-                                                   style="flex: 1; padding: 12px 16px; font-size: 15px;">
-                                            <span style="color: #b8b8d1; font-size: 18px; font-weight: 600;">-</span>
-                                            <input type="number" name="maxSalary" id="maxSalary" class="form-control"
-                                                   placeholder="Đến" value="${param.maxSalary}" min="0" step="100"
-                                                   style="flex: 1; padding: 12px 16px; font-size: 15px;">
-                                        </div>
-                                    </div>
-
-                                    <!-- Currency -->
-<div>
-                                        <label class="form-label">Tiền</label>
-                                        <select name="currency" class="form-select">
-                                            <option value="VND" ${param.currency=='VND' ? 'selected' : '' }>VND</option>
-                                            <option value="USD" ${param.currency=='USD' ? 'selected' : '' }>USD</option>
-                                            <option value="EUR" ${param.currency=='EUR' ? 'selected' : '' }>EUR</option>
-                                            <option value="JPY" ${param.currency=='JPY' ? 'selected' : '' }>JPY</option>
-                                        </select>
-                                    </div>
+                            <!-- Currency -->
+                            <div>
+                                <label class="form-label">Tiền</label>
+                                <select name="currency" class="form-select">
+                                    <option value="VND" ${param.currency == 'VND' ? 'selected' : ''}>VND</option>
+                                    <option value="USD" ${param.currency == 'USD' ? 'selected' : ''}>USD</option>
+                                    <option value="EUR" ${param.currency == 'EUR' ? 'selected' : ''}>EUR</option>
+                                    <option value="JPY" ${param.currency == 'JPY' ? 'selected' : ''}>JPY</option>
+                                </select>
+                            </div>
 
 
-                                </div>
-
-                                <!-- Second row for date and checkbox -->
-                                <div class="filter-grid" style="margin-top: 1rem;">
-                                    <!-- Date From -->
-                                    <div>
-                                        <label class="form-label">Từ ngày</label>
-                                        <input type="date" name="dateFrom" class="form-control"
-                                               value="${param.dateFrom}">
-                                    </div>
-
-                                    <!-- Date To -->
-                                    <div>
-                                        <label class="form-label">Đến ngày</label>
-                                        <input type="date" name="dateTo" class="form-control" value="${param.dateTo}">
-                                    </div>
-
-                                    <!-- Online Checkbox -->
-                                    <div style="display: flex; align-items: flex-end;">
-                                        <label class="filter-checkbox">
-                                            <span>Làm việc Online</span>
-                                            <input type="checkbox" name="onlineOnly" value="true"
-                                                   ${param.onlineOnly=='true' ? 'checked' : '' }>
-
-                                        </label>
-                                    </div>
-                                    <!-- Filter Button -->
-                                    <div>
-                                        <button type="submit" class="search-button">
-                                            <i class="fas fa-search"></i>
-                                        </button>
-                                    </div>
-                                </div>
-
-                            </form>
                         </div>
 
-                        <!-- Job Listings - Full Width -->
-                        <div class="row" style="margin-top: 2rem;">
-                            <c:choose>
-                                <c:when test="${empty jobPostingsList}">
-<div class="col-12">
-                                        <div class="empty-state">
-                                            <div class="empty-state-icon">
-                                                <i class="fas fa-briefcase"></i>
-                                            </div>
-                                            <h4>Không tìm thấy công việc</h4>
-                                            <p>Hãy thử thay đổi bộ lọc hoặc từ khóa tìm kiếm của bạn</p>
-                                        </div>
+                        <!-- Second row for date and checkbox -->
+                        <div class="filter-grid" style="margin-top: 1rem;">
+                            <!-- Date From -->
+                            <div>
+                                <label class="form-label">Từ ngày</label>
+                                <input type="date" name="dateFrom" class="form-control"
+                                       value="${param.dateFrom}">
+                            </div>
+
+                            <!-- Date To -->
+                            <div>
+                                <label class="form-label">Đến ngày</label>
+                                <input type="date" name="dateTo" class="form-control"
+                                       value="${param.dateTo}">
+                            </div>
+
+<!--                             Online Checkbox 
+                            <div style="display: flex; align-items: flex-end;">
+                                <label class="filter-checkbox">
+                                    <span>Làm việc Online</span>
+                                    <input type="checkbox" name="onlineOnly" value="true" 
+                                           ${param.onlineOnly == 'true' ? 'checked' : ''}>
+
+                                </label>
+                            </div>-->
+                            <!-- Filter Button -->
+                            <div>
+                                <button type="submit" class="search-button">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                            
+
+                            
+                        </div>
+
+                    </form>
+                </div>
+
+                <!-- Job Listings - Full Width -->
+                <div class="row" style="margin-top: 2rem;">
+                    <c:choose>
+                        <c:when test="${empty jobPostingsList}">
+                            <div class="col-12">
+                                <div class="empty-state">
+                                    <div class="empty-state-icon">
+                                        <i class="fas fa-briefcase"></i>
                                     </div>
-                                </c:when>
-                                <c:otherwise>
-                                    <c:forEach var="job" items="${jobPostingsList}">
-                                        <div class="col-md-6 col-lg-4 mb-4">
-                                            <a href="${pageContext.request.contextPath}/jobPostingDetail?action=details&idJP=${job.getJobPostingID()}"
-                                               class="job-card-link">
-                                                <div class="card job-card">
-                                                    <div class="card-body">
-                                                        <h5 class="card-title">${job.getTitle()}</h5>
-                                                        <div class="mb-2">
-                                                            <span class="badge bg-primary">
-                                                                <i class="fas fa-map-marker-alt"></i>
-                                                                ${job.getLocation()}
-                                                            </span>
-                                                        </div>
-                                                        <div class="mb-3">
-                                                            <span class="badge bg-success">
-                                                                <i class="fas fa-dollar-sign"></i>
-                                                                ${job.getMinSalary()} - ${job.getMaxSalary()}
-                                                            </span>
-                                                        </div>
-                                                        <p class="text-muted mb-0">
-                                                            <i class="far fa-clock me-1"></i>
-                                                            Đăng: ${job.getPostedDate()}
-                                                        </p>
-                                                    </div>
+                                    <h4>Không tìm thấy công việc</h4>
+                                    <p>Hãy thử thay đổi bộ lọc hoặc từ khóa tìm kiếm của bạn</p>
+                                </div>
+                            </div>
+                        </c:when>
+                        <c:otherwise>
+                            <c:forEach var="job" items="${jobPostingsList}">
+                                <div class="col-md-6 col-lg-4 mb-4">
+                                    <a href="${pageContext.request.contextPath}/jobPostingDetail?action=details&idJP=${job.getJobPostingID()}" 
+                                       class="job-card-link">
+                                        <div class="card job-card">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${job.getTitle()}</h5>
+                                                <div class="mb-2">
+                                                    <span class="badge bg-primary">
+                                                        <i class="fas fa-map-marker-alt"></i>
+                                                        ${job.getLocation()}
+                                                    </span>
                                                 </div>
-                                            </a>
+                                                <div class="mb-3">
+                                                    <span class="badge bg-success">
+                                                        <i class="fas fa-dollar-sign"></i>
+                                                        ${job.getMinSalary()} - ${job.getMaxSalary()}
+                                                    </span>
+                                                </div>
+                                                <p class="text-muted mb-0">
+                                                    <i class="far fa-clock me-1"></i>
+                                                    Đăng: ${job.getPostedDate()}
+                                                </p>
+                                            </div>
                                         </div>
-                                    </c:forEach>
-                                </c:otherwise>
-                            </c:choose>
-                        </div>
-<!-- Pagination -->
-                        <c:if test="${not empty jobPostingsList}">
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination" id="pagination">
-                                    <c:if test="${pageControl.getPage() > 1}">
-                                        <li class="page-item">
-                                            <a class="page-link"
-                                               href="${pageControl.getUrlPattern()}page=${pageControl.getPage()-1}">
-                                                <i class="fas fa-chevron-left"></i>
-                                            </a>
-                                        </li>
-                                    </c:if>
+                                    </a>
+                                </div>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
+                </div>
 
-                                    <c:set var="startPage"
-                                           value="${pageControl.getPage() - 2 > 0 ? pageControl.getPage() - 2 : 1}" />
-                                    <c:set var="endPage"
-                                           value="${startPage + 4 <= pageControl.getTotalPages() ? startPage + 4 : pageControl.getTotalPages()}" />
+                <!-- Pagination -->
+                <c:if test="${not empty jobPostingsList}">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination" id="pagination">
+                            <c:if test="${pageControl.getPage() > 1}">
+                                <li class="page-item">
+                                    <a class="page-link" href="${pageControl.getUrlPattern()}page=${pageControl.getPage()-1}">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                </li>
+                            </c:if>
 
-                                    <c:forEach var="i" begin="${startPage}" end="${endPage}">
-                                        <li class="page-item ${i == pageControl.getPage() ? 'active' : ''}">
-                                            <a class="page-link" href="${pageControl.getUrlPattern()}page=${i}">${i}</a>
-                                        </li>
-                                    </c:forEach>
+                            <c:set var="startPage" value="${pageControl.getPage() - 2 > 0 ? pageControl.getPage() - 2 : 1}"/>
+                            <c:set var="endPage" value="${startPage + 4 <= pageControl.getTotalPages() ? startPage + 4 : pageControl.getTotalPages()}"/>
 
-                                    <c:if test="${pageControl.getPage() < pageControl.getTotalPages()}">
-                                        <li class="page-item">
-                                            <a class="page-link"
-                                               href="${pageControl.getUrlPattern()}page=${pageControl.getPage() + 1}">
-                                                <i class="fas fa-chevron-right"></i>
-                                            </a>
-                                        </li>
-                                    </c:if>
-                                </ul>
-                            </nav>
-                        </c:if>
-                    </div>
-                </section>
+                            <c:forEach var="i" begin="${startPage}" end="${endPage}">
+                                <li class="page-item ${i == pageControl.getPage() ? 'active' : ''}">
+                                    <a class="page-link" href="${pageControl.getUrlPattern()}page=${i}">${i}</a>
+                                </li>
+                            </c:forEach>
 
-                <!-- Footer -->
-                <jsp:include page="../common/footer.jsp" />
+                            <c:if test="${pageControl.getPage() < pageControl.getTotalPages()}">
+                                <li class="page-item">
+                                    <a class="page-link" href="${pageControl.getUrlPattern()}page=${pageControl.getPage() + 1}">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            </c:if>
+                        </ul>
+                    </nav>
+                </c:if>
+            </div>
+        </section>
 
-                <!-- Back to Top Button -->
-                <button type="button" class="btn btn-success position-fixed bottom-0 end-0 m-4" id="back-to-top">
-                    <i class="fas fa-arrow-up"></i>
-                </button>
+        <!-- Footer -->
+        <jsp:include page="../common/footer.jsp"></jsp:include>
 
-                <!-- Scripts -->
-                <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
-                <script>
-                    // Category filter auto-submit
-document.getElementById('jobCategory').addEventListener('change', function () {
-                        document.getElementById('filterForm').submit();
-                    });
+            <!-- Back to Top Button -->
+            <button type="button" class="back-to-top" id="back-to-top">
+                <i class="fas fa-arrow-up"></i>
+            </button>
 
-                    // Salary range validation
-                    const minSalaryInput = document.getElementById('minSalary');
-                    const maxSalaryInput = document.getElementById('maxSalary');
+            <!-- Scripts -->
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+            <script>
+                // Generate stars
+                function createStars() {
+                    const starsContainer = document.getElementById('stars');
+                    const numberOfStars = 150;
 
-                    minSalaryInput.addEventListener('change', function () {
-                        const minValue = parseInt(this.value);
-                        if (maxSalaryInput.value && minValue > parseInt(maxSalaryInput.value)) {
-                            maxSalaryInput.value = minValue;
-                        }
-                    });
+                    for (let i = 0; i < numberOfStars; i++) {
+                        const star = document.createElement('div');
+                        star.className = 'star';
+                        star.style.left = Math.random() * 100 + '%';
+                        star.style.top = Math.random() * 100 + '%';
+                        star.style.animationDelay = Math.random() * 3 + 's';
+                        star.style.width = Math.random() * 2 + 1 + 'px';
+                        star.style.height = star.style.width;
+                        starsContainer.appendChild(star);
+                    }
+                }
 
-                    maxSalaryInput.addEventListener('change', function () {
-                        const maxValue = parseInt(this.value);
-                        if (minSalaryInput.value && maxValue < parseInt(minSalaryInput.value)) {
-                            minSalaryInput.value = maxValue;
-                        }
-                    });
+                createStars();
 
-                    // Back to top button
-                    const backToTopButton = document.getElementById('back-to-top');
+                // Back to top button
+                const backToTopButton = document.getElementById('back-to-top');
 
-                    window.onscroll = function () {
-                        if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                            backToTopButton.style.display = 'block';
-                        } else {
-                            backToTopButton.style.display = 'none';
-                        }
-                    };
+                window.onscroll = function () {
+                    if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                        backToTopButton.classList.add('visible');
+                    } else {
+                        backToTopButton.classList.remove('visible');
+                    }
+                };
 
-                    backToTopButton.addEventListener('click', function () {
-                        window.scrollTo({
-                            top: 0,
-                            behavior: 'smooth'
-                        });
-                    });
-                </script>
+                backToTopButton.addEventListener('click', function () {
+                    document.body.scrollTop = 0;
+                    document.documentElement.scrollTop = 0;
+                });
+            </script>
 
-                <jsp:include page="../common/user/common-js-user.jsp" />
-            </body>
-
-        </html>
+        <jsp:include page="../common/user/common-js-user.jsp"/>
+    </body>
+</html>

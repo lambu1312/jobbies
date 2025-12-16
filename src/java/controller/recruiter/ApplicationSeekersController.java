@@ -7,7 +7,7 @@ package controller.recruiter;
 import constant.CommonConst;
 import dao.AccountDAO;
 import dao.ApplicationDAO;
-import dao.CVDAO;
+import dao.CvDAO;
 import dao.EducationDAO;
 import dao.InterviewDAO;
 import dao.JobPostingsDAO;
@@ -127,7 +127,7 @@ public class ApplicationSeekersController extends HttpServlet {
 
     private void viewCV(HttpServletRequest request, HttpServletResponse response) {
         try {
-            CVDAO cvDao = new CVDAO();
+            CvDAO cvDao = new CvDAO();
             String accountId = request.getParameter("id");
             CV cv = cvDao.findCVbyJobSeekerID(Integer.parseInt(accountId));
             if (cv != null) {

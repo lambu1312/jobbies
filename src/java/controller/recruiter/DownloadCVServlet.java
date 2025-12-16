@@ -4,7 +4,7 @@
  */
 package controller.recruiter;
 
-import dao.CVDAO;
+import dao.CvDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import jakarta.servlet.ServletException;
@@ -29,7 +29,7 @@ public class DownloadCVServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Lấy CVID từ request
         String cvid = request.getParameter("cvid");
-        CVDAO cvDao = new CVDAO();
+        CvDAO cvDao = new CvDAO();
         CV cv = cvDao.findCVbyJobSeekerID(Integer.parseInt(cvid));
         if (cv == null || cv.getFilePath() == null) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "CV not found");

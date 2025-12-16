@@ -8,8 +8,14 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
             body {
-                background-color: #f4f4f9;
+                font-family: 'Inter', system-ui, sans-serif;
+                background: linear-gradient(135deg, #0a0015 0%, #1a0b2e 50%, #16213e 100%);
+                color: #fff;
+                overflow-x: hidden;
+                overflow-y: auto;
+                min-height: 100vh;
             }
+
             h1 {
                 font-size: 2.5rem;
                 font-weight: bold;
