@@ -1,4 +1,4 @@
-package controller.seeker;
+package controller.candidate;
 
 import constant.CommonConst;
 import dao.EducationDAO;
