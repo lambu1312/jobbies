@@ -1,27 +1,72 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<nav class="navbar">
-    <div class="navbar-container">
-        <a href="${pageContext.request.contextPath}/HomeSeeker" class="logo">JOBBIES</a>
+    <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+        <nav class="navbar">
+            <div class="navbar-container">
+                <a href="${pageContext.request.contextPath}/HomeSeeker" class="logo">JOBBIES</a>
 
-        <div class="nav-links" id="navLinks">
-            <a href="${pageContext.request.contextPath}/HomeSeeker">Trang chủ</a>
-            <a href="#">Tạo CV</a>
-            <a href="#">Cẩm nang</a>
-            <a href="${pageContext.request.contextPath}/FavourJobPosting">Yêu thích</a>
+                <div class="nav-links" id="navLinks">
+                    <a href="${pageContext.request.contextPath}/HomeSeeker">Trang chủ</a>
+                    <a href="#">Tạo CV</a>
+                    <a href="#">Cẩm nang</a>
+                    <a href="${pageContext.request.contextPath}/FavourJobPosting">Yêu thích</a>
 
-            <div class="user-dropdown">
-                <button class="user-dropdown-toggle" id="userDropdownBtn">
-                    <div class="user-avatar">
-                        <c:choose>
-                            <c:when test="${empty sessionScope.account.avatar}">
-                                <img src="${pageContext.request.contextPath}/assets/img/dashboard/avatar-mail.png"
-                                     alt="Avatar">
-                            </c:when>
-                            <c:otherwise>
-                                <img src="${sessionScope.account.avatar}" alt="Avatar">
-                            </c:otherwise>
-                        </c:choose>
+                    <div class="user-dropdown">
+                        <button class="user-dropdown-toggle" id="userDropdownBtn">
+                            <div class="user-avatar">
+                                <c:choose>
+                                    <c:when test="${empty sessionScope.account.avatar}">
+                                        <img src="${pageContext.request.contextPath}/assets/img/dashboard/avatar-mail.png"
+                                            alt="Avatar">
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img src="${sessionScope.account.avatar}" alt="Avatar">
+                                    </c:otherwise>
+                                </c:choose>
+                            </div>
+                            <div class="user-info">
+                                <span class="user-name">${sessionScope.account.fullName}</span>
+                                <span class="user-role">Người tìm việc</span>
+                            </div>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+
+                        <div class="dropdown-menu" id="userDropdownMenu">
+                            <a href="${pageContext.request.contextPath}/JobSeekerCheck" class="dropdown-item">
+                                <i class="fas fa-user"></i>
+                                <span>Hồ sơ</span>
+                            </a>
+                            <a href="${pageContext.request.contextPath}/cv" class="dropdown-item">
+                                <i class="fas fa-file-alt"></i>
+                                <span>Quản lý CV</span>
+                            </a>
+                            <a href="${pageContext.request.contextPath}/education" class="dropdown-item">
+                                <i class="fas fa-graduation-cap"></i>
+                                <span>Học nghiệp</span>
+                            </a>
+                            <a href="${pageContext.request.contextPath}/experience" class="dropdown-item">
+                                <i class="fas fa-briefcase"></i>
+                                <span>Kinh nghiệm</span>
+                            </a>
+                            <a href="${pageContext.request.contextPath}/application" class="dropdown-item">
+                                <i class="fas fa-paper-plane"></i>
+                                <span>Đơn đăng ký của tôi</span>
+                            </a>
+                            <a href="${pageContext.request.contextPath}/feedbackSeeker" class="dropdown-item">
+                                <i class="fas fa-comment"></i>
+                                <span>Góp ý/Nhận xét</span>
+                            </a>
+                            <a href="${pageContext.request.contextPath}/authen?action=change-password"
+                                class="dropdown-item">
+                                <i class="fas fa-lock"></i>
+                                <span>Đổi mật khẩu</span>
+                            </a>
+                            <div class="dropdown-divider"></div>
+                            <a href="${pageContext.request.contextPath}/view/authen/logout.jsp"
+                                class="dropdown-item logout">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Đăng xuất</span>
+                            </a>
+                        </div>
                     </div>
                     <div class="user-info">
                         <span class="user-name">${sessionScope.account.fullName}</span>

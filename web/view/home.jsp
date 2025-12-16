@@ -738,7 +738,7 @@ ${job.getMinSalary()} - ${job.getMaxSalary()}
 
     <!-- Footer -->
     <jsp:include page="../view/common/footer.jsp"/>
-
+   
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
@@ -761,5 +761,6 @@ for (let i = 0; i < numberOfStars; i++) {
 
         createStars();
     </script>
+    
 </body>
 </html>
