@@ -12,15 +12,8 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/upgit/jobbies/web/view/user/userHome.jsp</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/upgit/jobbies/web/view/common/user/common-js-user.jsp</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/upgit/jobbies/web/view/common/user/common-css-user.jsp</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/upgit/jobbies/web/WEB-INF/web.xml</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/upgit/jobbies/web/view/home.jsp</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/upgit/jobbies/web/view/common/user/header-user.jsp</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/upgit/jobbies/src/java/controller/AuthenticationController.java</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/upgit/jobbies/web/view/common/user/sidebar-user.jsp</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/upgit/jobbies/web/view/common/admin/sidebar-admin.jsp</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/upgit/jobbies/web/view/admin/seekerManagement.jsp</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/upgit/jobbies/web/view/admin/confirmRecruiter.jsp</file>
         </group>
     </open-files>
 </project-private>
