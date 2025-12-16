@@ -76,7 +76,10 @@
                 <p class="made-with">Made with 💜 and ✨</p>
             </div>
         </div>
+                        
     </footer>
+                        
+                        
 
     <style>
         .footer {
@@ -251,5 +254,6 @@
             }
         }
     </style>
+    
 
  
