@@ -430,7 +430,7 @@ hr {
                         <!--tao doi tuong companyDao de lay ve ten company-->
 
                         <!--end-->
-                        <h6 class="fw-medium mb-30 text-center fs-2">RECRUITER ACCOUNT MANAGEMENT</h6>
+                        <h6 class="fw-medium mb-30 text-center fs-2">QUẢN LÝ TÀI KHOẢN NHÀ TUYỂN DỤNG</h6>
                         <div class="container-fluid" style="margin-bottom: 20px; margin-top: 20px">
                             <div class="dash__content">
                                 <!-- sidebar menu -->
