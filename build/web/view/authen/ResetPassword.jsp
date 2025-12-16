@@ -328,7 +328,7 @@ margin-bottom: 0.5rem;
                 height: 60px;
                 font-size: 2rem;
 }
-        }
+}
     </style>
 </head>
 <body>
@@ -396,8 +396,8 @@ margin-bottom: 0.5rem;
                                 name="confirmPassword" 
                                 id="confirmPassword" 
                                 class="form-input"
-placeholder="Xác nhận mật khẩu mới" 
-                                required 
+placeholder="Xác nhận mật khẩu mới"
+required 
                                 onkeydown="preventSpaces(event)"
                             >
                             <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword')">
@@ -474,7 +474,7 @@ placeholder="Xác nhận mật khẩu mới"
 
         // Password strength indicator (optional)
 const passwordInput = document.getElementById('password');
-        const confirmPasswordInput = document.getElementById('confirmPassword');
+const confirmPasswordInput = document.getElementById('confirmPassword');
 
         if (passwordInput && confirmPasswordInput) {
             confirmPasswordInput.addEventListener('input', function() {

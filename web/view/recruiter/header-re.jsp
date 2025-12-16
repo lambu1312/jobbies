@@ -126,7 +126,7 @@
         background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
-        background-clip: text;
+background-clip: text;
         font-size: 22px;
         font-weight: 700;
         letter-spacing: -0.5px;
