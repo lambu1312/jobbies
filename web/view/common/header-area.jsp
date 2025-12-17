@@ -7,7 +7,7 @@
                 <div class="nav-links" id="navLinks">
                     <a href="${pageContext.request.contextPath}/home">Việc làm</a>
                     <a href="#">Tạo CV</a>
-                    <a href="#">Cẩm nang</a>
+                    <a href="${pageContext.request.contextPath}/handbook">Cẩm nang</a>
 
                     <c:choose>
                         <c:when test="${empty sessionScope.account}">
@@ -93,6 +93,7 @@
                 font-weight: 900;
                 background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
                 -webkit-background-clip: text;
+                background-clip: text;
                 -webkit-text-fill-color: transparent;
                 text-shadow: 0 0 30px rgba(196, 113, 245, 0.5);
                 letter-spacing: 2px;
