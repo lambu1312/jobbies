@@ -24,6 +24,7 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
     private final JobSeekerDAO jobSeekerDAO = new JobSeekerDAO();
     private final ApplicationDAO applicationDAO = new ApplicationDAO();
     private final FavourJobPostingDAO favourJPDAO = new FavourJobPostingDAO();
+    private final CVDAO cvDAO = new CVDAO();
     private final Validation valid = new Validation();
 
     @Override
@@ -75,8 +76,7 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
                 case "add-favourJP":
                     url = processAddFavouriteJobPosting(request);
                     break;
-
-                default:
+default:
                     url = "home";
             }
 
@@ -141,8 +141,7 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
             if (notice != null) {
                 request.setAttribute("notice", notice);
             }
-
-            return "view/user/ViewJobPosting.jsp";
+return "view/user/ViewJobPosting.jsp";
 
         } catch (NumberFormatException e) {
             Logger.getLogger(ViewDetailJobPostingServlet.class.getName()).log(Level.SEVERE, null, e);
@@ -167,6 +166,15 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
                         + URLEncoder.encode("You are not currently a member of Job Seeker. Please join to use this function.", "UTF-8");
             }
 
+            CV cv = cvDAO.findCVbyJobSeekerID(jobSeeker.getJobSeekerID());
+            if (cv == null) {
+                return "jobPostingDetail?action=details&idJP=" + jobPostingId + "&error="
+                        + URLEncoder.encode("CV is missing. You must upload a CV first.", "UTF-8");
+
+            }
+
+            request.setAttribute("cv", cv.getCVID());
+
             // Check for existing pending application
             Applications existingApp = applicationDAO.findPendingApplication(
                     jobSeeker.getJobSeekerID(), jobPostingId);
@@ -179,6 +187,7 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
             Applications application = new Applications();
             application.setJobPostingID(jobPostingId);
             application.setJobSeekerID(jobSeeker.getJobSeekerID());
+            application.setCVID(cv.getCVID());
             application.setStatus(3); // Pending status
             applicationDAO.insert(application);
 
@@ -196,7 +205,7 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
         Account account = (Account) session.getAttribute(CommonConst.SESSION_ACCOUNT);
 
         if (account == null) {
-            return "view/authen/login.jsp";
+return "view/authen/login.jsp";
         }
 
         try {
@@ -233,6 +242,15 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
         }
 
         JobSeekers jobSeeker = jobSeekerDAO.findJobSeekerIDByAccountID(String.valueOf(account.getId()));
+        if (jobSeeker != null) {
+            CV cv = cvDAO.findCVbyJobSeekerID(jobSeeker.getJobSeekerID());
+            if (cv != null) {
+                request.setAttribute("cvFilePath", cv.getFilePath());
+            }
+        } else {
+            request.setAttribute("errorJobSeeker",
+                    "You are not currently a member of Job Seeker. Please join to use this function.");
+        }
 
         return "view/user/ViewJobPosting.jsp";
     }
