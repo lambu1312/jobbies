@@ -34,6 +34,7 @@ import model.Account;
 import model.Company;
 import model.JobPostings;
 import model.Recruiters;
+import utils.CloudinaryUploadUtil;
 import validate.Validation;
 
 /**
@@ -569,104 +570,149 @@ public class AuthenticationController extends HttpServlet {
     }
 
     private String editProfile(HttpServletRequest request, HttpServletResponse response) {
-        String url = "";
-        try {
-            // Lấy các thông tin từ form
-            String lastName = request.getParameter("lastName");
-            String firstName = request.getParameter("firstName");
-            String phone = request.getParameter("phone");
-            Date dob = Date.valueOf(request.getParameter("date"));
-            int yearofbirth = dob.toLocalDate().getYear();
-            String gender = request.getParameter("gender");
-            String address = request.getParameter("address");
-            String email = request.getParameter("email");
+    String url = "";
+    try {
+        System.out.println("=== EDIT PROFILE ===");
+        
+        // Lấy các thông tin từ form
+        String lastName = request.getParameter("lastName");
+        String firstName = request.getParameter("firstName");
+        String phone = request.getParameter("phone");
+        Date dob = Date.valueOf(request.getParameter("date"));
+        int yearofbirth = dob.toLocalDate().getYear();
+        String gender = request.getParameter("gender");
+        String address = request.getParameter("address");
+        String email = request.getParameter("email");
 
-            // Lấy ảnh avatar từ form (nếu có)
-            Part part = request.getPart("avatar");
-            String imagePath = null;
+        // Lấy session và đối tượng Account hiện tại
+        HttpSession session = request.getSession();
+        Account accountEdit = (Account) session.getAttribute(CommonConst.SESSION_ACCOUNT);
+        
+        // Lưu avatar cũ
+        String oldAvatar = accountEdit.getAvatar();
+        System.out.println("Old avatar: " + oldAvatar);
 
-            // Nếu có ảnh mới thì xử lý tải lên
-            if (part != null && part.getSize() > 0 && part.getSubmittedFileName() != null && !part.getSubmittedFileName().isEmpty()) {
-                // Đường dẫn lưu ảnh
-                String path = request.getServletContext().getRealPath("/images");
-                File dir = new File(path);
+        // Upload avatar mới lên Cloudinary (nếu có)
+        String newAvatarUrl = uploadAvatar(request);
+        
+        System.out.println("New avatar URL: " + newAvatarUrl);
 
-                // Kiểm tra xem thư mục có tồn tại không, nếu không thì tạo mới
-                if (!dir.exists()) {
-                    dir.mkdirs(); // Tạo thư mục nếu chưa tồn tại
-                }
+        // Cập nhật thông tin trong đối tượng Account
+        accountEdit.setLastName(lastName);
+        accountEdit.setFirstName(firstName);
+        accountEdit.setPhone(phone);
+        accountEdit.setDob(dob);
+        accountEdit.setGender(gender.equalsIgnoreCase("male"));
+        accountEdit.setAddress(address);
+        accountEdit.setEmail(email);
 
-                // Tạo file ảnh trong thư mục images
-                File image = new File(dir, part.getSubmittedFileName());
-
-                // Ghi file ảnh vào đường dẫn
-                part.write(image.getAbsolutePath());
-
-                // Lấy đường dẫn tương đối của ảnh để lưu vào database
-                imagePath = request.getContextPath() + "/images/" + image.getName();
-            }
-
-            // Lấy session và đối tượng Account hiện tại
-            HttpSession session = request.getSession();
-            Account accountEdit = (Account) session.getAttribute(CommonConst.SESSION_ACCOUNT);
-
-            // Cập nhật thông tin trong đối tượng Account
-            accountEdit.setLastName(lastName);
-            accountEdit.setFirstName(firstName);
-            accountEdit.setPhone(phone);
-            accountEdit.setDob(dob);
-            accountEdit.setGender(gender.equalsIgnoreCase("male"));
-            accountEdit.setAddress(address);
-            accountEdit.setEmail(email);
-
-            // Nếu có ảnh mới, cập nhật ảnh avatar, nếu không, giữ lại ảnh hiện tại
-            if (imagePath != null) {
-                accountEdit.setAvatar(imagePath);
-            }
-
-            // Kiểm tra điều kiện hợp lệ cho ngày sinh và số điện thoại
-            List<String> errorsMessage = new ArrayList<>();
-            if (!valid.checkYearOfBirth(yearofbirth)) {
-                errorsMessage.add("You must be between 17 and 50 years old!");
-            }
-            if (!valid.CheckPhoneNumber(phone)) {
-                errorsMessage.add("Phone number is not valid!");
-            }
-            if (!valid.checkName(lastName)) {
-                errorsMessage.add("Last name is invalid!");
-            }
-            if (!valid.checkName(firstName)) {
-                errorsMessage.add("First name is invalid!");
-            }
-
-            // Nếu có lỗi, đặt thông báo lỗi vào request và quay lại trang chỉnh sửa hồ sơ
-            if (!errorsMessage.isEmpty()) {
-                if (accountEdit.getRoleId() == 2) {
-                    request.setAttribute("errorsMessage", errorsMessage);
-                    url = "view/recruiter/editRecruiterProfile.jsp";
-                }
-                if (accountEdit.getRoleId() == 3) {
-                    request.setAttribute("errorsMessage", errorsMessage);
-                    url = "view/user/editUserProfile.jsp";
-                }
-
-            } else {
-                accountDAO.updateAccount(accountEdit);
-                request.setAttribute("successMessage", "Profile updated successfully.");
-                if (accountEdit.getRoleId() == 2) {
-                    url = "view/recruiter/editRecruiterProfile.jsp";
-                }
-                if (accountEdit.getRoleId() == 3) {
-                    url = "view/user/editUserProfile.jsp";
-                }
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            url = "view/user/editUserProfile.jsp";
+        // Nếu có ảnh mới được upload, cập nhật avatar, nếu không giữ nguyên ảnh cũ
+        if (newAvatarUrl != null && !newAvatarUrl.trim().isEmpty()) {
+            System.out.println("Setting new avatar");
+            accountEdit.setAvatar(newAvatarUrl);
+        } else {
+            System.out.println("Keeping old avatar");
+            accountEdit.setAvatar(oldAvatar);
         }
-        return url;
+
+        // Kiểm tra điều kiện hợp lệ
+        List<String> errorsMessage = new ArrayList<>();
+        if (!valid.checkYearOfBirth(yearofbirth)) {
+            errorsMessage.add("You must be between 17 and 50 years old!");
+        }
+        if (!valid.CheckPhoneNumber(phone)) {
+            errorsMessage.add("Phone number is not valid!");
+        }
+        if (!valid.checkName(lastName)) {
+            errorsMessage.add("Last name is invalid!");
+        }
+        if (!valid.checkName(firstName)) {
+            errorsMessage.add("First name is invalid!");
+        }
+
+        // Nếu có lỗi, đặt thông báo lỗi vào request và quay lại trang chỉnh sửa hồ sơ
+        if (!errorsMessage.isEmpty()) {
+            request.setAttribute("errorsMessage", errorsMessage);
+            if (accountEdit.getRoleId() == 2) {
+                url = "view/recruiter/editRecruiterProfile.jsp";
+            } else if (accountEdit.getRoleId() == 3) {
+                url = "view/user/editUserProfile.jsp";
+            }
+        } else {
+            // Cập nhật vào database
+            accountDAO.updateAccount(accountEdit);
+            
+            // Lấy lại account từ database để đảm bảo data mới nhất
+            Account updatedAccount = accountDAO.findUserById(accountEdit.getId());
+            
+            System.out.println("Account updated. Avatar in DB: " + updatedAccount.getAvatar());
+            
+            // Cập nhật lại session
+            session.setAttribute(CommonConst.SESSION_ACCOUNT, updatedAccount);
+            
+            request.setAttribute("successMessage", "Profile updated successfully.");
+            if (accountEdit.getRoleId() == 2) {
+                url = "view/recruiter/editRecruiterProfile.jsp";
+            } else if (accountEdit.getRoleId() == 3) {
+                url = "view/user/editUserProfile.jsp";
+            }
+        }
+
+    } catch (Exception e) {
+        System.out.println("Error in editProfile: " + e.getMessage());
+        e.printStackTrace();
+        request.setAttribute("errorsMessage", List.of("Failed to update profile: " + e.getMessage()));
+        url = "view/user/editUserProfile.jsp";
     }
+    return url;
+}
+
+/**
+ * Upload avatar image to Cloudinary
+ * @param request HTTP request containing the file
+ * @return Cloudinary URL or null if no file or upload failed
+ */
+/**
+ * Upload avatar image to Cloudinary
+ * @param request HTTP request containing the file
+ * @return Cloudinary URL or null if no file or upload failed
+ */
+private String uploadAvatar(HttpServletRequest request) {
+    String avatarUrl = null;
+    try {
+        System.out.println("=== UPLOADING AVATAR ===");
+        
+        // Get avatar file part
+        Part avatarPart = request.getPart("avatar");
+        
+        if (avatarPart != null) {
+            System.out.println("Avatar part name: " + avatarPart.getName());
+            System.out.println("Avatar file name: " + avatarPart.getSubmittedFileName());
+            System.out.println("Avatar file size: " + avatarPart.getSize());
+        }
+        
+        // Check if file is provided
+        if (avatarPart == null || 
+            avatarPart.getSubmittedFileName() == null || 
+            avatarPart.getSubmittedFileName().trim().isEmpty() ||
+            avatarPart.getSize() == 0) {
+            System.out.println("No avatar file provided");
+            return null;
+        }
+        
+        // Upload to Cloudinary
+        System.out.println("Uploading avatar to Cloudinary...");
+        avatarUrl = CloudinaryUploadUtil.uploadImage(avatarPart, "avatars");
+        System.out.println("Avatar upload successful! URL: " + avatarUrl);
+        
+    } catch (Exception e) {
+        System.out.println("Error uploading avatar: " + e.getMessage());
+        e.printStackTrace();
+        avatarUrl = null;
+    }
+    
+    return avatarUrl;
+}
 
     // Vo hieu hoa tai khoan
     private String deactivateAccount(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

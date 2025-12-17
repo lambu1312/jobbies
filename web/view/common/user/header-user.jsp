@@ -25,7 +25,7 @@
                             </div>
                             <div class="user-info">
                                 <span class="user-name">${sessionScope.account.fullName}</span>
-                                <span class="user-role">Seeker</span>
+                                <span class="user-role">Người tìm việc</span>
                             </div>
                             <i class="fas fa-chevron-down"></i>
                         </button>
@@ -33,38 +33,38 @@
                         <div class="dropdown-menu" id="userDropdownMenu">
                             <a href="${pageContext.request.contextPath}/JobSeekerCheck" class="dropdown-item">
                                 <i class="fas fa-user"></i>
-                                <span>Profile</span>
+                                <span>Hồ sơ</span>
                             </a>
                             <a href="${pageContext.request.contextPath}/cv" class="dropdown-item">
                                 <i class="fas fa-file-alt"></i>
-                                <span>Manage CV</span>
+                                <span>Quản lý CV</span>
                             </a>
                             <a href="${pageContext.request.contextPath}/education" class="dropdown-item">
                                 <i class="fas fa-graduation-cap"></i>
-                                <span>Education</span>
+                                <span>Học nghiệp</span>
                             </a>
                             <a href="${pageContext.request.contextPath}/experience" class="dropdown-item">
                                 <i class="fas fa-briefcase"></i>
-                                <span>Experience</span>
+                                <span>Kinh nghiệm</span>
                             </a>
-<a href="${pageContext.request.contextPath}/application" class="dropdown-item">
+                            <a href="${pageContext.request.contextPath}/application" class="dropdown-item">
                                 <i class="fas fa-paper-plane"></i>
-                                <span>My Applications</span>
+                                <span>Đơn đăng ký của tôi</span>
                             </a>
                             <a href="${pageContext.request.contextPath}/feedbackSeeker" class="dropdown-item">
                                 <i class="fas fa-comment"></i>
-                                <span>Feedback</span>
+                                <span>Góp ý/Nhận xét</span>
                             </a>
                             <a href="${pageContext.request.contextPath}/authen?action=change-password"
                                 class="dropdown-item">
                                 <i class="fas fa-lock"></i>
-                                <span>Change Password</span>
+                                <span>Đổi mật khẩu</span>
                             </a>
                             <div class="dropdown-divider"></div>
                             <a href="${pageContext.request.contextPath}/view/authen/logout.jsp"
                                 class="dropdown-item logout">
                                 <i class="fas fa-sign-out-alt"></i>
-                                <span>Log Out</span>
+                                <span>Đăng xuất</span>
                             </a>
                         </div>
                     </div>
@@ -125,7 +125,7 @@
                 text-decoration: none;
                 font-weight: 600;
                 transition: all 0.3s;
-position: relative;
+                position: relative;
                 white-space: nowrap;
             }
 
@@ -227,7 +227,7 @@ position: relative;
                 visibility: hidden;
                 transform: translateY(-10px);
                 transition: all 0.3s;
-box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
             }
 
             .user-dropdown.active .dropdown-menu {
@@ -329,7 +329,8 @@ box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
                     transition: right 0.3s;
                     overflow-y: auto;
                 }
-.nav-links.active {
+
+                .nav-links.active {
                     right: 0;
                 }
 

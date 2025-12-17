@@ -447,7 +447,7 @@ box-shadow: 0 15px 40px rgba(196, 113, 245, 0.6);
                 const seconds = timeLeft % 60;
                 timerElement.textContent = `⏱️ Expires in ${minutes}:${seconds.toString().padStart(2, '0')}`;
 if (timeLeft > 0) {
-timeLeft--;
+                    timeLeft--;
                 } else {
                     timerElement.textContent = '⏱️ Expired';
                     timerElement.style.background = 'rgba(255, 82, 82, 0.1)';

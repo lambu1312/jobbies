@@ -211,7 +211,7 @@ left: 0;
         }
 
         .user-info .avatar-img {
-width: 60px;
+            width: 60px;
             height: 60px;
         }
 

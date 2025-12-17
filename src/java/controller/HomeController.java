@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package controller;
 
 import dao.CompanyDAO;
@@ -65,11 +61,34 @@ protected void processRequest(HttpServletRequest request, HttpServletResponse re
             }
         }
 
-        // Get filter and search parameters
-        String minSalary = request.getParameter("minSalary") != null ? request.getParameter("minSalary") : "";
-        String maxSalary = request.getParameter("maxSalary") != null ? request.getParameter("maxSalary") : "";
+        // Get filter and search parameters - CHỖ NÀY ĐÃ SỬA
+        String minSalaryParam = request.getParameter("minSalary");
+        String maxSalaryParam = request.getParameter("maxSalary");
         String filterCategory = request.getParameter("filterCategory") != null ? request.getParameter("filterCategory") : "";
         String search = request.getParameter("search") != null ? request.getParameter("search") : "";
+
+        // Parse salary parameters - CHỖ NÀY ĐÃ SỬA
+        String minSalary = "";
+        String maxSalary = "";
+        
+        // Chỉ lấy giá trị nếu không null và không empty
+        if (minSalaryParam != null && !minSalaryParam.trim().isEmpty()) {
+            try {
+                Integer.parseInt(minSalaryParam); // Validate là số
+                minSalary = minSalaryParam.trim();
+            } catch (NumberFormatException e) {
+                // Invalid number, keep empty
+            }
+        }
+        
+        if (maxSalaryParam != null && !maxSalaryParam.trim().isEmpty()) {
+            try {
+                Integer.parseInt(maxSalaryParam); // Validate là số
+                maxSalary = maxSalaryParam.trim();
+            } catch (NumberFormatException e) {
+                // Invalid number, keep empty
+            }
+        }
 
         // Retrieve job postings based on filters
         List<JobPostings> jobPostingsList = jobPostingsDAO.findAndfilterJobPostingsHome(minSalary, maxSalary, filterCategory, search, page);

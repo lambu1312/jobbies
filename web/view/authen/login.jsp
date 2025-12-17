@@ -193,7 +193,7 @@ transform: translateY(30px);
                 margin-bottom: 1.5rem;
             }
 .form-label {
-display: block;
+                display: block;
                 color: #b8b8d1;
                 font-weight: 600;
                 margin-bottom: 0.5rem;
@@ -414,13 +414,10 @@ background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
                     </div>
 
                     <!-- Google reCAPTCHA -->
-                    <div class="recaptcha-container">
-                        <div class="g-recaptcha" data-sitekey="6LeVFEsqAAAAAFK_7xKTrV798KMOrnTYcVgfeMIa"></div>
-                        <div id="error" class="error-message"></div>
-                    </div>
+                 
 
                     <!-- Login Button -->
-                    <button type="button" onclick="checkCapCha()" class="btn-login">Đăng nhập ✨</button>
+                    <button type="submit" class="btn-login">Đăng nhập ✨</button>
                 </form>
 
                 <!-- Register Link -->
@@ -431,7 +428,7 @@ background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
         <jsp:include page="../common/footer.jsp"></jsp:include>
 
         <!-- JS logic -->
-        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+       
         <script type="text/javascript">
             // Generate stars
             const starsContainer = document.getElementById('stars');

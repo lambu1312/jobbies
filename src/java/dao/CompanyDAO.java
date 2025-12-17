@@ -101,7 +101,7 @@ public class CompanyDAO extends GenericDAO<Company> {
         return queryGenericDAO(Company.class, sql, parameterMap);
     }
 
-    public void updateCompany(Company companyEdit) {
+   public void updateCompany(Company companyEdit) {
     String sql = "UPDATE [dbo].[Company]\n"
             + "   SET [name] = ?\n"
             + "      ,[description] = ?\n"
@@ -109,7 +109,6 @@ public class CompanyDAO extends GenericDAO<Company> {
             + "      ,[businessCode] = ?\n"
             + "      ,[businessLicenseImage] = ?\n"
             + " WHERE id = ?";
-    
     parameterMap = new LinkedHashMap<>();
     parameterMap.put("name", companyEdit.getName());
     parameterMap.put("description", companyEdit.getDescription());
@@ -117,7 +116,6 @@ public class CompanyDAO extends GenericDAO<Company> {
     parameterMap.put("businessCode", companyEdit.getBusinessCode());
     parameterMap.put("businessLicenseImage", companyEdit.getBusinessLicenseImage());
     parameterMap.put("id", companyEdit.getId());
-    
     updateGenericDAO(sql, parameterMap);
 }
 

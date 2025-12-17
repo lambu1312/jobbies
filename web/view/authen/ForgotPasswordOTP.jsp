@@ -101,7 +101,7 @@
             border-radius: 30px;
             z-index: -1;
 opacity: 0.3;
-filter: blur(20px);
+            filter: blur(20px);
         }
 
         .card-header {
@@ -211,7 +211,7 @@ filter: blur(20px);
             padding: 1rem;
             border-radius: 12px;
 margin-bottom: 1.5rem;
-font-weight: 600;
+            font-weight: 600;
             text-align: center;
             display: flex;
             align-items: center;
@@ -320,7 +320,7 @@ font-weight: 600;
                     <p class="card-description">
 Nhập mã OTP đã được gửi đến email của bạn
                     </p>
-</div>
+                </div>
 
                 <div class="info-box">
                     <i class="fas fa-info-circle"></i>
