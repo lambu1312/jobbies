@@ -14,7 +14,7 @@
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
 
         <style>
-<<<<<<< HEAD
+
             /* CRITICAL: Force navbar and dropdown positioning */
             nav.navbar,
             .navbar {
@@ -513,8 +513,8 @@
                     padding: 1rem;
                 }
             }
-        </style>
-=======
+      
+
     /* CRITICAL: Force navbar and dropdown positioning */
     nav.navbar,
     .navbar {
@@ -1014,7 +1014,7 @@
         }
     }
 </style>
->>>>>>> abe434f2440d1100ebf075c1a32336fe4846224c
+
     </head>
     <body>
         <!-- Stars Background -->

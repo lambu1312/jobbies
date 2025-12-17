@@ -13,7 +13,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
-<<<<<<< HEAD
+
                 body {
                 font-family: 'Inter', system-ui, sans-serif;
                 background: linear-gradient(135deg, #0a0015 0%, #1a0b2e 50%, #16213e 100%);
@@ -21,10 +21,10 @@
                 overflow-x: hidden;
                 overflow-y: auto;
                 min-height: 100vh;
-=======
+                }
             body {
                 background-color: #f4f4f9;
->>>>>>> abe434f2440d1100ebf075c1a32336fe4846224c
+
             }
             h1 {
                 font-size: 2.5rem;
@@ -87,12 +87,11 @@
                 background-color: #28a745;
                 color: white;
             }
-<<<<<<< HEAD
+
             .text-center{
                 color:#fff;
             }
-=======
->>>>>>> abe434f2440d1100ebf075c1a32336fe4846224c
+
         </style>
     </head>
     <body>
