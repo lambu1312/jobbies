@@ -12,13 +12,21 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/SWP391deptrai/jobbies/web/view/authen/ForgotPasswordOTP.jsp</file>
-            <file>file:/C:/SWP391deptrai/jobbies/web/view/authen/login.jsp</file>
-            <file>file:/C:/SWP391deptrai/jobbies/web/view/authen/logout.jsp</file>
-            <file>file:/C:/SWP391deptrai/jobbies/web/view/authen/ResetPassword.jsp</file>
-            <file>file:/C:/SWP391deptrai/jobbies/web/view/admin/adminHome.jsp</file>
-            <file>file:/C:/SWP391deptrai/jobbies/web/view/authen/ConfirmOTP.jsp</file>
-            <file>file:/C:/SWP391deptrai/jobbies/web/view/common/footer.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/src/java/utils/CloudinaryUploadUtil.java</file>
+            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/src/java/config/CloudinaryConfig.java</file>
+            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/src/java/controller/recruiter/CompanyController.java</file>
+            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/src/java/controller/AuthenticationController.java</file>
+            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/src/java/dao/DBContext.java</file>
+            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/src/java/controller/recruiter/InterviewManagementController.java</file>
+            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/web/view/recruiter/viewRecruiterProfile.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/web/view/home.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/web/view/recruiter/jobPost-manager.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/web/view/recruiter/editRecruiterProfile.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/src/java/controller/recruiter/GeminiAISuggestion.java</file>
+            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/web/view/recruiter/manageApplications.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/web/view/recruiter/cvSeeker.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/web/view/recruiter/editCompany.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/web/view/recruiter/createCompany.jsp</file>
         </group>
     </open-files>
 </project-private>

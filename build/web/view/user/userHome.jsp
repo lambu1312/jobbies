@@ -514,6 +514,7 @@
     }
 </style>
     </head>
+
     <body>
         <!-- Stars Background -->
         <div class="stars" id="stars"></div>
@@ -524,7 +525,7 @@
         <div class="pixel-decoration deco-3">🚀</div>
 
         <!-- Header -->
-        <jsp:include page="../common/user/header-user.jsp"/>
+        <jsp:include page="../common/user/header-user.jsp" />
 
         <!-- Hero Section -->
         <section class="hero-section">
@@ -707,6 +708,8 @@
                                                     Đăng: ${job.getPostedDate()}
                                                 </p>
                                             </div>
+                                            <h4>Không tìm thấy công việc</h4>
+                                            <p>Hãy thử thay đổi bộ lọc hoặc từ khóa tìm kiếm của bạn</p>
                                         </div>
                                     </a>
                                 </div>
