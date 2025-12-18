@@ -76,8 +76,7 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
                 case "add-favourJP":
                     url = processAddFavouriteJobPosting(request);
                     break;
-
-                default:
+default:
                     url = "home";
             }
 
@@ -142,8 +141,7 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
             if (notice != null) {
                 request.setAttribute("notice", notice);
             }
-
-            return "view/user/ViewJobPosting.jsp";
+return "view/user/ViewJobPosting.jsp";
 
         } catch (NumberFormatException e) {
             Logger.getLogger(ViewDetailJobPostingServlet.class.getName()).log(Level.SEVERE, null, e);
@@ -207,7 +205,7 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
         Account account = (Account) session.getAttribute(CommonConst.SESSION_ACCOUNT);
 
         if (account == null) {
-            return "view/authen/login.jsp";
+return "view/authen/login.jsp";
         }
 
         try {

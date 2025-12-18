@@ -48,6 +48,12 @@
                     <span class="nav-text">Đánh giá</span>
                 </a>
             </li>
+            <li>
+                <a href="${pageContext.request.contextPath}/handbook_admin" class="nav-link">
+                    <span class="nav-icon"><i class="fa-solid fa-book"></i></span>
+                    <span class="nav-text">Handbook</span>
+                </a>
+            </li>
         </ul>
         
         <hr class="divider">
@@ -113,6 +119,7 @@
         font-weight: 900;
         background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
         -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
         text-shadow: 0 0 30px rgba(196, 113, 245, 0.5);
         letter-spacing: 2px;

@@ -561,7 +561,7 @@
                                         }
         </script>
         <!-- TinyMCE và mã JavaScript cho nút Reset -->
-        <script src="https://cdn.tiny.cloud/1/vaugmbxpwey72le9o04xzdbx0pb0cgxv4ysvnlmu1qnlmngd/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+        <script src="https://cdn.tiny.cloud/1/1af9q7p79qcrurx9hkvj3z4dn90yr8d6lwb5fdyny56uqoh9/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
         <script>
                                         // Khởi tạo TinyMCE cho textarea với id là 'emailContent'
                                         tinymce.init({

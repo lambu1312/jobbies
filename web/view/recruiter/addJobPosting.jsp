@@ -13,7 +13,7 @@
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- TinyMCE Script -->
-    <script src="https://cdn.tiny.cloud/1/vaugmbxpwey72le9o04xzdbx0pb0cgxv4ysvnlmu1qnlmngd/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/1af9q7p79qcrurx9hkvj3z4dn90yr8d6lwb5fdyny56uqoh9/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 
     <style>
         * {
@@ -151,7 +151,7 @@ align-items: center;
             margin-top: 30px;
         }
 
-        .btn-success, 
+        .btn-success,
         .btn-secondary {
             padding: 12px 28px;
             font-size: 15px;
@@ -349,7 +349,7 @@ border-color: #c471f5;
             <a href="${pageContext.request.contextPath}/jobPost" class="btn-back">
                 <i class="fas fa-arrow-left"></i> Quay Lại
             </a>
-            <form id="jobPostingForm" action="${pageContext.request.contextPath}/jobPost?action=add-jp" method="POST" onsubmit="return validateForm()">
+            <form id="jobPostingForm" action="${pageContext.request.contextPath}/jobPost?action=add-jp" method="POST" onsubmit="return validateFormWithSalary()">
                 <h2>Thêm Bài Đăng Công Việc</h2>
 
                 <!-- Title -->
@@ -371,7 +371,7 @@ border-color: #c471f5;
                     <textarea id="jobRequirements" name="jobRequirements" class="form-control" placeholder="Nhập yêu cầu công việc" rows="6">${fn:escapeXml(jobRequirements)}</textarea>
                 </div>
 
-                <!-- Two-column row for Min Salary, Max Salary -->
+                <!-- Salary Row -->
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
@@ -517,7 +517,7 @@ editor.on('keydown', function (e) {
                     const pastedText = e.clipboardData.getData('text');
                     const currentContent = editor.getContent({format: 'text'});
                     const newContent = currentContent + pastedText;
-                    
+
                     if (newContent.length > MAX_CHARS) {
                         const allowedText = pastedText.substring(0, MAX_CHARS - currentContent.length);
                         editor.insertContent(allowedText);
@@ -526,7 +526,7 @@ editor.on('keydown', function (e) {
                     }
                 });
             },
-            init_instance_callback: function(editor) {
+            init_instance_callback: function (editor) {
                 console.log('✅ TinyMCE initialized:', editor.id);
                 if (tinymce.get('jobDescription') && tinymce.get('jobRequirements')) {
                     tinymceReady = true;
@@ -538,13 +538,11 @@ editor.on('keydown', function (e) {
         // Block excess input BEFORE it's added
         function blockExcessInput(editor, e) {
             const content = editor.getContent({format: 'text'});
-            
-            // Nếu đã đủ 1000 ký tự, chặn phím bất kỳ (trừ Ctrl, Shift, Arrow, Delete, Backspace)
+
             if (content.length >= MAX_CHARS) {
                 const allowedKeys = [8, 13, 46]; // Backspace, Enter, Delete
                 const ctrlKeys = [65, 67, 88]; // Ctrl+A, Ctrl+C, Ctrl+X
-                
-                // Chặn nếu không phải phím được phép
+
                 if (!e.ctrlKey && !allowedKeys.includes(e.keyCode) && !ctrlKeys.includes(e.keyCode)) {
                     e.preventDefault();
                     return false;
@@ -555,9 +553,8 @@ editor.on('keydown', function (e) {
         // Enforce character limit STRICTLY
         function enforceCharLimit(editor) {
             const content = editor.getContent({format: 'text'});
-            
+
             if (content.length > MAX_CHARS) {
-                // Cắt ngay tại 1000 ký tự
                 const truncated = content.substring(0, MAX_CHARS);
                 editor.setContent(truncated, {format: 'text'});
                 editor.undoManager.clear();
@@ -565,17 +562,17 @@ editor.on('keydown', function (e) {
         }
 
         // Wait for DOM and TinyMCE to be fully loaded
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             console.log('📄 DOM Content Loaded');
-            
-            setTimeout(function() {
+
+            setTimeout(function () {
                 let editorCount = 0;
                 let maxWait = 100;
-let checkInterval = setInterval(function() {
+                let checkInterval = setInterval(function () {
                     editorCount++;
                     const desc = tinymce.get('jobDescription');
                     const req = tinymce.get('jobRequirements');
-                    
+
                     if (desc && req) {
                         console.log('✅ All TinyMCE editors confirmed ready!');
                         tinymceReady = true;
@@ -594,14 +591,14 @@ let checkInterval = setInterval(function() {
         // Setup the job title input listener
         function setupJobTitleListener() {
             const jobTitleInput = document.getElementById('jobTitle');
-            
-            jobTitleInput.addEventListener('input', function() {
+
+            jobTitleInput.addEventListener('input', function () {
                 const jobTitle = this.value.trim();
-                
+
                 if (aiGenerateTimeout) {
                     clearTimeout(aiGenerateTimeout);
                 }
-                
+
                 if (jobTitle && jobTitle !== lastGeneratedTitle && jobTitle.length >= 3) {
                     aiGenerateTimeout = setTimeout(() => {
                         getAISuggestions();
@@ -613,56 +610,54 @@ let checkInterval = setInterval(function() {
         // Function to get AI suggestions
         async function getAISuggestions() {
             const jobTitle = document.getElementById('jobTitle').value.trim();
-            
+
             if (!jobTitle || jobTitle.length < 3) {
                 return;
             }
-            
+
             if (jobTitle === lastGeneratedTitle) {
                 return;
             }
-            
-            // Wait for TinyMCE if not ready
+
             if (!tinymceReady) {
                 setTimeout(() => getAISuggestions(), 500);
                 return;
             }
-            
+
             lastGeneratedTitle = jobTitle;
-            
+
             const hintElement = document.querySelector('.ai-hint');
             if (!hintElement) {
                 return;
             }
-            
+
             const originalHint = hintElement.innerHTML;
             hintElement.innerHTML = '<i class="fas fa-spinner fa-spin"></i> AI đang tạo nội dung...';
             hintElement.style.color = '#667eea';
-            
+
             try {
                 const response = await fetch('${pageContext.request.contextPath}/GeminiAISuggestion', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ jobTitle: jobTitle })
+                    body: JSON.stringify({jobTitle: jobTitle})
                 });
-const data = await response.json();
-                
+                const data = await response.json();
+
                 if (response.ok && data.description && data.requirements) {
                     const descEditor = tinymce.get('jobDescription');
                     const reqEditor = tinymce.get('jobRequirements');
-                    
+
                     if (descEditor && reqEditor) {
-                        // Strip HTML tags và cắt về 1000 ký tự
                         const descText = stripHTML(data.description).substring(0, MAX_CHARS);
                         const reqText = stripHTML(data.requirements).substring(0, MAX_CHARS);
-                        
+
                         descEditor.setContent(descText, {format: 'text'});
                         reqEditor.setContent(reqText, {format: 'text'});
                         descEditor.undoManager.clear();
                         reqEditor.undoManager.clear();
-                        
+
                         hintElement.innerHTML = '<i class="fas fa-check-circle"></i> Nội dung AI được tạo thành công!';
                         hintElement.style.color = '#28a745';
                         showNotification('✨ Gợi ý AI được tạo cho "' + jobTitle + '"', 'success');
@@ -706,18 +701,18 @@ const data = await response.json();
 if (existingAlert) {
                 existingAlert.remove();
             }
-            
+
             const alertDiv = document.createElement('div');
-            const typeClass = type === 'success' ? 'success' : 
-                             type === 'warning' ? 'warning' : 
-                             type === 'info' ? 'info' : 'danger';
-            
+            const typeClass = type === 'success' ? 'success' :
+                    type === 'warning' ? 'warning' :
+                    type === 'info' ? 'info' : 'danger';
+
             alertDiv.className = 'alert alert-' + typeClass + ' ai-notification';
             alertDiv.style.cssText = 'position: fixed; top: 100px; right: 20px; z-index: 9999; min-width: 300px; animation: slideIn 0.3s ease;';
             alertDiv.innerHTML = message;
-            
+
             document.body.appendChild(alertDiv);
-            
+
             setTimeout(() => {
                 alertDiv.style.animation = 'slideOut 0.3s ease';
                 setTimeout(() => alertDiv.remove(), 300);
@@ -761,15 +756,50 @@ if (existingAlert) {
                 reqEditor.setContent('');
                 reqEditor.undoManager.clear();
             }
-            
+
             lastGeneratedTitle = '';
         }
 
-        // Validate form before submission
-        function validateForm() {
+        // Validate salary TRƯỚC khi submit
+        function validateSalary() {
+            const minSalary = parseFloat(document.getElementById("minSalary").value);
+            const maxSalary = parseFloat(document.getElementById("maxSalary").value);
+
+            if (isNaN(minSalary) || isNaN(maxSalary)) {
+                alert("❌ Vui lòng nhập số cho Lương Tối Thiểu và Tối Đa!");
+                return false;
+            }
+
+            if (minSalary < 0) {
+                alert("❌ Lương Tối Thiểu không thể là số âm!");
+                return false;
+            }
+
+            if (maxSalary < 0) {
+                alert("❌ Lương Tối Đa không thể là số âm!");
+                return false;
+            }
+
+            // KIỂM TRA CHÍNH: minSalary <= maxSalary
+            if (minSalary > maxSalary) {
+                alert("❌ Lương Tối Thiểu không được vượt quá Lương Tối Đa!\n\nVí dụ:\n- VND: 20,000,000 đến 30,000,000\n- USD: 1,000 đến 2,000");
+                return false;
+            }
+
+            return true;
+        }
+
+        // Validate form đầy đủ trước submit
+        function validateFormWithSalary() {
+            // Kiểm tra salary trước
+            if (!validateSalary()) {
+                return false;
+            }
+
+            // Kiểm tra description và requirements
             const descEditor = tinymce.get("jobDescription");
             const reqEditor = tinymce.get("jobRequirements");
-            
+
             let description = descEditor ? descEditor.getContent({format: 'text'}) : '';
             let requirements = reqEditor ? reqEditor.getContent({format: 'text'}) : '';
 if (!description.trim()) {

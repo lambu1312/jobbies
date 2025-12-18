@@ -76,7 +76,10 @@
                 <p class="made-with">Made with 💜 and ✨</p>
             </div>
         </div>
+                        
     </footer>
+                        
+                        
 
     <style>
         .footer {
@@ -252,4 +255,6 @@
         }
     </style>
 
- 
+    <!-- Chatbot Widget -->
+    <%@ include file="chatbot-component.jsp" %>
+  
