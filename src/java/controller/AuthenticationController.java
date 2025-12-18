@@ -34,7 +34,6 @@ import model.Account;
 import model.Company;
 import model.JobPostings;
 import model.Recruiters;
-import utils.CloudinaryUploadUtil;
 import validate.Validation;
 
 /**
@@ -87,8 +86,20 @@ public class AuthenticationController extends HttpServlet {
             case "edit-recruiter-profile":
                 url = "view/recruiter/editRecruiterProfile.jsp";
                 break;
+                
+            case "deactivate-user":
+                url = "view/user/deactiveAccountUser.jsp";
+                break;
+
+            case "deactivate-recruiter":
+                url = "view/recruiter/deactiveAccountRecruiter.jsp";
+                break;    
+                
             default:
                 url = "view/authen/login.jsp";
+
+            
+
         }
 
         // Forward to the appropriate page
@@ -570,194 +581,124 @@ public class AuthenticationController extends HttpServlet {
     }
 
     private String editProfile(HttpServletRequest request, HttpServletResponse response) {
-        String url = "";
-        try {
-            System.out.println("=== EDIT PROFILE ===");
+    String url = "";
+    try {
+        // 1. Lấy các thông tin từ form
+        String lastName = request.getParameter("lastName");
+        String firstName = request.getParameter("firstName");
+        String phone = request.getParameter("phone");
+        String dobStr = request.getParameter("date");
+        String gender = request.getParameter("gender");
+        String address = request.getParameter("address");
+        String email = request.getParameter("email");
 
-            // Lấy các thông tin từ form
-            String lastName = request.getParameter("lastName");
-            String firstName = request.getParameter("firstName");
-            String phone = request.getParameter("phone");
-            Date dob = Date.valueOf(request.getParameter("date"));
-            int yearofbirth = dob.toLocalDate().getYear();
-            String gender = request.getParameter("gender"); // Nhận giá trị "male" hoặc "female" từ select option
-            String address = request.getParameter("address");
-            String email = request.getParameter("email");
+        // 2. Xử lý upload ảnh lên Cloudinary
+        Part part = request.getPart("avatar");
+        String cloudImageUrl = null;
 
-            // Lấy session và đối tượng Account hiện tại
-            HttpSession session = request.getSession();
-            Account accountEdit = (Account) session.getAttribute(CommonConst.SESSION_ACCOUNT);
-
-            // Danh sách lỗi
-            List<String> errorsMessage = new ArrayList<>();
-
-            // 1. Kiểm tra Validate cơ bản
-            if (!valid.checkYearOfBirth(yearofbirth)) {
-                errorsMessage.add("Bạn phải trong độ tuổi từ 17 đến 50!");
-            }
-            if (!valid.CheckPhoneNumber(phone)) {
-                errorsMessage.add("Số điện thoại không hợp lệ!");
-            }
-            if (!valid.checkName(lastName)) {
-                errorsMessage.add("Họ không hợp lệ (không chứa ký tự đặc biệt)!");
-            }
-            if (!valid.checkName(firstName)) {
-                errorsMessage.add("Tên không hợp lệ (không chứa ký tự đặc biệt)!");
-            }
-
-            // 2. Kiểm tra trùng Email (Quan trọng khi cho phép sửa Email)
-            // Nếu email nhập vào KHÁC email hiện tại của người dùng, thì mới kiểm tra trong DB
-            if (!email.equals(accountEdit.getEmail())) {
-                Account emailCheck = new Account();
-                emailCheck.setEmail(email);
-                if (accountDAO.checkUserEmailExist(emailCheck)) {
-                    errorsMessage.add("Email này đã được sử dụng bởi tài khoản khác!");
-                }
-            }
-
-            // Lưu avatar cũ
-            String oldAvatar = accountEdit.getAvatar();
-            // Upload avatar mới lên Cloudinary (nếu có)
-            String newAvatarUrl = uploadAvatar(request);
-
-            // Nếu có lỗi, trả về trang edit và hiển thị lỗi
-            if (!errorsMessage.isEmpty()) {
-                request.setAttribute("errorsMessage", errorsMessage);
-                if (accountEdit.getRoleId() == 2) {
-                    url = "view/recruiter/editRecruiterProfile.jsp";
-                } else if (accountEdit.getRoleId() == 3) {
-                    url = "view/user/editUserProfile.jsp";
-                }
-                return url;
-            }
-
-            // Nếu không có lỗi, tiến hành cập nhật object
-            accountEdit.setLastName(lastName);
-            accountEdit.setFirstName(firstName);
-            accountEdit.setPhone(phone);
-            accountEdit.setDob(dob);
-            // Chuyển đổi chuỗi "male"/"female" thành boolean
-            accountEdit.setGender(gender != null && gender.equalsIgnoreCase("male"));
-            accountEdit.setAddress(address);
-            accountEdit.setEmail(email);
-
-            // Cập nhật Avatar
-            if (newAvatarUrl != null && !newAvatarUrl.trim().isEmpty()) {
-                accountEdit.setAvatar(newAvatarUrl);
-            } else {
-                accountEdit.setAvatar(oldAvatar);
-            }
-
-            // Cập nhật vào database
-            accountDAO.updateAccount(accountEdit);
-
-            // Lấy lại account từ database để đảm bảo dữ liệu đồng bộ nhất
-            Account updatedAccount = accountDAO.findUserById(accountEdit.getId());
-
-            // Cập nhật lại session
-            session.setAttribute(CommonConst.SESSION_ACCOUNT, updatedAccount);
-
-            request.setAttribute("successMessage", "Cập nhật hồ sơ thành công!");
-
-            // Điều hướng lại trang edit
-            if (accountEdit.getRoleId() == 2) {
-                url = "view/recruiter/editRecruiterProfile.jsp";
-            } else if (accountEdit.getRoleId() == 3) {
-                url = "view/user/editUserProfile.jsp";
-            }
-
-        } catch (Exception e) {
-            System.out.println("Error in editProfile: " + e.getMessage());
-            e.printStackTrace();
-            request.setAttribute("errorsMessage", List.of("Lỗi cập nhật: " + e.getMessage()));
-            url = "view/user/editUserProfile.jsp";
-        }
-        return url;
-    }
-
-    /**
-     * Upload avatar image to Cloudinary
-     *
-     * @param request HTTP request containing the file
-     * @return Cloudinary URL or null if no file or upload failed
-     */
-    /**
-     * Upload avatar image to Cloudinary
-     *
-     * @param request HTTP request containing the file
-     * @return Cloudinary URL or null if no file or upload failed
-     */
-    private String uploadAvatar(HttpServletRequest request) {
-        String avatarUrl = null;
-        try {
-            System.out.println("=== UPLOADING AVATAR ===");
-
-            // Get avatar file part
-            Part avatarPart = request.getPart("avatar");
-
-            if (avatarPart != null) {
-                System.out.println("Avatar part name: " + avatarPart.getName());
-                System.out.println("Avatar file name: " + avatarPart.getSubmittedFileName());
-                System.out.println("Avatar file size: " + avatarPart.getSize());
-            }
-
-            // Check if file is provided
-            if (avatarPart == null
-                    || avatarPart.getSubmittedFileName() == null
-                    || avatarPart.getSubmittedFileName().trim().isEmpty()
-                    || avatarPart.getSize() == 0) {
-                System.out.println("No avatar file provided");
-                return null;
-            }
-
-            // Upload to Cloudinary
-            System.out.println("Uploading avatar to Cloudinary...");
-            avatarUrl = CloudinaryUploadUtil.uploadImage(avatarPart, "avatars");
-            System.out.println("Avatar upload successful! URL: " + avatarUrl);
-        } catch (Exception e) {
-            System.out.println("Error uploading avatar: " + e.getMessage());
-            e.printStackTrace();
-            avatarUrl = null;
+        // Nếu người dùng chọn ảnh mới (part không rỗng và có dung lượng)
+        if (part != null && part.getSize() > 0) {
+            // Sử dụng Utility để đẩy ảnh lên Cloudinary folder 'user_avatars'
+            cloudImageUrl = utils.CloudinaryUploadUtil.uploadImage(part, "user_avatars");
         }
 
-        return avatarUrl;
-    }
-
-    // Vo hieu hoa tai khoan
-    private String deactivateAccount(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Lấy tài khoản từ session
+        // 3. Lấy đối tượng Account hiện tại từ session
         HttpSession session = request.getSession();
-        Account account = (Account) session.getAttribute(CommonConst.SESSION_ACCOUNT);
+        Account accountEdit = (Account) session.getAttribute(CommonConst.SESSION_ACCOUNT);
 
-        if (account != null) {
-            // Lấy mật khẩu mà người dùng đã nhập từ request
-            String currentPassword = request.getParameter("currentPassword");
+        if (accountEdit == null) return "view/authen/login.jsp";
 
-            // Kiểm tra xem mật khẩu nhập vào có trùng với mật khẩu của tài khoản hiện tại không
-            if (account.getPassword().equals(currentPassword)) {  // So sánh mật khẩu đã lưu với mật khẩu nhập vào
-                // Nếu mật khẩu đúng, xóa tài khoản khỏi cơ sở dữ liệu
-                accountDAO.deactiveAccount(account);
-
-                // Chuyển hướng đến trang đăng nhập sau khi vô hiệu hoá thành công
-                request.setAttribute("message", "Your account has deactivated successfully.");
-                return "view/authen/login.jsp";
-            } else {
-                // Nếu mật khẩu không đúng, yêu cầu người dùng nhập lại và lưu trạng thái tab
-                request.setAttribute("error", "Incorrect password. Please try again.");
-                request.setAttribute("activeTab", "#deactivate-account"); // Đặt tab Deactivate là tab đang mở
-
-                if (account.getRoleId() == 3) {
-                    return "view/user/userProfile.jsp"; // Trở lại trang yêu cầu nhập lại mật khẩu
-                }
-                if (account.getRoleId() == 2) {
-                    return "view/recruiter/deactiveAccountRecruiter.jsp"; // Trở lại trang yêu cầu nhập lại mật khẩu
-                }
-            }
-        } else {
-            // Nếu không có tài khoản trong session, quay lại trang chủ
-            return "home";
+        // 4. Cập nhật thông tin cơ bản vào đối tượng Account
+        accountEdit.setLastName(lastName);
+        accountEdit.setFirstName(firstName);
+        accountEdit.setPhone(phone);
+        if (dobStr != null && !dobStr.isEmpty()) {
+            accountEdit.setDob(Date.valueOf(dobStr));
         }
-        return null;
+        accountEdit.setGender(gender != null && gender.equalsIgnoreCase("male"));
+        accountEdit.setAddress(address);
+        accountEdit.setEmail(email);
+
+        // Nếu upload thành công và có URL mới từ Cloudinary thì mới cập nhật thuộc tính avatar
+        if (cloudImageUrl != null) {
+            accountEdit.setAvatar(cloudImageUrl);
+        }
+
+        // 5. Kiểm tra dữ liệu (Validation)
+        List<String> errorsMessage = new ArrayList<>();
+        int yearofbirth = (accountEdit.getDob() != null) ? accountEdit.getDob().toLocalDate().getYear() : 0;
+
+        if (!valid.checkYearOfBirth(yearofbirth)) {
+            errorsMessage.add("You must be between 17 and 50 years old!");
+        }
+        if (!valid.CheckPhoneNumber(phone)) {
+            errorsMessage.add("Phone number is not valid!");
+        }
+        if (!valid.checkName(lastName)) {
+            errorsMessage.add("Last name is invalid!");
+        }
+        if (!valid.checkName(firstName)) {
+            errorsMessage.add("First name is invalid!");
+        }
+
+        // 6. Xử lý kết quả cập nhật
+        if (!errorsMessage.isEmpty()) {
+            request.setAttribute("errorsMessage", errorsMessage);
+            url = (accountEdit.getRoleId() == 2) ? "view/recruiter/editRecruiterProfile.jsp" : "view/user/editUserProfile.jsp";
+        } else {
+            // Lưu đối tượng Account (đã có URL ảnh Cloudinary) vào database
+            accountDAO.updateAccount(accountEdit);
+            
+            // Cập nhật lại session để hiển thị thông tin mới ngay lập tức
+            session.setAttribute(CommonConst.SESSION_ACCOUNT, accountEdit);
+            
+            request.setAttribute("successMessage", "Profile updated successfully.");
+            url = (accountEdit.getRoleId() == 2) ? "view/recruiter/editRecruiterProfile.jsp" : "view/user/editUserProfile.jsp";
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        request.setAttribute("errorsMessage", List.of("An error occurred: " + e.getMessage()));
+        url = "view/user/editUserProfile.jsp";
     }
+    return url;
+}
+    private String deactivateAccount(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
+
+    HttpSession session = request.getSession(false);
+    if (session == null) return "home";
+
+    Account account = (Account) session.getAttribute(CommonConst.SESSION_ACCOUNT);
+    if (account == null) return "home";
+
+    // Chỉ cho role 2 và 3 dùng chức năng này (tuỳ bạn)
+    if (account.getRoleId() != 2 && account.getRoleId() != 3) {
+        request.setAttribute("error", "You are not allowed to deactivate this account.");
+        return "view/authen/login.jsp";
+    }
+
+    String currentPassword = request.getParameter("currentPassword");
+
+    if (account.getPassword() != null && account.getPassword().equals(currentPassword)) {
+
+        accountDAO.deactiveAccount(account); // isActive = 0
+
+        session.removeAttribute(CommonConst.SESSION_ACCOUNT);
+        session.invalidate();
+
+        request.setAttribute("message", "Your account has deactivated successfully.");
+        return "view/authen/login.jsp";
+
+    } else {
+        request.setAttribute("error", "Incorrect password. Please try again.");
+
+        if (account.getRoleId() == 3) {
+            return "view/user/deactiveAccountUser.jsp";
+        } else { // roleId == 2
+            return "view/recruiter/deactiveAccountRecruiter.jsp";
+        }
+    }
+}
 
 }

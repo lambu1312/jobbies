@@ -203,6 +203,28 @@
                             font-weight: 600;
                         }
 
+                        .salary-display {
+                            background: linear-gradient(135deg, rgba(196, 113, 245, 0.1), rgba(250, 113, 205, 0.1));
+                            padding: 0.8rem 1rem;
+                            border-radius: 10px;
+                            border-left: 3px solid #c471f5;
+                        }
+
+                        .salary-amount {
+                            font-size: 1.3rem;
+                            font-weight: 800;
+                            background: linear-gradient(135deg, #7ee8fa, #c471f5);
+                            -webkit-background-clip: text;
+                            -webkit-text-fill-color: transparent;
+                        }
+
+                        .salary-currency {
+                            font-size: 0.9rem;
+                            color: #7ee8fa;
+                            font-weight: 700;
+                            margin-top: 0.3rem;
+                        }
+
                         .status-badge {
                             display: inline-flex;
                             align-items: center;
@@ -401,9 +423,9 @@
                                 <i class="fas fa-home"></i> Home
                             </a>
                             <span>/</span>
-                            <a href="${pageContext.request.contextPath}/home">Công việc</a>
+                            <a href="${pageContext.request.contextPath}/home">Jobs</a>
                             <span>/</span>
-                            <span>Chi tiết công việc</span>
+                            <span>Job Details</span>
                         </nav>
 
                         <c:choose>
@@ -445,8 +467,39 @@
                                                         <i class="fas fa-dollar-sign"></i>
                                                         <div>
                                                             <span class="meta-label">Lương:</span>
-                                                            <span class="meta-value">${jobPost.getMinSalary()} -
-                                                                ${jobPost.getMaxSalary()}</span>
+                                                            <div class="salary-display">
+                                                                <div class="salary-amount">
+                                                                    ${jobPost.getMinSalary()} - ${jobPost.getMaxSalary()}
+                                                                </div>
+                                                                <div class="salary-currency">
+                                                                    <c:choose>
+                                                                        <c:when test="${jobPost.getCurrency() == 'USD'}">
+                                                                            💵 USD ($)
+                                                                        </c:when>
+                                                                        <c:when test="${jobPost.getCurrency() == 'VND'}">
+                                                                            🇻🇳 VND (₫)
+                                                                        </c:when>
+                                                                        <c:when test="${jobPost.getCurrency() == 'EUR'}">
+                                                                            💶 EUR (€)
+                                                                        </c:when>
+                                                                        <c:when test="${jobPost.getCurrency() == 'GBP'}">
+                                                                            💷 GBP (£)
+                                                                        </c:when>
+                                                                        <c:when test="${jobPost.getCurrency() == 'JPY'}">
+                                                                            🇯🇵 JPY (¥)
+                                                                        </c:when>
+                                                                        <c:when test="${jobPost.getCurrency() == 'AUD'}">
+                                                                            🇦🇺 AUD (A$)
+                                                                        </c:when>
+                                                                        <c:when test="${jobPost.getCurrency() == 'CAD'}">
+                                                                            🇨🇦 CAD (C$)
+                                                                        </c:when>
+                                                                        <c:otherwise>
+                                                                            ${jobPost.getCurrency()}
+                                                                        </c:otherwise>
+                                                                    </c:choose>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
 
@@ -487,7 +540,7 @@
                                         <div class="card">
                                             <div class="card-header">
                                                 <i class="fas fa-file-alt"></i>
-                                                <h5>Mô tả công việc</h5>
+                                                <h5>Job Description</h5>
                                             </div>
                                             <div class="card-content">
                                                 ${jobPost.getDescription()}
@@ -498,7 +551,7 @@
                                         <div class="card">
                                             <div class="card-header">
                                                 <i class="fas fa-clipboard-check"></i>
-                                                <h5>Yêu cầu</h5>
+                                                <h5>Requirements</h5>
                                             </div>
                                             <div class="card-content">
                                                 ${jobPost.getRequirements()}
@@ -514,17 +567,20 @@
                                                 <div class="card apply-card">
                                                     <div class="card-header">
                                                         <i class="fas fa-briefcase"></i>
-                                                        <h5>đăng kí công việc</h5>
+                                                        <h5>Apply for this Job</h5>
                                                     </div>
                                                     <div class="login-notice">
-                                                        <p>🔒 Bạn phải đăng nhập để đăng kí công việc</p>
+                                                        <!-- nếu sc thì hiện nút đăng ký và like ko thì hiện you must be login -->
+                                                        <p>🔒 You must be logged in with a Seeker role to apply for this
+                                                            job.</p>
                                                         <a href="${pageContext.request.contextPath}/authen">
                                                             <button class="apply-button">
                                                                 <i class="fas fa-sign-in-alt"></i>
-                                                                Đăng nhập
+                                                                Login to Apply
                                                             </button>
                                                         </a>
                                                     </div>
+                                                            
                                                 </div>
                                             </c:when>
                                             <c:otherwise>
@@ -541,13 +597,51 @@
                                                 </div>
                                             </c:otherwise>
                                         </c:choose>
+
+                                        <!-- Job Info Card -->
+                                        <div class="card info-card">
+                                            <div class="card-header">
+                                                <i class="fas fa-info-circle"></i>
+                                                <h5>Job Information</h5>
+                                            </div>
+                                            <ul class="info-list">
+                                                <li>
+                                                    <i class="fas fa-building"></i>
+                                                    <div>
+                                                        <div class="meta-label">Company</div>
+                                                        <div class="meta-value">TechVibe Co.</div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fas fa-users"></i>
+                                                    <div>
+                                                        <div class="meta-label">Job Type</div>
+                                                        <div class="meta-value">Full-time</div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fas fa-layer-group"></i>
+                                                    <div>
+                                                        <div class="meta-label">Experience</div>
+                                                        <div class="meta-value">2-3 years</div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <i class="fas fa-clock"></i>
+                                                    <div>
+                                                        <div class="meta-label">Posted</div>
+                                                        <div class="meta-value">${jobPost.getPostedDate()}</div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </aside>
                                 </div>
                             </c:when>
                             <c:otherwise>
                                 <div class="error-message">
                                     <i class="fas fa-exclamation-triangle"></i>
-                                    Công việc không tìm thấy hoặc đã bị xóa
+                                    Job posting not found or has been removed.
                                 </div>
                             </c:otherwise>
                         </c:choose>

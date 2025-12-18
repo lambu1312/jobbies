@@ -38,54 +38,93 @@ public class HomeSeekerServlet extends HttpServlet {
             throws ServletException, IOException {
 
         PageControl pageControl = new PageControl();
-        
-        // Parse and validate page parameter
+
+        /* ================= PAGE ================= */
         int page = 1;
         try {
             page = Integer.parseInt(request.getParameter("page"));
             if (page < 1) page = 1;
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             page = 1;
         }
 
-        // Fetch category information and filter active categories
+        int pageSize = 12;
+
+        /* ================= CATEGORY ================= */
         List<Job_Posting_Category> jobCategories = jobCategoryDAO.findAll();
         List<Job_Posting_Category> activeCategories = new ArrayList<>();
-        for (Job_Posting_Category category : jobCategories) {
-            if (category.isStatus()) {
-                activeCategories.add(category);
+        for (Job_Posting_Category c : jobCategories) {
+            if (c.isStatus()) {
+                activeCategories.add(c);
             }
         }
 
-        // Get filter and search parameters
-        String minSalary = request.getParameter("minSalary") != null ? request.getParameter("minSalary") : "";
-        String maxSalary = request.getParameter("maxSalary") != null ? request.getParameter("maxSalary") : "";
-        String filterCategory = request.getParameter("filterCategory") != null ? request.getParameter("filterCategory") : "";
-        String search = request.getParameter("search") != null ? request.getParameter("search") : "";
+        /* ================= FILTER PARAMS ================= */
+        String minSalary   = getParam(request, "minSalary");
+        String maxSalary   = getParam(request, "maxSalary");
+        String search      = getParam(request, "search");
+        String currency    = getParam(request, "currency");
+        String postedDate  = getParam(request, "postedDate");
+        String closingDate = getParam(request, "closingDate");
+        String location    = getParam(request, "location");
 
-        // Retrieve job postings based on filters
-        List<JobPostings> jobPostingsList = jobPostingsDAO.findAndfilterJobPostingsHome(minSalary, maxSalary, filterCategory, search, page);
-        int totalRecord = jobPostingsDAO.findAndfilterAllHomeRecord(minSalary, maxSalary, filterCategory, search);
+        /* ================= QUERY DATA ================= */
+        List<JobPostings> jobPostingsList =
+                jobPostingsDAO.filterJobPostingsHome(
+                        minSalary,
+                        maxSalary,
+                        search,
+                        currency,
+                        postedDate,
+                        closingDate,
+                        location,
+                        page,
+                        pageSize
+                );
 
-        // Set up URL pattern for pagination links
+        int totalRecord =
+                jobPostingsDAO.countFilterJobPostingsHome(
+                        minSalary,
+                        maxSalary,
+                        search,
+                        currency,
+                        postedDate,
+                        closingDate,
+                        location
+                );
+
+        /* ================= PAGINATION ================= */
+        int totalPage = (int) Math.ceil((double) totalRecord / pageSize);
+
         String requestURL = request.getRequestURL().toString();
-        pageControl.setUrlPattern(requestURL + "?minSalary=" + minSalary + "&maxSalary=" + maxSalary 
-                + "&filterCategory=" + filterCategory + "&search=" + search + "&");
+        pageControl.setUrlPattern(
+                requestURL
+                + "?minSalary=" + minSalary
+                + "&maxSalary=" + maxSalary
+                + "&search=" + search
+                + "&currency=" + currency
+                + "&postedDate=" + postedDate
+                + "&closingDate=" + closingDate
+                + "&location=" + location
+                + "&"
+        );
 
-        // Calculate total pages for pagination
-        int totalPage = (totalRecord + 11) / 12; // Ceiling division for total pages
-        
-        // Configure page control attributes
         pageControl.setPage(page);
         pageControl.setTotalRecord(totalRecord);
         pageControl.setTotalPages(totalPage);
 
-        // Set attributes for request scope
+        /* ================= SET ATTRIBUTE ================= */
         request.setAttribute("jobPostingsList", jobPostingsList);
         request.setAttribute("pageControl", pageControl);
         request.setAttribute("activeCategories", activeCategories);
 
-        // Forward to JSP
+        /* ================= FORWARD ================= */
         request.getRequestDispatcher("view/user/userHome.jsp").forward(request, response);
+    }
+
+    /* ================= HELPER ================= */
+    private String getParam(HttpServletRequest request, String name) {
+        String value = request.getParameter(name);
+        return value == null ? "" : value.trim();
     }
 }

@@ -1,15 +1,17 @@
 package model;
+
 import java.util.Date;
 import java.util.List;
 
 public class JobPostings {
+
     private int JobPostingID;
     private int RecruiterID;
     private String Title;
     private String Description;
     private String Requirements;
-    private Long MinSalary;        // ✅ Thay double -> Long
-    private Long MaxSalary;        // ✅ Thay double -> Long
+    private double MinSalary;
+    private double MaxSalary;
     private String Currency;
     private String Location;
     private Date PostedDate;
@@ -21,7 +23,7 @@ public class JobPostings {
     public JobPostings() {
     }
 
-    public JobPostings(int JobPostingID, int RecruiterID, String Title, String Description, String Requirements, Long MinSalary, Long MaxSalary, String Currency, String Location, Date PostedDate, Date ClosingDate, int Job_Posting_CategoryID, String Status) {
+    public JobPostings(int JobPostingID, int RecruiterID, String Title, String Description, String Requirements, double MinSalary, double MaxSalary, String Currency, String Location, Date PostedDate, Date ClosingDate, int Job_Posting_CategoryID, String Status) {
         this.JobPostingID = JobPostingID;
         this.RecruiterID = RecruiterID;
         this.Title = Title;
@@ -77,19 +79,19 @@ public class JobPostings {
         this.Requirements = Requirements;
     }
 
-    public Long getMinSalary() {
+    public double getMinSalary() {
         return MinSalary;
     }
 
-    public void setMinSalary(Long MinSalary) {
+    public void setMinSalary(double MinSalary) {
         this.MinSalary = MinSalary;
     }
 
-    public Long getMaxSalary() {
+    public double getMaxSalary() {
         return MaxSalary;
     }
 
-    public void setMaxSalary(Long MaxSalary) {
+    public void setMaxSalary(double MaxSalary) {
         this.MaxSalary = MaxSalary;
     }
 

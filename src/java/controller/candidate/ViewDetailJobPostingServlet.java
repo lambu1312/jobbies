@@ -24,7 +24,7 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
     private final JobSeekerDAO jobSeekerDAO = new JobSeekerDAO();
     private final ApplicationDAO applicationDAO = new ApplicationDAO();
     private final FavourJobPostingDAO favourJPDAO = new FavourJobPostingDAO();
-    private final CVDAO cvDAO = new CVDAO();
+    private final CvDAO cvDAO = new CvDAO();
     private final Validation valid = new Validation();
 
     @Override
@@ -173,7 +173,7 @@ return "view/user/ViewJobPosting.jsp";
 
             }
 
-            request.setAttribute("cv", cv.getCVID());
+            request.setAttribute("cv", cv.getCvId());
 
             // Check for existing pending application
             Applications existingApp = applicationDAO.findPendingApplication(
@@ -187,7 +187,7 @@ return "view/user/ViewJobPosting.jsp";
             Applications application = new Applications();
             application.setJobPostingID(jobPostingId);
             application.setJobSeekerID(jobSeeker.getJobSeekerID());
-            application.setCVID(cv.getCVID());
+            application.setCVID(cv.getCvId());
             application.setStatus(3); // Pending status
             applicationDAO.insert(application);
 

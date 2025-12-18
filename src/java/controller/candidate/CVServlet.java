@@ -1,7 +1,7 @@
 package controller.candidate;
 
 import constant.CommonConst;
-import dao.CVDAO;
+import dao.CvDAO;
 import dao.JobSeekerDAO;
 import model.CV;
 import java.io.File;
@@ -34,7 +34,7 @@ import model.JobSeekers;
 
 public class CVServlet extends HttpServlet {
 
-    private final CVDAO cvDAO = new CVDAO();
+    private final CvDAO cvDAO = new CvDAO();
     private final JobSeekerDAO jobSeekerDAO = new JobSeekerDAO();
 
     @Override
@@ -163,10 +163,10 @@ public class CVServlet extends HttpServlet {
 
             // Insert CV record into the database
             CV newCV = new CV();
-            newCV.setJobSeekerID(jobSeeker.getJobSeekerID());
+            newCV.setCvId(jobSeeker.getJobSeekerID());
             newCV.setFilePath(request.getContextPath() + "/cvFiles/" + cvFile.getName());
             newCV.setUploadDate(Date.valueOf(LocalDate.now()));
-            cvDAO.insert(newCV);
+            cvDAO.insertFileCV(newCV);
 
             // Set success message and return to the CV page
             request.setAttribute("successCV", "CV uploaded successfully.");
@@ -230,8 +230,8 @@ public class CVServlet extends HttpServlet {
             part.write(cvFile.getAbsolutePath());
             // Update CV record in the database
             existingCV.setFilePath(request.getContextPath() + "/cvFiles/" + cvFile.getName());
-            existingCV.setUploadDate(Date.valueOf(LocalDate.now()));
-            cvDAO.updateCV(existingCV);
+            existingCV.setLastUpdated(Date.valueOf(LocalDate.now()));
+            cvDAO.update(existingCV);
 
             request.setAttribute("successCV", "CV updated successfully.");
             url = "cv";

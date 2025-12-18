@@ -48,7 +48,6 @@
         <url-pattern>/feedback</url-pattern>
         <url-pattern>/recruiters</url-pattern>
         <url-pattern>/candidate</url-pattern>
-        <url-pattern>/handbook_admin</url-pattern>
     </filter-mapping>
     <!--end-filter-admin-->
     <filter>

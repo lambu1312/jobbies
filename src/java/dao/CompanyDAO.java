@@ -106,15 +106,11 @@ public class CompanyDAO extends GenericDAO<Company> {
                 + "   SET [name] = ?\n"
                 + "      ,[description] = ?\n"
                 + "      ,[location] = ?\n"
-                + "      ,[businessCode] = ?\n"
-                + "      ,[businessLicenseImage] = ?\n"
                 + " WHERE id = ?";
         parameterMap = new LinkedHashMap<>();
         parameterMap.put("name", companyEdit.getName());
         parameterMap.put("description", companyEdit.getDescription());
         parameterMap.put("location", companyEdit.getLocation());
-        parameterMap.put("businessCode", companyEdit.getBusinessCode());
-        parameterMap.put("businessLicenseImage", companyEdit.getBusinessLicenseImage());
         parameterMap.put("id", companyEdit.getId());
         updateGenericDAO(sql, parameterMap);
     }

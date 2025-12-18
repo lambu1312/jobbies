@@ -347,6 +347,20 @@ hr {
     box-shadow: 0 6px 20px rgba(196, 113, 245, 0.5) !important;
 }
 
+/* Loading Animation */
+.loader-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
 .loader {
     width: 50px;
     height: 50px;
@@ -430,7 +444,7 @@ hr {
                         <!--tao doi tuong companyDao de lay ve ten company-->
 
                         <!--end-->
-                        <h6 class="fw-medium mb-30 text-center fs-2">QUẢN LÝ TÀI KHOẢN NHÀ TUYỂN DỤNG</h6>
+                        <h6 class="fw-medium mb-30 text-center fs-2">RECRUITER ACCOUNT MANAGEMENT</h6>
                         <div class="container-fluid" style="margin-bottom: 20px; margin-top: 20px">
                             <div class="dash__content">
                                 <!-- sidebar menu -->
@@ -638,10 +652,23 @@ hr {
                         </div>
                     </div>
                 </div>
+                <!-- content area end -->
+
+                <!-- Back to Top Button -->
+                <!--                <button type="button" class="btn btn-primary position-fixed" id="rts-back-to-top" style="bottom: 20px; right: 20px;">
+                                    <i class="fas fa-arrow-up"></i>
+                                </button>-->
             </div>
         </div>
     </div>
 
+
+    <!-- Theme Preloader Start -->
+    <div class="loader-wrapper">
+        <div class="loader"></div>
+        <div class="loader-section section-left"></div>
+        <div class="loader-section section-right"></div>
+    </div>
     <!-- Theme Preloader End -->
 
     <!-- Back to Top Button -->
@@ -682,6 +709,31 @@ hr {
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     <script>
+    // Hide loader when page is fully loaded
+    window.addEventListener('load', function() {
+        const loaderWrapper = document.querySelector('.loader-wrapper');
+        if (loaderWrapper) {
+            loaderWrapper.style.opacity = '0';
+            loaderWrapper.style.transition = 'opacity 0.5s ease';
+            
+            setTimeout(function() {
+                loaderWrapper.style.display = 'none';
+            }, 500);
+        }
+    });
+
+    // Fallback: Hide loader after 2 seconds if load event doesn't fire
+    setTimeout(function() {
+        const loaderWrapper = document.querySelector('.loader-wrapper');
+        if (loaderWrapper && loaderWrapper.style.display !== 'none') {
+            loaderWrapper.style.opacity = '0';
+            loaderWrapper.style.transition = 'opacity 0.5s ease';
+            
+            setTimeout(function() {
+                loaderWrapper.style.display = 'none';
+            }, 500);
+        }
+    }, 2000);
 
     // Back to top button functionality
     const backToTopBtn = document.getElementById('rts-back-to-top');

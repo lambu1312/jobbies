@@ -1,4 +1,4 @@
-package dao;
+  package dao;
 
 import static constant.CommonConst.RECORD_PER_PAGE;
 import java.util.LinkedHashMap;
@@ -283,85 +283,25 @@ public class JobPostingsDAO extends GenericDAO<JobPostings> {
         return queryGenericDAO(JobPostings.class, sql, parameterMap);
     }
 
-    // ========== METHODS CHO DASHBOARD WITH DATE FILTER ==========
-    /**
-     * Lấy top 5 recruiters có nhiều job postings nhất
-     * Hỗ trợ filter theo date range
-     */
-    public List<JobPostings> findTop5Recruiter(String startDate, String endDate) {
-        String sql = "SELECT * FROM JobPostings WHERE RecruiterID IN ("
-                + "    SELECT TOP 5 RecruiterID FROM JobPostings ";
-        
-        // Thêm WHERE clause nếu có date filter
-        if (startDate != null && !startDate.isEmpty() && endDate != null && !endDate.isEmpty()) {
-            sql += "    WHERE PostedDate BETWEEN ? AND ? ";
-        }
-        
-        sql += "    GROUP BY RecruiterID "
-                + "    ORDER BY COUNT(*) DESC"
-                + ") ";
-        
-        // Thêm WHERE clause cho query chính nếu có date filter
-        if (startDate != null && !startDate.isEmpty() && endDate != null && !endDate.isEmpty()) {
-            sql += "AND PostedDate BETWEEN ? AND ? ";
-        }
-        
-        sql += "ORDER BY RecruiterID, PostedDate DESC";
-        
-        parameterMap = new LinkedHashMap<>();
-        
-        // Set parameters nếu có date filter
-        if (startDate != null && !startDate.isEmpty() && endDate != null && !endDate.isEmpty()) {
-            parameterMap.put("StartDate1", startDate);
-            parameterMap.put("EndDate1", endDate);
-            parameterMap.put("StartDate2", startDate);
-            parameterMap.put("EndDate2", endDate);
-        }
-        
-        return queryGenericDAO(JobPostings.class, sql, parameterMap);
-    }
-    
-    /**
-     * Method overload để giữ compatibility với code cũ
-     */
     public List<JobPostings> findTop5Recruiter() {
-        return findTop5Recruiter(null, null);
+        String sql = "SELECT *\n"
+                + "FROM JobPostings\n"
+                + "WHERE RecruiterID IN (\n"
+                + "    SELECT TOP 5 RecruiterID\n"
+                + "    FROM JobPostings\n"
+                + "    GROUP BY RecruiterID\n"
+                + "    ORDER BY COUNT(*) DESC\n"
+                + ")\n"
+                + "ORDER BY RecruiterID, PostedDate;";
+        return queryGenericDAO(JobPostings.class, sql, parameterMap);
     }
 
-    /**
-     * Lấy tất cả job postings để đếm theo status
-     * Hỗ trợ filter theo date range
-     */
-    public List<JobPostings> filterJobPostingStatusForChart(String startDate, String endDate) {
-        String sql = "SELECT * FROM JobPostings ";
-        
-        // Thêm WHERE clause nếu có date filter
-        if (startDate != null && !startDate.isEmpty() && endDate != null && !endDate.isEmpty()) {
-            sql += "WHERE PostedDate BETWEEN ? AND ? ";
-        }
-        
-        sql += "ORDER BY Status";
-        
-        parameterMap = new LinkedHashMap<>();
-        
-        // Set parameters nếu có date filter
-        if (startDate != null && !startDate.isEmpty() && endDate != null && !endDate.isEmpty()) {
-            parameterMap.put("StartDate", startDate);
-            parameterMap.put("EndDate", endDate);
-        }
-        
+    public List<JobPostings> filterJobPostingStatusForChart() {
+        String sql = "SELECT *\n"
+                + "FROM JobPostings\n"
+                + "ORDER BY Status;";
         return queryGenericDAO(JobPostings.class, sql, parameterMap);
     }
-    
-    /**
-     * Method overload để giữ compatibility với code cũ
-     */
-    public List<JobPostings> filterJobPostingStatusForChart() {
-        return filterJobPostingStatusForChart(null, null);
-    }
-    
-    
-    // ========== KẾT THÚC METHODS CHO DASHBOARD ==========
 
     // Tim Job theo khoang luong
     public List<JobPostings> getJobsBySalaryRange(double MinSalary, double MaxSalary, int page, int pageSize, String sortField) {
@@ -376,111 +316,163 @@ public class JobPostingsDAO extends GenericDAO<JobPostings> {
         return queryGenericDAO(JobPostings.class, sql, parameterMap);
     }
 
-    public List<JobPostings> findAndfilterJobPostings(String status, String currency, String salaryRange, String postDate, String search, int page) {
+    public List<JobPostings> findAndfilterJobPostings(String status, String salaryRange, String postDate, String search, int page) {
         String sql = """
                      SELECT jb.* FROM JobPostings as jb, Recruiters as re, Account as acc
                      where jb.RecruiterID = re.RecruiterID AND re.AccountID = acc.id """;
 
-        parameterMap = new LinkedHashMap<>();
-
-        // Lọc theo Status
+        // Thêm điều kiện lọc nếu các giá trị không null hoặc không rỗng
         if (status != null && !status.isEmpty() && !status.equals("all")) {
             sql += " AND jb.Status = ?";
-            parameterMap.put("Status", status);
         }
-
-        // Lọc theo Currency
-        if (currency != null && !currency.isEmpty() && !currency.equals("all")) {
-            sql += " AND jb.Currency = ?";
-            parameterMap.put("Currency", currency);
-        }
-
-        // Lọc theo Salary Range
         if (salaryRange != null && !salaryRange.isEmpty() && !salaryRange.equals("all")) {
             switch (salaryRange) {
-                case "0-500":
-                    sql += " AND jb.MinSalary >= 0 AND jb.MaxSalary <= 500";
+                case "0-1000":
+                    sql += " AND jb.MinSalary >= 0 AND jb.MaxSalary <=1000";
                     break;
-                case "500-1000":
-                    sql += " AND jb.MinSalary >= 500 AND jb.MaxSalary <= 1000";
+                case "1000+":
+                    sql += " AND jb.MinSalary >= 1000";
                     break;
-                case "1000-2000":
-                    sql += " AND jb.MinSalary >= 1000 AND jb.MaxSalary <= 2000";
-                    break;
-                case "2000-5000":
-                    sql += " AND jb.MinSalary >= 2000 AND jb.MaxSalary <= 5000";
-                    break;
-                case "5000+":
-                    sql += " AND jb.MinSalary >= 5000";
+                case "2000+":
+                    sql += " AND jb.MinSalary >= 2000";
                     break;
             }
         }
-
-        // Lọc theo PostedDate
         if (postDate != null && !postDate.isEmpty()) {
-            sql += " AND CAST(jb.PostedDate AS DATE) = CAST(? AS DATE)";
+            sql += " AND jb.PostedDate = ?";
+        }
+        if (search != null && !search.isEmpty()) {
+            sql += " AND acc.lastName + ' ' + acc.firstName like ?";
+        }
+        sql += """
+                order by JobPostingID
+               OFFSET ? rows
+               FETCH NEXT ? rows only""";
+        parameterMap = new LinkedHashMap<>();
+        if (status != null && !status.isEmpty() && !status.equals("all")) {
+            parameterMap.put("Status", status);
+        }
+        if (postDate != null && !postDate.isEmpty()) {
             parameterMap.put("PostedDate", postDate);
         }
-
-        // Lọc theo Search (tìm tên người tạo)
         if (search != null && !search.isEmpty()) {
-            sql += " AND (acc.lastName + ' ' + acc.firstName like ? OR acc.firstName + ' ' + acc.lastName like ?)";
-            parameterMap.put("FullName1", "%" + search + "%");
-            parameterMap.put("FullName2", "%" + search + "%");
+            parameterMap.put("FullName", "%" + search + "%");
         }
-
-        sql += " ORDER BY jb.JobPostingID OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
-
         parameterMap.put("offset", (page - 1) * RECORD_PER_PAGE);
         parameterMap.put("fetch", RECORD_PER_PAGE);
-
         return queryGenericDAO(JobPostings.class, sql, parameterMap);
     }
 
     public List<JobPostings> findAndfilterJobPostingsHome(String minSalaryStr, String maxSalaryStr, String filterCategory, String search, int page) {
-        String sql = """
+    String sql = """
                  SELECT * FROM JobPostings where Status LIKE 'Open' """;
+    
+    parameterMap = new LinkedHashMap<>();
+    
+    // ✅ SỬA LOGIC NÀY - cho phép lọc linh hoạt
+    boolean hasMinSalary = minSalaryStr != null && !minSalaryStr.isEmpty();
+    boolean hasMaxSalary = maxSalaryStr != null && !maxSalaryStr.isEmpty();
+    
+    if (hasMinSalary && hasMaxSalary) {
+        // Cả 2 có: lọc trong khoảng
+        sql += " AND MinSalary >= ? AND MaxSalary <= ?";
+        parameterMap.put("MinSalary", minSalaryStr);
+        parameterMap.put("MaxSalary", maxSalaryStr);
+    } else if (hasMinSalary) {
+        // Chỉ có Min: lương >= Min
+        sql += " AND MaxSalary >= ?";
+        parameterMap.put("MinSalary", minSalaryStr);
+    } else if (hasMaxSalary) {
+        // Chỉ có Max: lương <= Max
+        sql += " AND MinSalary <= ?";
+        parameterMap.put("MaxSalary", maxSalaryStr);
+    }
+    
+    if(filterCategory != null && !filterCategory.isEmpty()) {
+        sql+=" AND Job_Posting_CategoryID = ?";
+        parameterMap.put("Job_Posting_CategoryID", filterCategory);
+    }
+    
+    if (search != null && !search.isEmpty()) {
+        sql += " AND Title LIKE ?";
+        parameterMap.put("Title", "%" + search + "%");
+    }
 
-        parameterMap = new LinkedHashMap<>();
-
-        // ✅ SỬA LOGIC NÀY - cho phép lọc linh hoạt
-        boolean hasMinSalary = minSalaryStr != null && !minSalaryStr.isEmpty();
-        boolean hasMaxSalary = maxSalaryStr != null && !maxSalaryStr.isEmpty();
-
-        if (hasMinSalary && hasMaxSalary) {
-            // Cả 2 có: lọc trong khoảng
-            sql += " AND MinSalary >= ? AND MaxSalary <= ?";
-            parameterMap.put("MinSalary", minSalaryStr);
-            parameterMap.put("MaxSalary", maxSalaryStr);
-        } else if (hasMinSalary) {
-            // Chỉ có Min: lương >= Min
-            sql += " AND MaxSalary >= ?";
-            parameterMap.put("MinSalary", minSalaryStr);
-        } else if (hasMaxSalary) {
-            // Chỉ có Max: lương <= Max
-            sql += " AND MinSalary <= ?";
-            parameterMap.put("MaxSalary", maxSalaryStr);
-        }
-
-        if (filterCategory != null && !filterCategory.isEmpty()) {
-            sql += " AND Job_Posting_CategoryID = ?";
-            parameterMap.put("Job_Posting_CategoryID", filterCategory);
-        }
-
-        if (search != null && !search.isEmpty()) {
-            sql += " AND Title LIKE ?";
-            parameterMap.put("Title", "%" + search + "%");
-        }
-
-        sql += """
+    sql += """
             order by JobPostingID
            OFFSET ? rows
            FETCH NEXT ? rows only""";
 
-        parameterMap.put("offset", (page - 1) * 12);
-        parameterMap.put("fetch", 12);
-        return queryGenericDAO(JobPostings.class, sql, parameterMap);
+    parameterMap.put("offset", (page - 1) * 12);
+    parameterMap.put("fetch", 12);
+    return queryGenericDAO(JobPostings.class, sql, parameterMap);
+}
+    public List<JobPostings> filterJobPostingsHome(
+        String minSalary,
+        String maxSalary,
+        String search,
+        String currency,
+        String postedDate,
+        String closingDate,
+        String location,
+        int page,
+        int pageSize) {
+
+    String sql = "SELECT * FROM JobPostings WHERE Status = 'Open'";
+    parameterMap = new LinkedHashMap<>();
+
+    // ===== LƯƠNG =====
+    if (minSalary != null && !minSalary.isEmpty()) {
+        sql += " AND MinSalary >= ?";
+        parameterMap.put("MinSalary", minSalary);
     }
+
+    if (maxSalary != null && !maxSalary.isEmpty()) {
+        sql += " AND MaxSalary <= ?";
+        parameterMap.put("MaxSalary", maxSalary);
+    }
+
+    // ===== SEARCH TITLE =====
+    if (search != null && !search.isEmpty()) {
+        sql += " AND Title LIKE ?";
+        parameterMap.put("Title", "%" + search + "%");
+    }
+
+    // ===== CURRENCY =====
+    if (currency != null && !currency.isEmpty()) {
+        sql += " AND Currency = ?";
+        parameterMap.put("Currency", currency);
+    }
+
+    // ===== LOCATION =====
+    if (location != null && !location.isEmpty()) {
+        sql += " AND Location LIKE ?";
+        parameterMap.put("Location", "%" + location + "%");
+    }
+
+    // ===== POSTED DATE =====
+    if (postedDate != null && !postedDate.isEmpty()) {
+        sql += " AND CAST(PostedDate AS DATE) >= ?";
+        parameterMap.put("PostedDate", postedDate);
+    }
+
+    // ===== CLOSING DATE =====
+    if (closingDate != null && !closingDate.isEmpty()) {
+        sql += " AND CAST(ClosingDate AS DATE) <= ?";
+        parameterMap.put("ClosingDate", closingDate);
+    }
+
+    sql += """
+            ORDER BY PostedDate DESC
+            OFFSET ? ROWS FETCH NEXT ? ROWS ONLY
+           """;
+
+    parameterMap.put("offset", (page - 1) * pageSize);
+    parameterMap.put("fetch", pageSize);
+
+    return queryGenericDAO(JobPostings.class, sql, parameterMap);
+}
+
 
     public void violateJobPost(int jobPostId) {
         String sql = """
@@ -494,62 +486,49 @@ public class JobPostingsDAO extends GenericDAO<JobPostings> {
         updateGenericDAO(sql, parameterMap);
     }
 
-    public int findAndfilterAllRecord(String status, String currency, String salaryRange, String postDate, String search) {
+    public int findAndfilterAllRecord(String status, String salaryRange, String postDate, String search) {
         String sql = """
                      SELECT count(*) FROM JobPostings as jb, Recruiters as re, Account as acc
                      where jb.RecruiterID = re.RecruiterID AND re.AccountID = acc.id """;
 
-        parameterMap = new LinkedHashMap<>();
-
-        // Lọc theo Status
+        // Thêm điều kiện lọc nếu các giá trị không null hoặc không rỗng
         if (status != null && !status.isEmpty() && !status.equals("all")) {
             sql += " AND jb.Status = ?";
-            parameterMap.put("Status", status);
         }
-
-        // Lọc theo Currency
-        if (currency != null && !currency.isEmpty() && !currency.equals("all")) {
-            sql += " AND jb.Currency = ?";
-            parameterMap.put("Currency", currency);
-        }
-
-        // Lọc theo Salary Range
         if (salaryRange != null && !salaryRange.isEmpty() && !salaryRange.equals("all")) {
             switch (salaryRange) {
-                case "0-500":
-                    sql += " AND jb.MinSalary >= 0 AND jb.MaxSalary <= 500";
+                case "0-1000":
+                    sql += " AND jb.MinSalary >= 0 AND jb.MaxSalary <=1000";
                     break;
-                case "500-1000":
-                    sql += " AND jb.MinSalary >= 500 AND jb.MaxSalary <= 1000";
+                case "1000+":
+                    sql += " AND jb.MinSalary >= 1000";
                     break;
-                case "1000-2000":
-                    sql += " AND jb.MinSalary >= 1000 AND jb.MaxSalary <= 2000";
-                    break;
-                case "2000-5000":
-                    sql += " AND jb.MinSalary >= 2000 AND jb.MaxSalary <= 5000";
-                    break;
-                case "5000+":
-                    sql += " AND jb.MinSalary >= 5000";
+                case "2000+":
+                    sql += " AND jb.MinSalary >= 2000";
                     break;
             }
         }
-
-        // Lọc theo PostedDate
         if (postDate != null && !postDate.isEmpty()) {
-            sql += " AND CAST(jb.PostedDate AS DATE) = CAST(? AS DATE)";
-            parameterMap.put("PostedDate", postDate);
+            sql += " AND jb.PostedDate = ?";
+        }
+        if (search != null && !search.isEmpty()) {
+            sql += " AND acc.lastName + ' ' + acc.firstName like ?";
         }
 
-        // Lọc theo Search (tìm tên người tạo)
+        parameterMap = new LinkedHashMap<>();
+        if (status != null && !status.isEmpty() && !status.equals("all")) {
+            parameterMap.put("Status", status);
+        }
+        if (postDate != null && !postDate.isEmpty()) {
+            parameterMap.put("PostedDate", postDate);
+        }
         if (search != null && !search.isEmpty()) {
-            sql += " AND (acc.lastName + ' ' + acc.firstName like ? OR acc.firstName + ' ' + acc.lastName like ?)";
-            parameterMap.put("FullName1", "%" + search + "%");
-            parameterMap.put("FullName2", "%" + search + "%");
+            parameterMap.put("FullName", "%" + search + "%");
         }
 
         return findTotalRecordGenericDAO(JobPostings.class, sql, parameterMap);
     }
-
+    
     public int findAndfilterAllHomeRecord(String minSalaryStr, String maxSalaryStr, String filterCategory, String search) {
         String sql = """
                      SELECT count(*) FROM JobPostings where Status LIKE 'Open' """;
@@ -560,12 +539,12 @@ public class JobPostingsDAO extends GenericDAO<JobPostings> {
             parameterMap.put("MinSalary", minSalaryStr);
             parameterMap.put("MaxSalary", maxSalaryStr);
         }
-
-        if (filterCategory != null && !filterCategory.isEmpty()) {
-            sql += " AND Job_Posting_CategoryID = ?";
+        
+        if(filterCategory != null && !filterCategory.isEmpty()) {
+            sql+=" AND Job_Posting_CategoryID = ?";
             parameterMap.put("Job_Posting_CategoryID", filterCategory);
         }
-
+        
         if (search != null && !search.isEmpty()) {
             sql += " AND Title LIKE ?";
             parameterMap.put("Title", "%" + search + "%");
@@ -612,8 +591,7 @@ public class JobPostingsDAO extends GenericDAO<JobPostings> {
 
         return findTotalRecordGenericDAO(JobPostings.class, sql, parameterMap);
     }
-
-    ///
+///
     public int findTotalJobPostingCountByQuarter(int recruiterID, int quarter) {
         // Xác định khoảng thời gian của quý dựa trên tham số quarter
         int startMonth;
@@ -658,5 +636,54 @@ public class JobPostingsDAO extends GenericDAO<JobPostings> {
         // Trả về tổng số job postings (nếu không có kết quả thì trả về 0)
         return result.isEmpty() ? 0 : result.get(0);
     }
+public int countFilterJobPostingsHome(
+        String minSalary,
+        String maxSalary,
+        String search,
+        String currency,
+        String postedDate,
+        String closingDate,
+        String location) {
+
+    String sql = "SELECT COUNT(*) FROM JobPostings WHERE Status = 'Open'";
+    parameterMap = new LinkedHashMap<>();
+
+    if (minSalary != null && !minSalary.isEmpty()) {
+        sql += " AND MinSalary >= ?";
+        parameterMap.put("MinSalary", minSalary);
+    }
+
+    if (maxSalary != null && !maxSalary.isEmpty()) {
+        sql += " AND MaxSalary <= ?";
+        parameterMap.put("MaxSalary", maxSalary);
+    }
+
+    if (search != null && !search.isEmpty()) {
+        sql += " AND Title LIKE ?";
+        parameterMap.put("Title", "%" + search + "%");
+    }
+
+    if (currency != null && !currency.isEmpty()) {
+        sql += " AND Currency = ?";
+        parameterMap.put("Currency", currency);
+    }
+
+    if (location != null && !location.isEmpty()) {
+        sql += " AND Location LIKE ?";
+        parameterMap.put("Location", "%" + location + "%");
+    }
+
+    if (postedDate != null && !postedDate.isEmpty()) {
+        sql += " AND CAST(PostedDate AS DATE) >= ?";
+        parameterMap.put("PostedDate", postedDate);
+    }
+
+    if (closingDate != null && !closingDate.isEmpty()) {
+        sql += " AND CAST(ClosingDate AS DATE) <= ?";
+        parameterMap.put("ClosingDate", closingDate);
+    }
+
+    return findTotalRecordGenericDAO(JobPostings.class, sql, parameterMap);
+}
 
 }

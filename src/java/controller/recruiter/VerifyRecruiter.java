@@ -16,7 +16,9 @@ import model.Company;
 import model.Recruiters;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.http.Part;
-import utils.CloudinaryUploadUtil;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024, // 1 MB
@@ -50,16 +52,17 @@ public class VerifyRecruiter extends HttpServlet {
         String position = request.getParameter("position");
 
         try {
-            // Check if a verification request has already been submitted
+            // Check if a verification request has already been submitted => ko cho gui lan 2
             Recruiters existingRecruiter = reDAO.findRecruitersbyAccountID(String.valueOf(account.getId()));
             if (existingRecruiter != null && !existingRecruiter.isIsVerify()) {
+                // If there's an existing unverified request, show error message
                 request.setAttribute("error", "Your verification request is already pending approval.");
                 request.getRequestDispatcher("view/recruiter/verifyRecruiter.jsp").forward(request, response);
                 return;
             }
-            
             // Check if the businessCode belongs to the recruiter's own company
             if (!companyDao.doesBusinessCodeExist(businessCode, account.getId())) {
+                // If the business code does not exist for the given account, show specific error message
                 request.setAttribute("error", "Invalid Business Code.");
                 request.getRequestDispatcher("view/recruiter/verifyRecruiter.jsp").forward(request, response);
                 return;
@@ -67,100 +70,73 @@ public class VerifyRecruiter extends HttpServlet {
 
             // Check if the company is active
             if (!companyDao.isCompanyActive(businessCode)) {
-request.setAttribute("error", "Company is not active.");
+                // If the company is inactive, show specific error message
+                request.setAttribute("error", "Company is not active.");
                 request.getRequestDispatcher("view/recruiter/verifyRecruiter.jsp").forward(request, response);
                 return;
             }
 
-            // Retrieve CompanyID based on BusinessCode
+            // Retrieve CompanyID based on BusinessCode since it's valid
             int companyId = companyDao.getCompanyIdByBusinessCode(businessCode);
 
-            // Get citizen ID image parts
+            // File uploads for citizen ID
             Part frontCitizenIDPart = request.getPart("frontCitizenID");
             Part backCitizenIDPart = request.getPart("backCitizenID");
 
-            // Validate that files are uploaded
-            if (frontCitizenIDPart == null || frontCitizenIDPart.getSubmittedFileName() == null || 
-                frontCitizenIDPart.getSubmittedFileName().trim().isEmpty()) {
-                request.setAttribute("error", "Please upload Front Citizen ID image.");
-                request.getRequestDispatcher("view/recruiter/verifyRecruiter.jsp").forward(request, response);
-                return;
-            }
-
-            if (backCitizenIDPart == null || backCitizenIDPart.getSubmittedFileName() == null || 
-                backCitizenIDPart.getSubmittedFileName().trim().isEmpty()) {
-                request.setAttribute("error", "Please upload Back Citizen ID image.");
-                request.getRequestDispatcher("view/recruiter/verifyRecruiter.jsp").forward(request, response);
-                return;
-            }
-
-            // Check if same file uploaded for both
             if (frontCitizenIDPart.getSubmittedFileName().equals(backCitizenIDPart.getSubmittedFileName())) {
                 request.setAttribute("error", "You cannot upload the same file for both Front and Back Citizen ID.");
                 request.getRequestDispatcher("view/recruiter/verifyRecruiter.jsp").forward(request, response);
                 return;
             }
 
-            // Upload images to Cloudinary
-            String frontCitizenIDUrl = uploadCitizenImage(frontCitizenIDPart, "frontCitizenID");
-            String backCitizenIDUrl = uploadCitizenImage(backCitizenIDPart, "backCitizenID");
-
-            // Check if upload was successful
-            if (frontCitizenIDUrl == null || backCitizenIDUrl == null) {
-                request.setAttribute("error", "Failed to upload citizen ID images. Please try again.");
-                request.getRequestDispatcher("view/recruiter/verifyRecruiter.jsp").forward(request, response);
-                return;
-            }
+            String frontCitizenIDFileName = saveFile(frontCitizenIDPart, "uploads/citizen_ids");
+            String backCitizenIDFileName = saveFile(backCitizenIDPart, "uploads/citizen_ids");
 
             // Create new recruiter entry
             Recruiters recruiter = new Recruiters();
             recruiter.setAccountID(account.getId());
             recruiter.setCompanyID(companyId);
             recruiter.setPosition(position);
-            recruiter.setIsVerify(false);
-            recruiter.setFrontCitizenImage(frontCitizenIDUrl);
-            recruiter.setBackCitizenImage(backCitizenIDUrl);
+            recruiter.setIsVerify(false);  // Set verification status to pending
+            recruiter.setFrontCitizenImage(frontCitizenIDFileName);
+            recruiter.setBackCitizenImage(backCitizenIDFileName);
 
             reDAO.insert(recruiter);
 
             request.setAttribute("verify", "Your verification request has been sent.");
-request.getRequestDispatcher("view/recruiter/verifyRecruiter.jsp").forward(request, response);
+            request.getRequestDispatcher("view/recruiter/verifyRecruiter.jsp").forward(request, response);
 
-        } catch (Exception e) {
-            request.setAttribute("error", "An error occurred while processing your request.");
+        } catch (NumberFormatException e) {
+            request.setAttribute("error", "Database error occurred.");
             request.getRequestDispatcher("view/recruiter/verifyRecruiter.jsp").forward(request, response);
             e.printStackTrace();
         }
     }
+// Helper method to save the uploaded file and return the file path
 
-    /**
-     * Upload citizen ID image to Cloudinary
-     * @param part File part from the request
-     * @param folder Folder name in Cloudinary
-     * @return Cloudinary URL or null if failed
-     */
-    private String uploadCitizenImage(Part part, String folder) {
-        String imageUrl = null;
-        try {
-            System.out.println("=== UPLOADING CITIZEN ID IMAGE ===");
-            System.out.println("Part name: " + part.getName());
-            System.out.println("File name: " + part.getSubmittedFileName());
-            System.out.println("File size: " + part.getSize());
-            
-            if (part == null || part.getSubmittedFileName() == null || part.getSubmittedFileName().trim().isEmpty()) {
-                System.out.println("No file provided");
-                return null;
-            }
-            
-            System.out.println("Uploading to Cloudinary folder: " + folder);
-            imageUrl = CloudinaryUploadUtil.uploadImage(part, folder);
-            System.out.println("Upload successful! URL: " + imageUrl);
-            
-        } catch (Exception e) {
-            System.out.println("Error uploading citizen ID image: " + e.getMessage());
-            e.printStackTrace();
-            imageUrl = null;
+    private String saveFile(Part filePart, String uploadDir) throws IOException {
+        // Create directories if they don't exist
+        Path uploadPath = Paths.get(getServletContext().getRealPath("/") + uploadDir);
+        if (!Files.exists(uploadPath)) {
+            Files.createDirectories(uploadPath);
         }
-        return imageUrl;
+
+        // Lấy tên file từ filePart
+        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+
+        // Kiểm tra nếu file đã tồn tại
+        Path filePath = uploadPath.resolve(fileName);
+        if (Files.exists(filePath)) {
+            // Tạo tên file mới bằng cách thêm timestamp vào file
+            String newFileName = System.currentTimeMillis() + "_" + fileName;
+            filePath = uploadPath.resolve(newFileName);
+            fileName = newFileName;
+        }
+
+        // Lưu file
+        Files.copy(filePart.getInputStream(), filePath);
+
+        // Trả về đường dẫn tương đối đến file
+        return uploadDir + "/" + fileName;
     }
 }

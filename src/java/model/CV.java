@@ -5,69 +5,132 @@
  */
 package model;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
-/**
- *
- * @author vanct
- */
 public class CV {
-    private int CVID;
-    private int JobSeekerID;
-    private String FilePath;
-    private Date UploadDate;
-    private Date LastUpdated;
+    private int cvId;
+    private int jobSeekerId;
 
-    public CV() {
-    }
+    private String title;
+    private String templateCode;
+    private boolean isDefault;
 
-    public CV(int CVID, int JobSeekerID, String FilePath, Date UploadDate, Date LastUpdated) {
-        this.CVID = CVID;
-        this.JobSeekerID = JobSeekerID;
-        this.FilePath = FilePath;
-        this.UploadDate = UploadDate;
-        this.LastUpdated = LastUpdated;
-    }
+    private String summary;
+    private String skills;
+    private String links;
 
-    public int getCVID() {
-        return CVID;
-    }
+    private String filePath;
+    private Date uploadDate;
+    private Date lastUpdated;
 
-    public void setCVID(int CVID) {
-        this.CVID = CVID;
-    }
+     public boolean isUploaded() {
+    return filePath != null && !filePath.trim().isEmpty();
+}
+    // getters/setters
+    public int getCvId() { return cvId; }
+    public void setCvId(int cvId) { this.cvId = cvId; }
 
-    public int getJobSeekerID() {
-        return JobSeekerID;
-    }
+    public int getJobSeekerId() { return jobSeekerId; }
+    public void setJobSeekerId(int jobSeekerId) { this.jobSeekerId = jobSeekerId; }
 
-    public void setJobSeekerID(int JobSeekerID) {
-        this.JobSeekerID = JobSeekerID;
-    }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
-    public String getFilePath() {
-        return FilePath;
-    }
+    public String getTemplateCode() { return templateCode; }
+    public void setTemplateCode(String templateCode) { this.templateCode = templateCode; }
 
-    public void setFilePath(String FilePath) {
-        this.FilePath = FilePath;
-    }
+    public boolean isIsDefault() { return isDefault; }
+    public void setIsDefault(boolean isDefault) { this.isDefault = isDefault; }
 
-    public Date getUploadDate() {
-        return UploadDate;
-    }
+    public String getSummary() { return summary; }
+    public void setSummary(String summary) { this.summary = summary; }
 
-    public void setUploadDate(Date UploadDate) {
-        this.UploadDate = UploadDate;
-    }
+    public String getSkills() { return skills; }
+    public void setSkills(String skills) { this.skills = skills; }
 
-    public Date getLastUpdated() {
-        return LastUpdated;
-    }
+    public String getLinks() { return links; }
+    public void setLinks(String links) { this.links = links; }
 
-    public void setLastUpdated(Date LastUpdated) {
-        this.LastUpdated = LastUpdated;
-    }
+    public String getFilePath() { return filePath; }
+    public void setFilePath(String filePath) { this.filePath = filePath; }
+
+    public Date getUploadDate() { return uploadDate; }
+    public void setUploadDate(Date uploadDate) { this.uploadDate = uploadDate; }
+
+    public Date getLastUpdated() { return lastUpdated; }
+    public void setLastUpdated(Date lastUpdated) { this.lastUpdated = lastUpdated; }
     
+    
+//    package model;
+//
+//import java.sql.Timestamp;
+//import java.util.List;
+//
+//public class CV {
+//    private int cvId;
+//    private int jobSeekerId;
+//
+//    private List<CvSection> sections;
+//
+//    private String title;
+//    private String templateCode;
+//    private boolean isDefault;
+//
+//    private String summary;
+//    private String skills;
+//    private String links;
+//
+//    private String filePath;
+//    private Timestamp uploadDate;
+//    private Timestamp lastUpdated;
+//
+//    // ===== helpers (không cần CvType) =====
+//    public boolean isUploaded() {
+//    return filePath != null && !filePath.trim().isEmpty();
+//}
+//
+//
+//    public boolean isBuilder() {
+//        return !isUploaded();
+//    }
+//
+//    public int getCvId() { return cvId; }
+//    public void setCvId(int cvId) { this.cvId = cvId; }
+//
+//    public int getJobSeekerId() { return jobSeekerId; }
+//    public void setJobSeekerId(int jobSeekerId) { this.jobSeekerId = jobSeekerId; }
+//
+//    public List<CvSection> getSections() { return sections; }
+//    public void setSections(List<CvSection> sections) { this.sections = sections; }
+//
+//    public String getTitle() { return title; }
+//    public void setTitle(String title) { this.title = title; }
+//
+//    public String getTemplateCode() { return templateCode; }
+//    public void setTemplateCode(String templateCode) { this.templateCode = templateCode; }
+//
+//    public boolean isIsDefault() { return isDefault; }
+//    public void setIsDefault(boolean isDefault) { this.isDefault = isDefault; }
+//
+//    public String getSummary() { return summary; }
+//    public void setSummary(String summary) { this.summary = summary; }
+//
+//    public String getSkills() { return skills; }
+//    public void setSkills(String skills) { this.skills = skills; }
+//
+//    public String getLinks() { return links; }
+//    public void setLinks(String links) { this.links = links; }
+//
+//    public String getFilePath() { return filePath; }
+//    public void setFilePath(String filePath) { this.filePath = filePath; }
+//
+//    public Timestamp getUploadDate() { return uploadDate; }
+//    public void setUploadDate(Timestamp uploadDate) { this.uploadDate = uploadDate; }
+//
+//    public Timestamp getLastUpdated() { return lastUpdated; }
+//    public void setLastUpdated(Timestamp lastUpdated) { this.lastUpdated = lastUpdated; }
+//}
+
     
 }

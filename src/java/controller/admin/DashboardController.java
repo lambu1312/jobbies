@@ -1,3 +1,7 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
+ */
 package controller.admin;
 
 import dao.AccountDAO;
@@ -9,6 +13,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,39 +29,18 @@ public class DashboardController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        // Lấy date filter parameters
-        String startDate = request.getParameter("startDate");
-        String endDate = request.getParameter("endDate");
-        
-        // Kiểm tra xem có filter theo date không
-        boolean hasDateFilter = (startDate != null && !startDate.isEmpty() && 
-                                 endDate != null && !endDate.isEmpty());
-        
-        // Get seeker statistics with date filter
-        int totalSeeker, totalSeekerActive, totalSeekerInactive;
-        int totalRecruiter, totalRecruiterActive, totalRecruiterInactive;
-        
-        if (hasDateFilter) {
-            // Lọc theo date range
-            totalSeeker = accDao.findAllTotalRecordByDateRange(3, startDate, endDate);
-            totalSeekerActive = accDao.findTotalRecordByStatusAndDateRange(true, 3, startDate, endDate);
-            totalSeekerInactive = accDao.findTotalRecordByStatusAndDateRange(false, 3, startDate, endDate);
-            
-            totalRecruiter = accDao.findAllTotalRecordByDateRange(2, startDate, endDate);
-            totalRecruiterActive = accDao.findTotalRecordByStatusAndDateRange(true, 2, startDate, endDate);
-            totalRecruiterInactive = accDao.findTotalRecordByStatusAndDateRange(false, 2, startDate, endDate);
-        } else {
-            // Không lọc - lấy tất cả
-            totalSeeker = accDao.findAllTotalRecord(3);
-            totalSeekerActive = accDao.findTotalRecordByStatus(true, 3);
-            totalSeekerInactive = accDao.findTotalRecordByStatus(false, 3);
-            
-            totalRecruiter = accDao.findAllTotalRecord(2);
-            totalRecruiterActive = accDao.findTotalRecordByStatus(true, 2);
-            totalRecruiterInactive = accDao.findTotalRecordByStatus(false, 2);
-        }
-        
+        //get seeker record
+        int totalSeeker = accDao.findAllTotalRecord(3);
+        int totalSeekerActive = accDao.findTotalRecordByStatus(true, 3);
+        int totalSeekerInactive = accDao.findTotalRecordByStatus(false, 3);
+        //get recruiter record
+        int totalRecruiter = accDao.findAllTotalRecord(2);
+        int totalRecruiterActive = accDao.findTotalRecordByStatus(true, 2);
+        int totalRecruiterInactive = accDao.findTotalRecordByStatus(false, 2);
+        //get company record
+        int totalCompany = companyDao.findAllTotalRecord();
+        int totalCompanyActive = companyDao.findTotalRecordByStatus(true);
+        int totalCompanyInactive = companyDao.findTotalRecordByStatus(false);
         //set vao request
         request.setAttribute("totalSeeker", totalSeeker);
         request.setAttribute("totalSeekerActive", totalSeekerActive);
@@ -64,30 +48,26 @@ public class DashboardController extends HttpServlet {
         request.setAttribute("totalRecruiter", totalRecruiter);
         request.setAttribute("totalRecruiterActive", totalRecruiterActive);
         request.setAttribute("totalRecruiterInactive", totalRecruiterInactive);
+        request.setAttribute("totalCompany", totalCompany);
+        request.setAttribute("totalCompanyActive", totalCompanyActive);
+        request.setAttribute("totalCompanyInactive", totalCompanyInactive);
 
-        // Lấy danh sách JobPostings - SỬ DỤNG DATE FILTER
-        List<JobPostings> jobPostingsList;
-        if (hasDateFilter) {
-            jobPostingsList = jobPostingDao.findTop5Recruiter(startDate, endDate);
-        } else {
-            jobPostingsList = jobPostingDao.findTop5Recruiter();
-        }
+        // Sử dụng hàm findTop5Recruiter từ jobPostingDao để lấy danh sách JobPostings
+        List<JobPostings> jobPostingsList = jobPostingDao.findTop5Recruiter();
 
         // Tạo một Map để đếm số lượng bài đăng cho từng RecruiterID
         Map<Integer, Integer> recruiterPostCount = new HashMap<>();
+
         for (JobPostings posting : jobPostingsList) {
             int recruiterId = posting.getRecruiterID();
             recruiterPostCount.put(recruiterId, recruiterPostCount.getOrDefault(recruiterId, 0) + 1);
         }
+        // Đưa recruiterPostCount vào request scope để JSP có thể sử dụng
         request.setAttribute("recruiterPostCount", recruiterPostCount);
 
-        // Lấy job posting status - SỬ DỤNG DATE FILTER
-        List<JobPostings> jobPostingsListFilter;
-        if (hasDateFilter) {
-            jobPostingsListFilter = jobPostingDao.filterJobPostingStatusForChart(startDate, endDate);
-        } else {
-            jobPostingsListFilter = jobPostingDao.filterJobPostingStatusForChart();
-        }
+        // Khởi tạo JobPostingDAO và lấy danh sách JobPostings
+        JobPostingsDAO jobPostingDao = new JobPostingsDAO();
+        List<JobPostings> jobPostingsListFilter = jobPostingDao.filterJobPostingStatusForChart();
 
         // Đếm số lượng job postings theo từng trạng thái
         Map<String, Integer> jobPostingStatusData = new HashMap<>();
@@ -96,12 +76,12 @@ public class DashboardController extends HttpServlet {
         jobPostingStatusData.put("Violate", 0);
 
         for (JobPostings jobPosting : jobPostingsListFilter) {
-            String status = jobPosting.getStatus();
+            String status = jobPosting.getStatus(); // Giả sử hàm getStatus() trả về chuỗi "Open", "Closed", hoặc "Violate"
             jobPostingStatusData.put(status, jobPostingStatusData.getOrDefault(status, 0) + 1);
         }
 
+        // Đặt dữ liệu vào request attribute để chuyển tới JSP
         request.setAttribute("jobPostingStatusData", jobPostingStatusData);
-        
         //chuyen trang
         request.getRequestDispatcher("view/admin/adminHome.jsp").forward(request, response);
     }
@@ -109,7 +89,62 @@ public class DashboardController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Redirect POST to GET to handle uniformly
-        doGet(request, response);
+        //get seeker record
+        int totalSeeker = accDao.findAllTotalRecord(3);
+        int totalSeekerActive = accDao.findTotalRecordByStatus(true, 3);
+        int totalSeekerInactive = accDao.findTotalRecordByStatus(false, 3);
+        //get recruiter record
+        int totalRecruiter = accDao.findAllTotalRecord(2);
+        int totalRecruiterActive = accDao.findTotalRecordByStatus(true, 2);
+        int totalRecruiterInactive = accDao.findTotalRecordByStatus(false, 2);
+        //get company record
+        int totalCompany = companyDao.findAllTotalRecord();
+        int totalCompanyActive = companyDao.findTotalRecordByStatus(true);
+        int totalCompanyInactive = companyDao.findTotalRecordByStatus(false);
+        //set vao request
+        request.setAttribute("totalSeeker", totalSeeker);
+        request.setAttribute("totalSeekerActive", totalSeekerActive);
+        request.setAttribute("totalSeekerInactive", totalSeekerInactive);
+        request.setAttribute("totalRecruiter", totalRecruiter);
+        request.setAttribute("totalRecruiterActive", totalRecruiterActive);
+        request.setAttribute("totalRecruiterInactive", totalRecruiterInactive);
+        request.setAttribute("totalCompany", totalCompany);
+        request.setAttribute("totalCompanyActive", totalCompanyActive);
+        request.setAttribute("totalCompanyInactive", totalCompanyInactive);
+
+        // Sử dụng hàm findTop5Recruiter từ jobPostingDao để lấy danh sách JobPostings
+        List<JobPostings> jobPostingsList = jobPostingDao.findTop5Recruiter();
+
+        // Tạo một Map để đếm số lượng bài đăng cho từng RecruiterID
+        Map<Integer, Integer> recruiterPostCount = new HashMap<>();
+
+        for (JobPostings posting : jobPostingsList) {
+            int recruiterId = posting.getRecruiterID();
+            recruiterPostCount.put(recruiterId, recruiterPostCount.getOrDefault(recruiterId, 0) + 1);
+        }
+
+        // Đưa recruiterPostCount vào request scope để JSP có thể sử dụng
+        request.setAttribute("recruiterPostCount", recruiterPostCount);
+
+        // Khởi tạo JobPostingDAO và lấy danh sách JobPostings
+        JobPostingsDAO jobPostingDao = new JobPostingsDAO();
+        List<JobPostings> jobPostingsListFilter = jobPostingDao.filterJobPostingStatusForChart();
+
+        // Đếm số lượng job postings theo từng trạng thái
+        Map<String, Integer> jobPostingStatusData = new HashMap<>();
+        jobPostingStatusData.put("Open", 0);
+        jobPostingStatusData.put("Closed", 0);
+        jobPostingStatusData.put("Violate", 0);
+
+        for (JobPostings jobPosting : jobPostingsListFilter) {
+            String status = jobPosting.getStatus(); // Giả sử hàm getStatus() trả về chuỗi "Open", "Closed", hoặc "Violate"
+            jobPostingStatusData.put(status, jobPostingStatusData.getOrDefault(status, 0) + 1);
+        }
+
+        // Đặt dữ liệu vào request attribute để chuyển tới JSP
+        request.setAttribute("jobPostingStatusData", jobPostingStatusData);
+        //chuyen trang
+        request.getRequestDispatcher("view/admin/adminHome.jsp").forward(request, response);
     }
+
 }

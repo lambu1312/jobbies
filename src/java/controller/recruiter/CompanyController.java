@@ -26,7 +26,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Account;
 import model.Company;
-import utils.CloudinaryUploadUtil;
 import validate.Validation;
 
 @MultipartConfig
@@ -133,23 +132,22 @@ public class CompanyController extends HttpServlet {
         try {
             // get ve businessLicense
             Part part = request.getPart(businessLicense);
-
+//SWT: MAJOR (CODE_SMELL)            
             if (part == null || part.getSubmittedFileName() == null || part.getSubmittedFileName().trim().isEmpty()) {
                 imagePath = null;
             } else {
-                ////        duong dan lưu ảnh
-//                String path = request.getServletContext().getRealPath("images");
-//                File dir = new File(path);
-////        xem duong dan nay ton tai chua
-//                if (!dir.exists()) {
-//                    dir.mkdirs();
-//                }
-//                File image = new File(dir, part.getSubmittedFileName());
-////        ghi file vao trong duong dan
-//                part.write(image.getAbsolutePath());
-////        lay ra contextPath cua project
-//                imagePath = request.getContextPath() + "/" + "/images/" + image.getName();
-                imagePath = CloudinaryUploadUtil.uploadImage(part, "businessLicense");
+//        duong dan lưu ảnh
+                String path = request.getServletContext().getRealPath("images");
+                File dir = new File(path);
+//        xem duong dan nay ton tai chua
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+                File image = new File(dir, part.getSubmittedFileName());
+//        ghi file vao trong duong dan
+                part.write(image.getAbsolutePath());
+//        lay ra contextPath cua project
+                imagePath = request.getContextPath() + "/" + "/images/" + image.getName();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -171,60 +169,21 @@ public class CompanyController extends HttpServlet {
     }
 
     private String editCompanyDoPost(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            //get ve cac thong tin nhap
-            int id = Integer.parseInt(request.getParameter("companyId"));
-            String name = request.getParameter("name");
-            String location = request.getParameter("location");
-            String description = request.getParameter("description");
-            String businessCode = request.getParameter("businessCode");
-
-            //tao doi tuong va set 
-            Company company = companyDao.findCompanyById(id);
-
-            // Validate business code nếu có thay đổi
-            if (!businessCode.equals(company.getBusinessCode())) {
-                if (!validate.checkCode(businessCode)) {
-                    String error = "Business code is not valid!!";
-                    request.setAttribute("errorCode", error);
-                    request.setAttribute("company", company);
-                    return "view/recruiter/editCompany.jsp";
-                } else if (companyDao.checkExistBusinessCode(company.getAccountId(), businessCode)) {
-                    request.setAttribute("duplicateCode", "Business code is existed !!");
-                    request.setAttribute("company", company);
-                    return "view/recruiter/editCompany.jsp";
-                }
-            }
-
-            // Xử lý upload business license image mới nếu có
-            String newBusinessLicense = getBusinessLicenseImg("businessLicense", request);
-
-            // Chỉ cập nhật ảnh nếu có ảnh mới được upload
-            if (newBusinessLicense != null && !newBusinessLicense.trim().isEmpty()) {
-                company.setBusinessLicenseImage(newBusinessLicense);
-            }
-            // Nếu không có ảnh mới, giữ nguyên ảnh cũ (không set lại)
-
-            // Cập nhật các thông tin khác
-            company.setName(name);
-            company.setLocation(location);
-            company.setDescription(description);
-            company.setBusinessCode(businessCode);
-//cap nhap thong tin
-            companyDao.updateCompany(company);
-
-            // Lấy lại company mới nhất từ database để hiển thị
-            company = companyDao.findCompanyById(id);
-
-            //set vao request de gui sang trang jsp
-            request.setAttribute("company", company);
-            request.setAttribute("success", "Edit successfully!!");
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            request.setAttribute("error", "Update failed: " + e.getMessage());
-        }
-
+        //get ve cac thong tin nhap
+        int id = Integer.parseInt(request.getParameter("companyId"));
+        String name = request.getParameter("name");
+        String location = request.getParameter("location");
+        String description = request.getParameter("description");
+        //tao doi tuong va set 
+        Company company = companyDao.findCompanyById(id);
+        company.setName(name);
+        company.setLocation(location);
+        company.setDescription(description);
+        //cap nhap thong tin
+        companyDao.updateCompany(company);
+        //set vao request de gui sang trang jsp
+        request.setAttribute("company", company);
+        request.setAttribute("success", "Edit successfully!!");
         //tra ve duong dan
         return "view/recruiter/editCompany.jsp";
     }

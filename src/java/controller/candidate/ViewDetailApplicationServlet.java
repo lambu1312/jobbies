@@ -2,7 +2,7 @@ package controller.candidate;
 
 import constant.CommonConst;
 import dao.ApplicationDAO;
-import dao.CVDAO;
+import dao.CvDAO;
 import dao.JobPostingsDAO;
 import dao.Job_Posting_CategoryDAO;
 import java.io.IOException;
@@ -24,7 +24,7 @@ public class ViewDetailApplicationServlet extends HttpServlet {
     private Job_Posting_CategoryDAO categoryDAO = new Job_Posting_CategoryDAO();
     private JobPostingsDAO jobPostingsDAO = new JobPostingsDAO();
     private ApplicationDAO applicationDAO = new ApplicationDAO();
-    private CVDAO cvDAO = new CVDAO();
+    private CvDAO cvDAO = new CvDAO();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)

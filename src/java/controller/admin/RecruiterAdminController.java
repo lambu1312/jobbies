@@ -60,46 +60,25 @@ public class RecruiterAdminController extends HttpServlet {
         //total record
         int totalRecord = 0;
         if (!searchQuery.isEmpty()) {
-            boolean searchByEmail = searchQuery.contains("@");
             switch (filter) {
                 case "all":
-                    if (searchByEmail) {
-                        listRecruiters = dao.searchUserByEmail(searchQuery, 3, page);
-                        totalRecord = dao.findTotalRecordByEmail(searchQuery, 3);
-                    } else {
-                        listRecruiters = dao.searchUserByName(searchQuery, 3, page);
-                        totalRecord = dao.findTotalRecordByName(searchQuery, 3);
-                    }
+                    listRecruiters = dao.searchUserByName(searchQuery, 2, page); // Tìm tất cả
+                    totalRecord = dao.findTotalRecordByName(searchQuery, 2);
                     pageControl.setUrlPattern(requestURL + "?searchQuery=" + searchQuery + "&");
                     break;
                 case "active":
-                    if (searchByEmail) {
-                        listRecruiters = dao.searchUserByEmailAndStatus(searchQuery, true, 3, page);
-                        totalRecord = dao.findTotalRecordByEmailAndStatus(searchQuery, true, 3);
-                    } else {
-                        listRecruiters = dao.searchUserByNameAndStatus(searchQuery, true, 3, page);
-                        totalRecord = dao.findTotalRecordByNameAndStatus(searchQuery, true, 3);
-                    }
+                    listRecruiters = dao.searchUserByNameAndStatus(searchQuery, true, 2, page); // Chỉ tìm active
+                    totalRecord = dao.findTotalRecordByNameAndStatus(searchQuery, true, 2);
                     pageControl.setUrlPattern(requestURL + "?filter=active&searchQuery=" + searchQuery + "&");
                     break;
                 case "inactive":
-                    if (searchByEmail) {
-                        listRecruiters = dao.searchUserByEmailAndStatus(searchQuery, false, 3, page);
-                        totalRecord = dao.findTotalRecordByEmailAndStatus(searchQuery, false, 3);
-                    } else {
-                        listRecruiters = dao.searchUserByNameAndStatus(searchQuery, false, 3, page);
-                        totalRecord = dao.findTotalRecordByNameAndStatus(searchQuery, false, 3);
-                    }
+                    listRecruiters = dao.searchUserByNameAndStatus(searchQuery, false, 2, page); // Chỉ tìm inactive
+                    totalRecord = dao.findTotalRecordByNameAndStatus(searchQuery, false, 2);
                     pageControl.setUrlPattern(requestURL + "?filter=inactive&searchQuery=" + searchQuery + "&");
                     break;
                 default:
-                    if (searchByEmail) {
-                        listRecruiters = dao.searchUserByEmail(searchQuery, 3, page);
-                        totalRecord = dao.findTotalRecordByEmail(searchQuery, 3);
-                    } else {
-                        listRecruiters = dao.searchUserByName(searchQuery, 3, page);
-                        totalRecord = dao.findTotalRecordByName(searchQuery, 3);
-                    }
+                    listRecruiters = dao.searchUserByName(searchQuery, 2, page); // Mặc định là tất cả
+                    totalRecord = dao.findTotalRecordByName(searchQuery, 2);
                     pageControl.setUrlPattern(requestURL + "?searchQuery=" + searchQuery + "&");
             }
         } else {

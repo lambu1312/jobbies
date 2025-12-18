@@ -76,10 +76,7 @@
                 <p class="made-with">Made with 💜 and ✨</p>
             </div>
         </div>
-                        
     </footer>
-                        
-                        
 
     <style>
         .footer {
@@ -87,7 +84,7 @@
             z-index: 10;
             margin-top: 4rem;
             background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: auto ;
+            backdrop-filter: blur(30px);
             border-top: 2px solid rgba(196, 113, 245, 0.3);
         }
 
@@ -254,8 +251,5 @@
             }
         }
     </style>
-    
 
-    <!-- Chatbot Widget -->
-    <%@ include file="chatbot-component.jsp" %>
-  
+ 

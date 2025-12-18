@@ -12,6 +12,28 @@
                     <link rel="stylesheet"
                         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
                     <style>
+                        :root {
+                            --color-primary: #2B59FF;
+                            --color-primary-dark: #1E3FCC;
+                            --color-text-primary: #0A0E27;
+                            --color-text-secondary: #5B6B8C;
+                            --color-border: #E4E8F0;
+                            --color-background: #FAFBFC;
+                            --color-surface: #FFFFFF;
+                            --color-success: #0EA770;
+                            --color-success-light: #E8F7F0;
+                            --color-danger: #E03E52;
+                            --color-danger-light: #FFEBEE;
+                            --color-warning: #F59E0B;
+                            --color-warning-light: #FFF9EB;
+                            --shadow-sm: 0 1px 2px rgba(10, 14, 39, 0.03);
+                            --shadow-md: 0 4px 12px rgba(10, 14, 39, 0.06);
+                            --shadow-lg: 0 12px 32px rgba(10, 14, 39, 0.08);
+                            --radius-sm: 8px;
+                            --radius-md: 12px;
+                            --radius-lg: 16px;
+                        }
+
                         * {
                             margin: 0;
                             padding: 0;
@@ -19,138 +41,98 @@
                         }
 
                         body {
-                            font-family: 'Segoe UI', system-ui, sans-serif;
-                            background: linear-gradient(135deg, #0a0015 0%, #1a0b2e 50%, #16213e 100%);
-                            color: #fff;
-                            min-height: 100vh;
-                        }
-
-                        .stars {
-                            position: fixed;
-                            width: 100%;
-                            height: 100%;
-                            pointer-events: none;
-                            z-index: 1;
-                        }
-
-                        .star {
-                            position: absolute;
-                            width: 2px;
-                            height: 2px;
-                            background: #fff;
-                            border-radius: 50%;
-                            animation: twinkle 3s infinite;
-                        }
-
-                        @keyframes twinkle {
-
-                            0%,
-                            100% {
-                                opacity: 0.3;
-                            }
-
-                            50% {
-                                opacity: 1;
-                            }
-                        }
-
-                        .pixel-decoration {
-                            position: fixed;
-                            font-size: 3rem;
-                            opacity: 0.3;
-                            z-index: 5;
-                            animation: float 4s ease-in-out infinite;
-                        }
-
-                        @keyframes float {
-
-                            0%,
-                            100% {
-                                transform: translateY(0px);
-                            }
-
-                            50% {
-                                transform: translateY(-20px);
-                            }
-                        }
-
-                        .deco-1 {
-                            top: 20%;
-                            left: 10%;
-                        }
-
-                        .deco-2 {
-                            top: 60%;
-                            right: 15%;
-                            animation-delay: 2s;
-                        }
-
-                        .deco-3 {
-                            bottom: 15%;
-                            left: 20%;
-                            animation-delay: 1s;
+                            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                            background: var(--color-background);
+                            color: var(--color-text-primary);
+                            line-height: 1.6;
+                            -webkit-font-smoothing: antialiased;
+                            -moz-osx-font-smoothing: grayscale;
                         }
 
                         .container {
-                            position: relative;
-                            z-index: 10;
                             max-width: 1200px;
                             margin: 0 auto;
-                            padding: 2rem;
+                            padding: 3rem 2rem;
                         }
 
-                        .page-title {
-                            font-size: 2.5rem;
-                            font-weight: 900;
-                            margin-bottom: 2rem;
+                        .page-header {
+                            margin-bottom: 3rem;
+                            animation: fadeInUp 0.6s ease-out;
                             text-align: center;
-                            background: linear-gradient(135deg, #fff 0%, #c471f5 100%);
-                            -webkit-background-clip: text;
-                            -webkit-text-fill-color: transparent;
                         }
 
-                        .alert {
-                            padding: 1rem 1.5rem;
-                            border-radius: 15px;
-                            margin-bottom: 2rem;
-                            display: flex;
-                            align-items: center;
-                            gap: 0.8rem;
-                            animation: slideIn 0.3s ease-out;
-                        }
-
-                        @keyframes slideIn {
+                        @keyframes fadeInUp {
                             from {
                                 opacity: 0;
-                                transform: translateY(-20px);
+                                transform: translateY(20px);
                             }
-
                             to {
                                 opacity: 1;
                                 transform: translateY(0);
                             }
                         }
 
+                        .page-title {
+                            font-size: 2rem;
+                            font-weight: 700;
+                            color: var(--color-text-primary);
+                            margin-bottom: 0.5rem;
+                            letter-spacing: -0.01em;
+                        }
+
+                        .page-subtitle {
+                            font-size: 1.125rem;
+                            color: var(--color-text-secondary);
+                            font-weight: 400;
+                        }
+
+                        .alert {
+                            padding: 1rem 1.25rem;
+                            border-radius: var(--radius-md);
+                            margin-bottom: 2rem;
+                            display: flex;
+                            align-items: flex-start;
+                            gap: 0.875rem;
+                            font-size: 0.9375rem;
+                            border: 1px solid;
+                            animation: slideInRight 0.4s ease-out;
+                        }
+
+                        @keyframes slideInRight {
+                            from {
+                                opacity: 0;
+                                transform: translateX(-20px);
+                            }
+                            to {
+                                opacity: 1;
+                                transform: translateX(0);
+                            }
+                        }
+
+                        .alert i {
+                            flex-shrink: 0;
+                            margin-top: 0.125rem;
+                        }
+
                         .alert-danger {
-                            background: rgba(255, 107, 107, 0.2);
-                            border: 1px solid #ff6b6b;
-                            color: #ff6b6b;
+                            background: var(--color-danger-light);
+                            border-color: var(--color-danger);
+                            color: var(--color-danger);
                         }
 
                         .alert-success {
-                            background: rgba(57, 255, 20, 0.2);
-                            border: 1px solid #39ff14;
-                            color: #39ff14;
+                            background: var(--color-success-light);
+                            border-color: var(--color-success);
+                            color: var(--color-success);
                         }
 
-                        .table-container {
-                            background: rgba(255, 255, 255, 0.05);
-                            backdrop-filter: blur(20px);
-                            border: 1px solid rgba(255, 255, 255, 0.1);
-                            border-radius: 20px;
+                        .table-card {
+                            background: var(--color-surface);
+                            border-radius: var(--radius-lg);
+                            border: 1px solid var(--color-border);
                             overflow: hidden;
-                            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-                            margin-bottom: 2rem;
+                            box-shadow: var(--shadow-md);
+                            animation: fadeInUp 0.6s ease-out 0.1s both;
                         }
 
                         table {
@@ -159,93 +141,163 @@
                         }
 
                         thead {
-                            background: rgba(196, 113, 245, 0.2);
+                            background: linear-gradient(to bottom, #F8FAFC, #F1F5F9);
+                            border-bottom: 2px solid var(--color-border);
                         }
 
                         th {
-                            padding: 1.2rem;
+                            padding: 1.25rem 1.5rem;
                             text-align: left;
-                            font-weight: 700;
-                            color: #fff;
+                            font-weight: 600;
+                            color: var(--color-text-secondary);
                             text-transform: uppercase;
-                            font-size: 0.85rem;
-                            letter-spacing: 1px;
+                            font-size: 0.75rem;
+                            letter-spacing: 0.08em;
+                        }
+
+                        th:first-child {
+                            width: 50%;
+                        }
+
+                        th:last-child {
+                            width: 50%;
                         }
 
                         tbody tr {
-                            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-                            transition: all 0.3s;
+                            border-bottom: 1px solid var(--color-border);
+                            transition: background-color 0.2s ease;
+                        }
+
+                        tbody tr:last-child {
+                            border-bottom: none;
                         }
 
                         tbody tr:hover {
-                            background: rgba(196, 113, 245, 0.1);
+                            background: #F8FAFC;
                         }
 
                         td {
-                            padding: 1.2rem;
-                            color: #e0e0e0;
+                            padding: 1.5rem;
+                            color: var(--color-text-primary);
+                            vertical-align: middle;
+                        }
+
+                        td:first-child {
+                            width: 50%;
+                        }
+
+                        td:last-child {
+                            width: 50%;
                         }
 
                         .job-title {
-                            font-weight: 600;
-                            font-size: 1.1rem;
+                            font-weight: 500;
+                            font-size: 1rem;
+                            color: var(--color-text-primary);
+                            line-height: 1.5;
+                        }
+
+                        .action-cell {
+                            display: flex;
+                            align-items: center;
+                            gap: 0.75rem;
+                            flex-wrap: wrap;
                         }
 
                         .btn {
-                            padding: 0.6rem 1.2rem;
-                            border: none;
-                            border-radius: 10px;
-                            font-weight: 700;
-                            cursor: pointer;
-                            transition: all 0.3s;
                             display: inline-flex;
                             align-items: center;
                             gap: 0.5rem;
-                            font-size: 0.9rem;
-                            margin-right: 0.5rem;
+                            padding: 0.625rem 1.125rem;
+                            border-radius: var(--radius-sm);
+                            font-weight: 500;
+                            font-size: 0.875rem;
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+                            text-decoration: none;
+                            border: 1px solid;
+                            white-space: nowrap;
                         }
 
-                        .btn-view {
-                            background: rgba(126, 232, 250, 0.2);
-                            color: #7ee8fa;
-                            border: 1px solid #7ee8fa;
+                        .btn i {
+                            font-size: 0.875rem;
                         }
 
-                        .btn-view:hover {
-                            background: rgba(126, 232, 250, 0.3);
-                            transform: translateY(-2px);
-                            box-shadow: 0 5px 15px rgba(126, 232, 250, 0.4);
+                        .btn-primary {
+                            background: var(--color-primary);
+                            color: white;
+                            border-color: var(--color-primary);
                         }
 
-                        .btn-view:disabled {
-                            opacity: 0.5;
+                        .btn-primary:hover {
+                            background: var(--color-primary-dark);
+                            border-color: var(--color-primary-dark);
+                            transform: translateY(-1px);
+                            box-shadow: 0 4px 12px rgba(43, 89, 255, 0.2);
+                        }
+
+                        .btn-primary:disabled {
+                            background: #E4E8F0;
+                            border-color: #E4E8F0;
+                            color: #9CA3AF;
                             cursor: not-allowed;
+                            transform: none;
+                            box-shadow: none;
                         }
 
-                        .btn-unlike {
-                            background: rgba(255, 107, 107, 0.2);
-                            color: #ff6b6b;
-                            border: 1px solid #ff6b6b;
+                        .btn-outline-danger {
+                            background: white;
+                            color: var(--color-danger);
+                            border-color: var(--color-danger);
                         }
 
-                        .btn-unlike:hover {
-                            background: rgba(255, 107, 107, 0.3);
-                            transform: translateY(-2px);
-                            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+                        .btn-outline-danger:hover {
+                            background: var(--color-danger);
+                            color: white;
+                            transform: translateY(-1px);
+                            box-shadow: 0 4px 12px rgba(224, 62, 82, 0.2);
+                        }
+
+                        .btn-secondary {
+                            background: #F8FAFC;
+                            color: var(--color-text-secondary);
+                            border-color: var(--color-border);
+                        }
+
+                        .btn-secondary:hover {
+                            background: #F1F5F9;
+                            border-color: #CBD5E1;
+                        }
+
+                        .btn-danger {
+                            background: var(--color-danger);
+                            color: white;
+                            border-color: var(--color-danger);
+                        }
+
+                        .btn-danger:hover {
+                            background: #C42D3F;
+                            border-color: #C42D3F;
+                            transform: translateY(-1px);
+                            box-shadow: 0 4px 12px rgba(224, 62, 82, 0.25);
+                        }
+
+                        .badge {
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 0.375rem;
+                            padding: 0.375rem 0.75rem;
+                            border-radius: 6px;
+                            font-size: 0.8125rem;
+                            font-weight: 500;
+                            border: 1px solid;
+                            white-space: nowrap;
                         }
 
                         .badge-warning {
-                            display: inline-flex;
-                            align-items: center;
-                            gap: 0.5rem;
-                            padding: 0.5rem 1rem;
-                            background: rgba(255, 193, 7, 0.2);
-                            color: #ffc107;
-                            border: 1px solid #ffc107;
-                            border-radius: 20px;
-                            font-size: 0.85rem;
-                            font-weight: 600;
-                            margin-left: 0.5rem;
+                            background: var(--color-warning-light);
+                            color: var(--color-warning);
+                            border-color: #FCD34D;
                         }
 
                         .modal {
@@ -256,111 +308,90 @@
                             top: 0;
                             width: 100%;
                             height: 100%;
-                            background: rgba(0, 0, 0, 0.7);
-                            backdrop-filter: blur(10px);
-                            animation: fadeIn 0.3s ease-out;
+                            background: rgba(10, 14, 39, 0.4);
+                            backdrop-filter: blur(4px);
+                            animation: fadeIn 0.2s ease-out;
                         }
 
                         @keyframes fadeIn {
-                            from {
-                                opacity: 0;
-                            }
-
-                            to {
-                                opacity: 1;
-                            }
+                            from { opacity: 0; }
+                            to { opacity: 1; }
                         }
 
                         .modal.show {
                             display: flex;
                             align-items: center;
                             justify-content: center;
+                            padding: 1rem;
                         }
 
                         .modal-content {
-                            background: rgba(26, 11, 46, 0.95);
-                            backdrop-filter: blur(20px);
-                            border: 1px solid rgba(255, 255, 255, 0.1);
-                            border-radius: 20px;
-                            padding: 2rem;
-                            max-width: 500px;
-                            width: 90%;
-                            animation: slideUp 0.3s ease-out;
+                            background: var(--color-surface);
+                            border-radius: var(--radius-lg);
+                            max-width: 480px;
+                            width: 100%;
+                            box-shadow: 0 24px 48px rgba(10, 14, 39, 0.15);
+                            animation: scaleIn 0.2s ease-out;
                         }
 
-                        @keyframes slideUp {
+                        @keyframes scaleIn {
                             from {
                                 opacity: 0;
-                                transform: translateY(50px);
+                                transform: scale(0.95);
                             }
-
                             to {
                                 opacity: 1;
-                                transform: translateY(0);
+                                transform: scale(1);
                             }
                         }
 
                         .modal-header {
                             display: flex;
-                            justify-content: space-between;
                             align-items: center;
-                            margin-bottom: 1.5rem;
-                            padding-bottom: 1rem;
-                            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                            justify-content: space-between;
+                            padding: 1.5rem 1.5rem 1rem;
+                            border-bottom: 1px solid var(--color-border);
                         }
 
                         .modal-title {
-                            font-size: 1.5rem;
-                            font-weight: 700;
-                            background: linear-gradient(135deg, #fff 0%, #c471f5 100%);
-                            -webkit-background-clip: text;
-                            -webkit-text-fill-color: transparent;
+                            font-size: 1.25rem;
+                            font-weight: 600;
+                            color: var(--color-text-primary);
                         }
 
                         .modal-close {
                             background: none;
                             border: none;
-                            color: #fff;
-                            font-size: 1.5rem;
+                            color: var(--color-text-secondary);
+                            font-size: 1.25rem;
                             cursor: pointer;
-                            transition: all 0.3s;
+                            padding: 0.25rem;
+                            width: 32px;
+                            height: 32px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            border-radius: 6px;
+                            transition: all 0.2s ease;
                         }
 
                         .modal-close:hover {
-                            color: #ff6b6b;
-                            transform: rotate(90deg);
+                            background: #F1F5F9;
+                            color: var(--color-text-primary);
                         }
 
                         .modal-body {
-                            color: #e0e0e0;
-                            margin-bottom: 1.5rem;
+                            padding: 1.5rem;
+                            color: var(--color-text-secondary);
+                            font-size: 0.9375rem;
                             line-height: 1.6;
                         }
 
                         .modal-footer {
                             display: flex;
-                            gap: 1rem;
+                            gap: 0.75rem;
                             justify-content: flex-end;
-                        }
-
-                        .btn-secondary {
-                            background: rgba(255, 255, 255, 0.1);
-                            color: #fff;
-                            border: 1px solid rgba(255, 255, 255, 0.2);
-                        }
-
-                        .btn-secondary:hover {
-                            background: rgba(255, 255, 255, 0.15);
-                        }
-
-                        .btn-danger {
-                            background: linear-gradient(135deg, #ff6b6b, #ff5252);
-                            color: #fff;
-                        }
-
-                        .btn-danger:hover {
-                            transform: translateY(-2px);
-                            box-shadow: 0 5px 20px rgba(255, 107, 107, 0.5);
+                            padding: 1rem 1.5rem 1.5rem;
                         }
 
                         .pagination {
@@ -368,109 +399,137 @@
                             justify-content: center;
                             align-items: center;
                             gap: 0.5rem;
+                            margin-top: 2rem;
                             flex-wrap: wrap;
                         }
 
                         .page-button {
                             min-width: 40px;
                             height: 40px;
-                            padding: 0 0.8rem;
-                            background: rgba(255, 255, 255, 0.08);
-                            border: 1px solid rgba(255, 255, 255, 0.2);
-                            border-radius: 10px;
-                            color: #fff;
+                            padding: 0 0.75rem;
+                            background: var(--color-surface);
+                            border: 1px solid var(--color-border);
+                            border-radius: var(--radius-sm);
+                            color: var(--color-text-primary);
                             text-decoration: none;
                             cursor: pointer;
-                            transition: all 0.3s;
+                            transition: all 0.2s ease;
                             display: flex;
                             align-items: center;
                             justify-content: center;
-                            font-weight: 600;
+                            font-weight: 500;
+                            font-size: 0.875rem;
                         }
 
                         .page-button:hover {
-                            background: rgba(196, 113, 245, 0.3);
-                            border-color: #c471f5;
-                            color: #fff;
+                            background: #F8FAFC;
+                            border-color: var(--color-primary);
+                            color: var(--color-primary);
                         }
 
                         .page-button.active {
-                            background: linear-gradient(135deg, #c471f5, #fa71cd);
-                            border-color: transparent;
-                            box-shadow: 0 5px 15px rgba(196, 113, 245, 0.4);
+                            background: var(--color-primary);
+                            border-color: var(--color-primary);
+                            color: white;
                         }
 
                         .empty-state {
                             text-align: center;
-                            padding: 4rem 2rem;
-                            color: #b8b8d1;
+                            padding: 5rem 2rem;
+                            animation: fadeInUp 0.6s ease-out;
                         }
 
-                        .empty-state i {
-                            font-size: 4rem;
-                            margin-bottom: 1rem;
-                            opacity: 0.5;
+                        .empty-state-icon {
+                            width: 80px;
+                            height: 80px;
+                            margin: 0 auto 1.5rem;
+                            background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
+                            border-radius: 50%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            color: var(--color-text-secondary);
+                            font-size: 2rem;
+                        }
+
+                        .empty-state h3 {
+                            font-size: 1.5rem;
+                            font-weight: 600;
+                            color: var(--color-text-primary);
+                            margin-bottom: 0.5rem;
+                        }
+
+                        .empty-state p {
+                            color: var(--color-text-secondary);
+                            margin-bottom: 2rem;
+                            font-size: 1rem;
                         }
 
                         @media (max-width: 768px) {
                             .container {
-                                padding: 1rem;
+                                padding: 2rem 1rem;
                             }
 
-                            .table-container {
+                            .page-title {
+                                font-size: 2rem;
+                            }
+
+                            .table-card {
                                 overflow-x: auto;
                             }
 
                             th,
                             td {
-                                padding: 0.8rem;
-                                font-size: 0.9rem;
+                                padding: 1rem;
+                                font-size: 0.875rem;
+                            }
+
+                            .action-cell {
+                                flex-direction: column;
+                                align-items: flex-start;
                             }
 
                             .btn {
-                                padding: 0.5rem 0.8rem;
-                                font-size: 0.85rem;
+                                width: 100%;
+                                justify-content: center;
                             }
 
-                            .badge-warning {
-                                display: block;
-                                margin: 0.5rem 0 0 0;
+                            .badge {
+                                width: 100%;
+                                justify-content: center;
                             }
                         }
                     </style>
                 </head>
 
                 <body>
-                    <div class="stars" id="stars"></div>
-
-                    <div class="pixel-decoration deco-1">✨</div>
-                    <div class="pixel-decoration deco-2">💎</div>
-                    <div class="pixel-decoration deco-3">🚀</div>
-
                     <!-- Header -->
                     <jsp:include page="../common/user/header-user.jsp"></jsp:include>
 
                     <div class="container">
-                        <h1 class="page-title">Trang Yêu thích 💖</h1>
+                        <div class="page-header">
+                            <h1 class="page-title">Công việc yêu thích</h1>
+                            <p class="page-subtitle">Quản lý danh sách công việc bạn đã lưu</p>
+                        </div>
 
                         <!-- Alert Messages -->
                         <c:if test="${not empty errorFavourJP}">
                             <div class="alert alert-danger">
                                 <i class="fas fa-exclamation-circle"></i>
-                                ${errorFavourJP}
+                                <span>${errorFavourJP}</span>
                             </div>
                         </c:if>
 
                         <c:if test="${not empty successFavourJP}">
                             <div class="alert alert-success">
                                 <i class="fas fa-check-circle"></i>
-                                ${successFavourJP}
+                                <span>${successFavourJP}</span>
                             </div>
                         </c:if>
 
                         <c:choose>
                             <c:when test="${not empty favourJPs}">
-                                <div class="table-container">
+                                <div class="table-card">
                                     <table>
                                         <thead>
                                             <tr>
@@ -481,31 +540,33 @@
                                         <tbody>
                                             <c:forEach var="fjp" items="${favourJPs}">
                                                 <tr>
-                                                    <td class="job-title">
-                                                        <c:out value="${jobPostingMap[fjp.favourJPID]}" />
+                                                    <td>
+                                                        <div class="job-title">
+                                                            <c:out value="${jobPostingMap[fjp.favourJPID]}" />
+                                                        </div>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-view"
-                                                            onclick="window.location.href='${pageContext.request.contextPath}/jobPostingDetail?action=details&idJP=${fjp.jobPostingID}'"
-                                                            <c:if
-                                                            test="${favourJPMap[fjp.favourJPID] == 'Violate'}">disabled
-                                                            </c:if>>
-                                                            <i class="fas fa-eye"></i>
-                                                            View
-                                                        </button>
+                                                        <div class="action-cell">
+                                                            <button type="button" class="btn btn-primary"
+                                                                onclick="window.location.href='${pageContext.request.contextPath}/jobPostingDetail?action=details&idJP=${fjp.jobPostingID}'"
+                                                                <c:if test="${favourJPMap[fjp.favourJPID] == 'Violate'}">disabled</c:if>>
+                                                                <i class="fas fa-eye"></i>
+                                                                Xem chi tiết
+                                                            </button>
 
-                                                        <button type="button" class="btn btn-unlike"
-                                                            onclick="openModal('deleteFavourJPModal-${fjp.favourJPID}')">
-                                                            <i class="fas fa-heart-broken"></i>
-                                                            Unlike
-                                                        </button>
+                                                            <button type="button" class="btn btn-outline-danger"
+                                                                onclick="openModal('deleteFavourJPModal-${fjp.favourJPID}')">
+                                                                <i class="fas fa-heart-broken"></i>
+                                                                Bỏ thích
+                                                            </button>
 
-                                                        <c:if test="${favourJPMap[fjp.favourJPID] == 'Violate'}">
-                                                            <span class="badge-warning">
-                                                                <i class="fas fa-exclamation-triangle"></i>
-                                                                Job Violated
-                                                            </span>
-                                                        </c:if>
+                                                            <c:if test="${favourJPMap[fjp.favourJPID] == 'Violate'}">
+                                                                <span class="badge badge-warning">
+                                                                    <i class="fas fa-exclamation-triangle"></i>
+                                                                    Công việc vi phạm
+                                                                </span>
+                                                            </c:if>
+                                                        </div>
                                                     </td>
                                                 </tr>
 
@@ -513,26 +574,22 @@
                                                 <div class="modal" id="deleteFavourJPModal-${fjp.favourJPID}">
                                                     <div class="modal-content">
                                                         <div class="modal-header">
-                                                            <h5 class="modal-title">Không thích công việc</h5>
+                                                            <h5 class="modal-title">Xác nhận bỏ thích</h5>
                                                             <button type="button" class="modal-close"
                                                                 onclick="closeModal('deleteFavourJPModal-${fjp.favourJPID}')">
                                                                 <i class="fas fa-times"></i>
                                                             </button>
                                                         </div>
-                                                        <form
-                                                            action="${pageContext.request.contextPath}/FavourJobPosting"
-                                                            method="post">
+                                                        <form action="${pageContext.request.contextPath}/FavourJobPosting" method="post">
                                                             <div class="modal-body">
-                                                                <p>Bạn có chắc không thích công việc này không?</p>
-                                                                <input type="hidden" name="action"
-                                                                    value="delete-favourJP">
-                                                                <input type="hidden" name="favourJPId"
-                                                                    value="${fjp.favourJPID}">
+                                                                <p>Bạn có chắc chắn muốn bỏ thích công việc này không? Hành động này không thể hoàn tác.</p>
+                                                                <input type="hidden" name="action" value="delete-favourJP">
+                                                                <input type="hidden" name="favourJPId" value="${fjp.favourJPID}">
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary"
                                                                     onclick="closeModal('deleteFavourJPModal-${fjp.favourJPID}')">
-                                                                    Hủy
+                                                                    Hủy bỏ
                                                                 </button>
                                                                 <button type="submit" class="btn btn-danger">
                                                                     <i class="fas fa-heart-broken"></i>
@@ -552,7 +609,7 @@
                                     <c:if test="${currentPage > 1}">
                                         <a href="${pageContext.request.contextPath}/FavourJobPosting?page=${currentPage - 1}"
                                             class="page-button">
-                                            « Previous
+                                            <i class="fas fa-chevron-left"></i>
                                         </a>
                                     </c:if>
 
@@ -566,19 +623,21 @@
                                     <c:if test="${currentPage < totalPages}">
                                         <a href="${pageContext.request.contextPath}/FavourJobPosting?page=${currentPage + 1}"
                                             class="page-button">
-                                            Next »
+                                            <i class="fas fa-chevron-right"></i>
                                         </a>
                                     </c:if>
                                 </nav>
                             </c:when>
                             <c:otherwise>
                                 <div class="empty-state">
-                                    <i class="fas fa-heart-broken"></i>
+                                    <div class="empty-state-icon">
+                                        <i class="fas fa-heart"></i>
+                                    </div>
                                     <h3>Chưa có công việc yêu thích</h3>
-                                    <p>Bắt đầu tìm kiếm và lưu công việc yêu thích đi !</p>
-                                    <a href="${pageContext.request.contextPath}/HomeSeeker" class="btn btn-view">
+                                    <p>Khám phá và lưu những công việc phù hợp với bạn ngay hôm nay</p>
+                                    <a href="${pageContext.request.contextPath}/HomeSeeker" class="btn btn-primary">
                                         <i class="fas fa-search"></i>
-                                        Tìm việc
+                                        Khám phá công việc
                                     </a>
                                 </div>
                             </c:otherwise>
@@ -589,25 +648,15 @@
                     <jsp:include page="../common/footer.jsp"></jsp:include>
 
                     <script>
-                        // Generate stars
-                        const starsContainer = document.getElementById('stars');
-                        for (let i = 0; i < 100; i++) {
-                            const star = document.createElement('div');
-                            star.className = 'star';
-                            star.style.left = Math.random() * 100 + '%';
-                            star.style.top = Math.random() * 100 + '%';
-                            star.style.animationDelay = Math.random() * 3 + 's';
-                            starsContainer.appendChild(star);
-                        }
-
-                        // Modal functions
                         function openModal(modalId) {
-                            document.getElementById(modalId).classList.add('show');
+                            const modal = document.getElementById(modalId);
+                            modal.classList.add('show');
                             document.body.style.overflow = 'hidden';
                         }
 
                         function closeModal(modalId) {
-                            document.getElementById(modalId).classList.remove('show');
+                            const modal = document.getElementById(modalId);
+                            modal.classList.remove('show');
                             document.body.style.overflow = 'auto';
                         }
 
