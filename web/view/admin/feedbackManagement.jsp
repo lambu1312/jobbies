@@ -13,7 +13,6 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-
         <!--css-->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -21,29 +20,360 @@
         <script src="https://cdn.tiny.cloud/1/1af9q7p79qcrurx9hkvj3z4dn90yr8d6lwb5fdyny56uqoh9/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
         <!-- Add custom styles -->
         <style>
-            .seeker-status.active {
-                color: green; /* Active seekers in green */
-                font-weight: bold;
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
             }
-            .seeker-status.inactive {
-                color: red; /* Inactive seekers in red */
-                font-weight: bold;
-            }
-            .table-bordered td .form-check {
-                display: flex;
-                justify-content: center; /* Căn giữa theo chiều ngang */
-                align-items: center; /* Căn giữa theo chiều dọc */
-            }
-            .table-bordered thead th {
-                background-color: #28a745; /* Màu xanh lá cây */
-                color: #ffffff; /* Màu trắng cho chữ để dễ đọc */
-            }
-            /* Các style hiện có của bạn giữ nguyên */
 
-            /* Thêm style mới cho feedback details */
+            body {
+                font-family: 'Inter', system-ui, sans-serif;
+                background: linear-gradient(135deg, #f5f7fa 0%, #e8eef5 50%, #f0f5fb 100%);
+                color: #1a1a1a;
+                overflow-x: hidden;
+                min-height: 100vh;
+            }
+
+            /* Stars Background */
+            .stars {
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: 1 !important;
+                display: none;
+            }
+
+            .star {
+                position: absolute;
+                width: 2px;
+                height: 2px;
+                background: #fff;
+                border-radius: 50%;
+                animation: twinkle 3s infinite;
+            }
+
+            @keyframes twinkle {
+                0%, 100% {
+                    opacity: 0.3;
+                }
+                50% {
+                    opacity: 1;
+                }
+            }
+
+            /* Floating Decorations */
+            .pixel-decoration {
+                position: fixed;
+                font-size: 3rem;
+                opacity: 0.1;
+                z-index: 5 !important;
+                animation: float 4s ease-in-out infinite;
+            }
+
+            .deco-1 {
+                top: 20%;
+                left: 10%;
+            }
+            
+            .deco-2 {
+                top: 60%;
+                right: 15%;
+                animation-delay: 2s;
+            }
+            
+            .deco-3 {
+                bottom: 15%;
+                left: 20%;
+                animation-delay: 1s;
+            }
+
+            @keyframes float {
+                0%, 100% {
+                    transform: translateY(0px);
+                }
+                50% {
+                    transform: translateY(-20px);
+                }
+            }
+
+            /* Main layout using flexbox */
+            .page-container {
+                display: flex;
+                flex-direction: column;
+                min-height: 100vh;
+                position: relative;
+                z-index: 10;
+            }
+
+            /* Main content layout */
+            .feedback-container {
+                flex: 1;
+                padding: 2rem 3rem;
+                margin-left: 25px;
+                padding-top: 100px;
+                display: flex;
+                flex-direction: column;
+                position: relative;
+                z-index: 10;
+                width: calc(100% - 25px);
+            }
+
+            /* Ensure table takes available space */
+            .table-wrapper {
+                flex: 1;
+            }
+
+            /* Header section */
+            .header-section {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 3rem;
+                padding: 1rem 0;
+                margin-top: 0;
+            }
+
+            .header-section h2 {
+                font-size: 3rem;
+                background: linear-gradient(135deg, #1a0b2e 0%, #2d1b4e 50%, #0a3a52 100%);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+                font-weight: 700;
+                line-height: 1.2;
+                animation: fadeInUp 0.8s ease;
+                letter-spacing: -0.5px;
+            }
+
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            /* Search bar and Filter positioning */
+            .controls-container {
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                gap: 1.5rem;
+                width: 100%;
+                margin-bottom: 2.5rem;
+                flex-wrap: wrap;
+                margin-left: 0;
+            }
+
+            /* Filter dropdown styling */
+            .filter-group {
+                display: flex;
+                align-items: center;
+                gap: 0;
+                width: 100%;
+            }
+
+            .filter-select {
+                background-color: rgba(255, 255, 255, 0.9);
+                border: 1.5px solid #c471f5;
+                color: #1a1a1a;
+                padding: 12px 16px;
+                border-radius: 8px 0 0 8px;
+                font-size: 15px;
+                outline: none;
+                transition: all 0.3s ease;
+                cursor: pointer;
+                font-weight: 600;
+                min-width: 200px;
+            }
+
+            .filter-select:focus {
+                box-shadow: 0 0 20px rgba(196, 113, 245, 0.3);
+                border-color: #c471f5;
+            }
+
+            /* Search bar styling */
+            .search-container {
+                display: flex;
+                gap: 0;
+                flex: 1;
+            }
+
+            .search-box {
+                flex: 1;
+                min-width: 300px;
+                padding: 12px 16px;
+                border: 1.5px solid #c471f5;
+                border-right: none;
+                border-radius: 0;
+                font-size: 15px;
+                outline: none;
+                background-color: rgba(255, 255, 255, 0.9);
+                color: #1a1a1a;
+                transition: all 0.3s ease;
+            }
+
+            .search-box::placeholder {
+                color: #999;
+            }
+
+            .search-box:focus {
+                box-shadow: 0 0 20px rgba(196, 113, 245, 0.3);
+                background-color: rgba(255, 255, 255, 0.15);
+                border-color: #c471f5;
+            }
+
+            .search-button {
+                background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
+                border: none;
+                padding: 12px 20px;
+                border-radius: 0 8px 8px 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: auto;
+                cursor: pointer;
+                transition: all 0.3s ease;
+            }
+
+            .search-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 30px rgba(196, 113, 245, 0.5);
+            }
+
+            .search-button i {
+                color: white;
+                font-size: 16px;
+            }
+
+            /* Table styling */
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                background: rgba(255, 255, 255, 0.95);
+                border: 1px solid rgba(0, 0, 0, 0.1);
+                border-radius: 12px;
+                overflow: hidden;
+                box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            }
+
+            table thead th {
+                background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
+                color: white;
+                padding: 15px;
+                text-align: center;
+                font-size: 15px;
+                font-weight: 600;
+                border: none;
+            }
+
+            table tbody td {
+                padding: 14px 15px;
+                border-bottom: 1px solid #e5e5e5;
+                text-align: center;
+                font-size: 14px;
+                color: #333;
+            }
+
+            table tbody tr {
+                transition: all 0.3s ease;
+            }
+
+            table tbody tr:hover {
+                background-color: rgba(196, 113, 245, 0.05);
+            }
+
+            table tbody tr:last-child td {
+                border-bottom: none;
+            }
+
+            /* Status badge styling */
+            .status-badge {
+                display: inline-block;
+                padding: 6px 12px;
+                border-radius: 6px;
+                font-weight: 600;
+                font-size: 13px;
+            }
+
+            .status-pending {
+                background-color: #fff3cd;
+                color: #856404;
+            }
+
+            .status-resolved {
+                background-color: #d4edda;
+                color: #155724;
+            }
+
+            .status-reject {
+                background-color: #f8d7da;
+                color: #721c24;
+            }
+
+            .status-deleted {
+                background-color: #e2e3e5;
+                color: #383d41;
+            }
+
+            /* Action buttons styling */
+            .btn-action {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                margin-right: 8px;
+                background-color: transparent;
+                color: #0da5c0;
+                font-size: 16px;
+                cursor: pointer;
+                text-decoration: none;
+                transition: all 0.3s ease;
+                width: 32px;
+                height: 32px;
+                border-radius: 6px;
+                border: none;
+            }
+
+            .btn-action:last-child {
+                margin-right: 0;
+            }
+
+            .btn-action:hover {
+                color: #fff;
+                background-color: #0da5c0;
+                transform: scale(1.1);
+            }
+
+            .btn-action.btn-success {
+                color: #28a745;
+            }
+
+            .btn-action.btn-success:hover {
+                background-color: #28a745;
+            }
+
+            .btn-action.btn-warning {
+                color: #ffc107;
+            }
+
+            .btn-action.btn-warning:hover {
+                background-color: #ffc107;
+                color: #fff;
+            }
+
+            .btn-action:disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+
+            /* Card styling for feedback details */
             .card {
                 border: none;
                 transition: all 0.3s ease;
+                background: rgba(255, 255, 255, 0.95);
             }
 
             .card:hover {
@@ -70,554 +400,417 @@
             .rounded-circle:hover {
                 transform: scale(1.1);
             }
-            .input-group {
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                border-radius: 0.375rem;
+
+            /* Pagination */
+            .pagination {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 2rem;
+                padding-bottom: 2rem;
+                gap: 8px;
             }
 
-            .input-group .input-group-text {
-                background-color: #f8f9fa;
-                border-color: #dee2e6;
-                font-weight: 500;
-                color: #495057;
+            .pagination a,
+            .pagination span {
+                padding: 10px 14px;
+                border: 1.5px solid #c471f5;
+                font-size: 14px;
+                cursor: pointer;
+                border-radius: 8px;
+                text-decoration: none;
+                color: #1a1a1a;
+                transition: all 0.3s ease;
+                font-weight: 600;
+                background-color: rgba(255, 255, 255, 0.8);
             }
 
-            .input-group .form-select {
-                border-color: #dee2e6;
+            .pagination a:hover {
+                background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
+                color: white;
+                border-color: transparent;
+                transform: translateY(-2px);
             }
 
-            .input-group .form-control {
-                border-color: #dee2e6;
+            .pagination .page-link.active,
+            .pagination .active a {
+                background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
+                color: white;
+                border-color: transparent;
             }
 
-            .input-group .btn-primary {
-                background-color: #007bff;
-                border-color: #007bff;
+            /* Modal styling */
+            .modal-header.bg-success {
+                background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
             }
 
-            .input-group .btn-primary:hover {
-                background-color: #0056b3;
-                border-color: #004a9f;
+            .modal-header.bg-warning {
+                background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%) !important;
+                color: #1a1a1a !important;
+            }
+
+            .modal-body {
+                color: #333;
+            }
+
+            .form-label {
+                color: #333;
+                font-weight: 600;
+            }
+
+            .form-control {
+                border: 1.5px solid #dee2e6;
+                color: #333;
+            }
+
+            .form-control:focus {
+                border-color: #c471f5;
+                box-shadow: 0 0 0 0.2rem rgba(196, 113, 245, 0.25);
+            }
+
+            /* Toast notification styling */
+            .toast-container {
+                z-index: 9999;
+            }
+
+            .toast {
+                box-shadow: 0 2px 15px rgba(0, 0, 0, 0.15);
+            }
+
+            /* Footer container */
+            .footer-container {
+                margin-top: auto;
+            }
+
+            /* Mobile Responsive */
+            @media (max-width: 1200px) {
+                .feedback-container {
+                    margin-left: 0;
+                    padding-top: 60px;
+                }
+            }
+
+            @media (max-width: 768px) {
+                .controls-container {
+                    flex-direction: column;
+                    align-items: stretch;
+                    margin-left: 0;
+                }
+
+                .filter-group,
+                .search-container {
+                    width: 100%;
+                }
+
+                .filter-select {
+                    width: 100%;
+                    border-radius: 8px;
+                }
+
+                .search-box {
+                    width: 100%;
+                }
+
+                table {
+                    font-size: 12px;
+                }
+
+                table thead th,
+                table tbody td {
+                    padding: 10px 8px;
+                }
+
+                .btn-action {
+                    margin-right: 5px;
+                    width: 28px;
+                    height: 28px;
+                    font-size: 14px;
+                }
+
+                .header-section h2 {
+                    font-size: 1.8rem;
+                }
+
+                .pixel-decoration {
+                    display: none;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .feedback-container {
+                    padding: 1rem;
+                    padding-top: 60px;
+                }
+
+                .header-section h2 {
+                    font-size: 1.5rem;
+                }
+
+                table {
+                    font-size: 11px;
+                }
+
+                table thead th,
+                table tbody td {
+                    padding: 8px 5px;
+                }
+
+                .btn-action {
+                    width: 24px;
+                    height: 24px;
+                    font-size: 12px;
+                }
             }
         </style>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     </head>
     <body>
-        <!-- header area -->
-        <jsp:include page="../common/admin/header-admin.jsp"></jsp:include>
-            <!-- header area end -->
+        <div class="stars" id="stars"></div>
 
-            <!-- content area -->
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-2">
-                        <!--Side bar-->
+        <div class="pixel-decoration deco-1">✨</div>
+        <div class="pixel-decoration deco-2">💎</div>
+        <div class="pixel-decoration deco-3">🚀</div>
+
+        
+
+        <!-- content area -->
+        <div class="page-container">
+            <div style="display: flex; width: 100%; margin: 0;">
+                <div style="width: 240px;">
+                    <!--Side bar-->
                     <jsp:include page="../common/admin/sidebar-admin.jsp"></jsp:include>
-                        <!--side bar-end-->
-                    </div>
+                    <!--side bar-end-->
+                </div>
 
+                <div style="flex: 1; padding: 0;">
+                    <!--content-main can fix-->
+                    <div class="feedback-container">
+                        <!-- Centered Header section -->
+                        <div class="header-section">
+                            <h2>Quản Lý Phản Hồi</h2>
+                        </div>
 
-                    <div class="col-md-10">
-
-                        <!--content-main can fix-->
-                        <div class="container-fluid" style="margin-bottom: 20px; margin-top: 20px">
-                            <div class="dash__content">
-                                <!-- sidebar menu -->
-                                <div class="sidebar__menu d-md-block d-lg-none">
-                                    <div class="sidebar__action"><i class="fa-sharp fa-regular fa-bars"></i> Sidebar</div>
-                                </div>
-                                <!-- sidebar menu end -->
-                                <div class="dash__overview">
-
-                                    <h6 class="fw-medium mb-30 text-center fs-2">Feedback Management</h6>
-
-                                    <hr/>
-
-                                    <!-- Filter and Search -->
-                                    <form action="feedback" method="GET" class="mb-5 d-flex align-items-start gap-3" id="filterSearchForm" style="margin-left: 20px;">
-                                        <!-- Dropdown filter by status -->
-                                        <div class="input-group" style="width: auto;">
-                                            <select class="form-select" name="filter" id="status" onchange="document.getElementById('filterSearchForm').submit()">
-                                                <option value="0" ${param.filter == null || param.filter == '' ? 'selected' : ''}>All Status</option>
-                                            <option value="1" ${param.filter == '1' ? 'selected' : ''}>Pending</option>
-                                            <option value="2" ${param.filter == '2' ? 'selected' : ''}>Resolved</option>
-                                            <option value="3" ${param.filter == '3' ? 'selected' : ''}>Reject</option>
-                                        </select>
-                                    </div>
+                        <!-- Filter and Search -->
+                        <div class="controls-container">
+                            <!-- Dropdown filter by status -->
+                            <div class="filter-group">
+                                <form action="feedback" method="GET" id="filterSearchForm" style="display: flex; gap: 0;">
+                                    <select class="filter-select" name="filter" id="status" onchange="document.getElementById('filterSearchForm').submit()">
+                                        <option value="0" ${param.filter == null || param.filter == '' ? 'selected' : ''}>Tất Cả Trạng Thái</option>
+                                        <option value="1" ${param.filter == '1' ? 'selected' : ''}>Đang Chờ Xử Lý</option>
+                                        <option value="2" ${param.filter == '2' ? 'selected' : ''}>Đã Giải Quyết</option>
+                                        <option value="3" ${param.filter == '3' ? 'selected' : ''}>Từ Chối</option>
+                                    </select>
 
                                     <!-- Search input and button in the same input group -->
-                                    <div class="input-group" style="width: 500px;">
-                                        <input type="text" name="search" class="form-control" placeholder="Feedback by" value="${param.search != null ? param.search : ''}">
-                                        <button class="btn btn-primary" type="submit">
-                                            <i class="fas fa-search"></i>
-                                        </button>
-                                    </div>
+                                    <input type="text" name="search" class="search-box" placeholder="Tìm kiếm phản hồi..." value="${param.search != null ? param.search : ''}">
+                                    <button class="search-button" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
                                 </form>
-
-
-                                <!-- Filter and Search end -->
-
-
-
-                                <div class="seeker-list">
-                                    <!--nofication-->
-                                    <div class="toast-container position-fixed top-0 end-0 p-3">
-                                        <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                                            <div class="toast-header bg-success text-white">
-                                                <strong class="me-auto">Success</strong>
-                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
-                                            </div>
-                                            <div class="toast-body" id="successToastBody"></div>
-                                        </div>
-
-                                        <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                                            <div class="toast-header bg-danger text-white">
-                                                <strong class="me-auto">Error</strong>
-                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
-                                            </div>
-                                            <div class="toast-body" id="errorToastBody"></div>
-                                        </div>
-                                    </div>
-                                    <!--nofication-end-->
-                                    <table class="table table-bordered" style="text-align: center; vertical-align: middle;">
-                                        <thead>
-                                            <tr>
-                                                <th>Feedback By</th>
-                                                <th>Job Title</th>
-                                                <th>Status</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <%
-                                               Account account = new Account();
-                                               AccountDAO accDao = new AccountDAO();
-                                               JobPostings jobPost = new JobPostings();
-                                               JobPostingsDAO jobPostDao = new JobPostingsDAO();
-                                            %>
-                                            <c:forEach items="${listFeedback}" var="feedback">
-                                                <c:set var="accountId" value="${feedback.getAccountID()}"/>
-                                                <c:set var="jobPostId" value="${feedback.getJobPostingID()}"/>
-                                                <tr>
-                                                    <!-- Full Name Column -->
-                                                    <td>
-                                                        <%
-                                                            int accountId = (Integer) pageContext.getAttribute("accountId");
-                                                            account = accDao.findUserById(accountId);
-                                                            String name = "";
-                                                            if(account != null){
-                                                                name = account.getFullName();
-                                                            }
-                                                        %>
-                                                        <%= name%>
-                                                    </td>
-                                                    <td>
-                                                        <%
-                                                            int jobPostId = (Integer) pageContext.getAttribute("jobPostId");
-                                                            jobPost = jobPostDao.findJobPostingById(jobPostId);
-                                                                String title = "";
-                                                            if(jobPost != null){
-                                                                title = jobPost.getTitle();
-                                                               }
-                                                        %>
-                                                        <form action="${pageContext.request.contextPath}/job_posting" method="POST" style="display: inline;">
-                                                            <input type="hidden" name="action" value="view">
-                                                            <input type="hidden" name="jobPostID" value="${feedback.getJobPostingID()}">
-                                                            <button type="submit" class="btn btn-link text-decoration-none" style="padding: 0;">
-                                                                <%= title %>
-                                                            </button>
-                                                        </form>
-                                                    </td>
-
-                                                    <!-- Status Column -->
-                                                    <td>
-                                                        <c:choose>
-                                                            <c:when test="${feedback.getStatus() == 1}">
-                                                                <span style="background-color: yellow; color: black; padding: 5px; border-radius: 5px;">Pending</span>
-                                                            </c:when>
-                                                            <c:when test="${feedback.getStatus() == 2}">
-                                                                <span style="background-color: green; color: white; padding: 5px; border-radius: 5px;">Resolved</span>
-                                                            </c:when>
-                                                            <c:when test="${feedback.getStatus() == 3}">
-                                                                <span style="background-color: red; color: white; padding: 5px; border-radius: 5px;">Reject</span>
-                                                            </c:when>
-                                                            <c:otherwise>
-                                                                <span style="color: gray;">This feedback was deleted</span>
-                                                            </c:otherwise>
-                                                        </c:choose>
-                                                    </td>
-
-                                                    <!-- Action Column -->
-                                                    <td>
-                                                        <button 
-                                                            class="btn btn-info" 
-                                                            type="button" 
-                                                            onclick="toggleDetails(${feedback.getFeedbackID()})" 
-                                                            <c:if test="${feedback.getStatus() == 4}">disabled</c:if>>
-                                                                <i class="fa fa-eye"></i> 
-                                                            </button>
-
-                                                            <div style="display: inline-flex; width: max-content;">
-                                                                <!-- Resolved button -->
-                                                                <button 
-                                                                    class="btn btn-success" 
-                                                                    type="button" 
-                                                                    onclick="openResolvedModal(${feedback.getFeedbackID()})" 
-                                                                title="Resolved" 
-                                                                style="margin: 0 5px;"
-                                                                <c:if test="${feedback.getStatus() == 4}">disabled</c:if>>
-                                                                    <i class="fa-solid fa-check-circle"></i>
-                                                                </button>
-
-                                                                <!-- Reject button -->
-                                                                <button 
-                                                                    class="btn btn-warning" 
-                                                                    type="button" 
-                                                                    onclick="openRejectModal(${feedback.getFeedbackID()})" 
-                                                                title="Reject" 
-                                                                style="margin: 0 5px;"
-                                                                <c:if test="${feedback.getStatus() == 4}">disabled</c:if>>
-                                                                    <i class="fa-solid fa-times"></i>
-                                                                </button>
-                                                            </div>
-                                                        </td>
-
-                                                    </tr>
-
-                                                    <!-- Row for Feedback Details -->
-                                                    <tr id="details-${feedback.getFeedbackID()}" style="display: none;">
-                                                    <td colspan="4">
-                                                        <div class="card shadow-sm">
-                                                            <div class="card-body">
-                                                                <!-- Header with title -->
-                                                                <div class="d-flex justify-content-between align-items-center mb-3">
-                                                                    <h5 class="card-title text-success mb-0">
-                                                                        <i class="fas fa-comment-dots me-2"></i>Feedback Details
-                                                                    </h5>
-                                                                </div>
-
-                                                                <!-- Info row -->
-                                                                <div class="row mb-3 pb-2 border-bottom">
-                                                                    <div class="col-md-6">
-                                                                        <div class="d-flex align-items-center">
-                                                                            <div>
-                                                                                <small class="text-muted">Feedback By</small>
-                                                                                <p class="mb-0 fw-bold"><%= name %></p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <div class="d-flex align-items-center">
-                                                                            <div class="rounded-circle bg-info text-white p-2 me-2" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
-                                                                                <i class="fas fa-calendar"></i>
-                                                                            </div>
-                                                                            <div>
-                                                                                <small class="text-muted">Created At</small>
-                                                                                <p class="mb-0 fw-bold">${feedback.getCreatedAt()}</p>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-
-                                                                <!-- Content section -->
-                                                                <div class="feedback-content">
-                                                                    <h6 class="text-muted mb-2">
-                                                                        <i class="fas fa-comment-alt me-2"></i>Content
-                                                                    </h6>
-                                                                    <div class="p-3 bg-light rounded">
-                                                                        <p class="mb-0  text-start" style="white-space: pre-line;">${feedback.getContentFeedback()}</p>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                            </c:forEach>
-                                        </tbody>
-                                    </table>
-                                    <!--modal for resolved-reject button-->
-                                    <!-- Modal for Resolved Action -->
-                                    <div class="modal fade" id="resolvedModal" tabindex="-1" aria-labelledby="resolvedModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header bg-success text-white">
-                                                    <h5 class="modal-title" id="resolvedModalLabel">Resolve Feedback</h5>
-                                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <form action="feedback" method="POST">
-                                                    <div class="modal-body">
-                                                        <input type="hidden" id="resolved-feedback-id" name="feedback-id" value="">
-                                                        <input type="hidden" name="action" value="resolved">
-                                                        <div class="mb-3">
-                                                            <label for="resolved-response" class="form-label">Enter your response for resolving this feedback:</label>
-                                                            <textarea class="form-control" id="resolved-response" name="response" rows="4" required></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                        <button type="submit" class="btn btn-success">Resolve</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Modal for Reject Action -->
-                                    <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="rejectModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                            <div class="modal-content">
-                                                <div class="modal-header bg-warning text-dark">
-                                                    <h5 class="modal-title" id="rejectModalLabel">Reject Feedback</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <form action="feedback" method="POST">
-                                                    <div class="modal-body">
-                                                        <input type="hidden" id="reject-feedback-id" name="feedback-id" value="">
-                                                        <input type="hidden" name="action" value="reject">
-                                                        <div class="mb-3">
-                                                            <label for="reject-response" class="form-label">Enter your reason for rejecting this feedback:</label>
-                                                            <textarea class="form-control" id="reject-response" name="response" rows="4" required></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                        <button type="submit" class="btn btn-warning">Reject</button>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!--end modal-->
-
-
-                                    <!-- Pagination -->
-                                    <nav aria-label="Page navigation">
-                                        <ul class="pagination justify-content-center" id="pagination">
-                                            <c:if test="${pageControl.getPage() > 1}">
-                                                <li class="page-item">
-                                                    <a
-                                                        class="page-link"
-                                                        href="${pageControl.getUrlPattern()}page=${pageControl.getPage()-1}"
-                                                        aria-label="Previous"
-                                                        >
-                                                        <span aria-hidden="true">&laquo; Previous</span>
-                                                    </a>
-                                                </li>
-                                            </c:if>
-                                            <!-- Tính toán để chỉ hiển thị 5 trang tại một thời điểm -->
-                                            <c:set
-                                                var="startPage"
-                                                value="${pageControl.getPage() - 2 > 0 ? pageControl.getPage() - 2 : 1}"
-                                                />
-                                            <c:set
-                                                var="endPage"
-                                                value="${startPage + 4 <= pageControl.getTotalPages() ? startPage + 4 : pageControl.getTotalPages()}"
-                                                />
-                                            <!-- Nút để quay lại nhóm trang trước (nếu có) -->
-                                            <c:if test="${startPage > 1}">
-                                                <li class="page-item">
-                                                    <a
-                                                        class="page-link"
-                                                        href="${pageControl.getUrlPattern()}page=${startPage-1}"
-                                                        >...</a
-                                                    >
-                                                </li>
-                                            </c:if>
-                                            <!-- Hiển thị các trang trong khoảng từ startPage đến endPage -->
-                                            <c:forEach var="i" begin="${startPage}" end="${endPage}">
-                                                <li
-                                                    class="page-item <c:if test='${i == pageControl.getPage()}'>active</c:if>"
-                                                        >
-                                                        <a
-                                                            class="page-link"
-                                                            href="${pageControl.getUrlPattern()}page=${i}"
-                                                        >${i}</a
-                                                    >
-                                                </li>
-                                            </c:forEach>
-                                            <!-- Nút để chuyển sang nhóm trang tiếp theo (nếu có) -->
-                                            <c:if test="${endPage < pageControl.getTotalPages()}">
-                                                <li class="page-item">
-                                                    <a
-                                                        class="page-link"
-                                                        href="${pageControl.getUrlPattern()}page=${endPage + 1}"
-                                                        >...</a
-                                                    >
-                                                </li>
-                                            </c:if>
-                                            <!-- Nút Next để đi đến nhóm trang tiếp theo -->
-                                            <c:if test="${pageControl.getPage() < pageControl.getTotalPages()}">
-                                                <li class="page-item">
-                                                    <a
-                                                        class="page-link"
-                                                        href="${pageControl.getUrlPattern()}page=${pageControl.getPage() + 1}"
-                                                        aria-label="Next"
-                                                        >
-                                                        <span aria-hidden="true">Next &raquo;</span>
-                                                    </a>
-                                                </li>
-                                            </c:if>
-                                        </ul>
-                                    </nav>
-                                    <!-- Pagination -->
-
-
-
-                                    <!-- Add more seekers here -->
-                                </div>
                             </div>
                         </div>
-                        <!-- content area end -->
 
-                    </div>
-                    <!-- Back to Top Button -->
-                    <button type="button" class="btn btn-primary position-fixed" id="rts-back-to-top" style="bottom: 20px; right: 20px;">
-                        <i class="fas fa-arrow-up"></i>
-                    </button>
+                        <!-- Filter and Search end -->
 
-                    <!-- Footer -->
+                        <div class="seeker-list">
+                            <!--notification-->
+                            <div class="toast-container position-fixed top-0 end-0 p-3">
+                                <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                    <div class="toast-header bg-success text-white">
+                                        <strong class="me-auto">Thành Công</strong>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                                    </div>
+                                    <div class="toast-body" id="successToastBody"></div>
+                                </div>
 
-                </div>
-            </div>
-        </div>
+                                <div id="errorToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                                    <div class="toast-header bg-danger text-white">
+                                        <strong class="me-auto">Lỗi</strong>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                                    </div>
+                                    <div class="toast-body" id="errorToastBody"></div>
+                                </div>
+                            </div>
+                            <!--notification-end-->
+                            
+                            <div class="table-wrapper">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Phản Hồi Từ</th>
+                                            <th>Tiêu Đề Công Việc</th>
+                                            <th>Trạng Thái</th>
+                                            <th>Hành Động</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <%
+                                           Account account = new Account();
+                                           AccountDAO accDao = new AccountDAO();
+                                           JobPostings jobPost = new JobPostings();
+                                           JobPostingsDAO jobPostDao = new JobPostingsDAO();
+                                        %>
+                                        <c:forEach items="${listFeedback}" var="feedback">
+                                            <c:set var="accountId" value="${feedback.getAccountID()}"/>
+                                            <c:set var="jobPostId" value="${feedback.getJobPostingID()}"/>
+                                            <tr>
+                                                <!-- Full Name Column -->
+                                                <td>
+                                                    <%
+                                                        int accountId = (Integer) pageContext.getAttribute("accountId");
+                                                        account = accDao.findUserById(accountId);
+                                                        String name = "";
+                                                        if(account != null){
+                                                            name = account.getFullName();
+                                                        }
+                                                    %>
+                                                    <%= name%>
+                                                </td>
+                                                <td>
+                                                    <%
+                                                        int jobPostId = (Integer) pageContext.getAttribute("jobPostId");
+                                                        jobPost = jobPostDao.findJobPostingById(jobPostId);
+                                                            String title = "";
+                                                        if(jobPost != null){
+                                                            title = jobPost.getTitle();
+                                                           }
+                                                    %>
+                                                    <form action="${pageContext.request.contextPath}/job_posting" method="POST" style="display: inline;">
+                                                        <input type="hidden" name="action" value="view">
+                                                        <input type="hidden" name="jobPostID" value="${feedback.getJobPostingID()}">
+                                                        <button type="submit" class="btn btn-link text-decoration-none" style="padding: 0; color: #c471f5; font-weight: 600;">
+                                                            <%= title %>
+                                                        </button>
+                                                    </form>
+                                                </td>
 
+                                                <!-- Status Column -->
+                                                <td>
+                                                    <c:choose>
+                                                        <c:when test="${feedback.getStatus() == 1}">
+                                                            <span class="status-badge status-pending">Đang Chờ Xử Lý</span>
+                                                        </c:when>
+                                                        <c:when test="${feedback.getStatus() == 2}">
+                                                            <span class="status-badge status-resolved">Đã Giải Quyết</span>
+                                                        </c:when>
+                                                        <c:when test="${feedback.getStatus() == 3}">
+                                                            <span class="status-badge status-reject">Từ Chối</span>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <span class="status-badge status-deleted">Đã Xóa</span>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </td>
 
+                                                <!-- Action Column -->
+                                                <td>
+                                                    <button 
+                                                        class="btn-action" 
+                                                        type="button" 
+                                                        onclick="toggleDetails(${feedback.getFeedbackID()})"
+                                                        title="Xem chi tiết"
+                                                        <c:if test="${feedback.getStatus() == 4}">disabled</c:if>>
+                                                        <i class="fa fa-eye"></i> 
+                                                    </button>
 
-        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas" aria-labelledby="offcanvasLabel">
-            <div class="offcanvas-header p-0 mb-5 mt-4">
-                <a href="index.html" class="offcanvas-title" id="offcanvasLabel">
-                    <img src="${pageContext.request.contextPath}/assets/img/logo/header__one.svg" alt="logo">
-                </a> 
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-            </div>
-            <!-- login offcanvas -->
-            <div class="mb-4 d-block d-sm-none">
-                <div class="header__right__btn d-flex justify-content-center gap-3">
-                    <!--                    <a href="#" class="small__btn no__fill__btn border-6 font-xs" aria-label="Login Button" data-bs-toggle="modal" data-bs-target="#loginModal"> <i class="rt-login"></i>Sign In</a>-->
-                    <a href="#" class="small__btn d-xl-flex fill__btn border-6 font-xs" aria-label="Job Posting Button">Add Job</a>
-                </div>
-            </div>
-            <div class="offcanvas-body p-0">
-                <div class="rts__offcanvas__menu overflow-hidden">
-                    <div class="offcanvas__menu"></div>
-                </div>
-                <p class="max-auto font-20 fw-medium text-center text-decoration-underline mt-4">Our Social Links</p>
-                <div class="rts__social d-flex justify-content-center gap-3 mt-3">
-                    <a href="https://facebook.com"  aria-label="facebook">
-                        <i class="fa-brands fa-facebook"></i>
-                    </a>
-                    <a href="https://instagram.com"  aria-label="instagram">
-                        <i class="fa-brands fa-instagram"></i>
-                    </a>
-                    <a href="https://linkedin.com"  aria-label="linkedin">
-                        <i class="fa-brands fa-linkedin"></i>
-                    </a>
-                    <a href="https://pinterest.com"  aria-label="pinterest">
-                        <i class="fa-brands fa-pinterest"></i>
-                    </a>
-                    <a href="https://youtube.com"  aria-label="youtube">
-                        <i class="fa-brands fa-youtube"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <!-- THEME PRELOADER START -->
-        <div class="loader-wrapper">
-            <div class="loader">
-            </div>
-            <div class="loader-section section-left"></div>
-            <div class="loader-section section-right"></div>
-        </div>
-        <!-- THEME PRELOADER END -->
-        <button type="button" class="rts__back__top" id="rts-back-to-top">
-            <i class="fas fa-arrow-up"></i>
-        </button>
-        <!-- all plugin js -->
-        <jsp:include page="../common/admin/common-js-admin.jsp"></jsp:include>
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+                                                    <!-- Resolved button -->
+                                                    <button 
+                                                        class="btn-action btn-success" 
+                                                        type="button" 
+                                                        onclick="openResolvedModal(${feedback.getFeedbackID()})" 
+                                                        title="Đã Giải Quyết"
+                                                        <c:if test="${feedback.getStatus() == 4}">disabled</c:if>>
+                                                        <i class="fa-solid fa-check-circle"></i>
+                                                    </button>
 
-            <script>
-                                                                        function toggleDetails(feedbackId) {
-                                                                            var detailsRow = document.getElementById("details-" + feedbackId);
-                                                                            if (detailsRow.style.display === "none") {
-                                                                                detailsRow.style.display = "table-row";
-                                                                            } else {
-                                                                                detailsRow.style.display = "none";
-                                                                            }
-                                                                        }
-            </script>
-            <script>
-                function openResolvedModal(feedbackId) {
-                    document.getElementById('resolved-feedback-id').value = feedbackId;
-                    new bootstrap.Modal(document.getElementById('resolvedModal')).show();
-                }
+                                                    <!-- Reject button -->
+                                                    <button 
+                                                        class="btn-action btn-warning" 
+                                                        type="button" 
+                                                        onclick="openRejectModal(${feedback.getFeedbackID()})" 
+                                                        title="Từ Chối"
+                                                        <c:if test="${feedback.getStatus() == 4}">disabled</c:if>>
+                                                        <i class="fa-solid fa-times"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
 
-                function openRejectModal(feedbackId) {
-                    document.getElementById('reject-feedback-id').value = feedbackId;
-                    new bootstrap.Modal(document.getElementById('rejectModal')).show();
-                }
+                                            <!-- Row for Feedback Details -->
+                                            <tr id="details-${feedback.getFeedbackID()}" style="display: none;">
+                                                <td colspan="4">
+                                                    <div class="card shadow-sm">
+                                                        <div class="card-body">
+                                                            <!-- Header with title -->
+                                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                                <h5 class="card-title mb-0" style="color: #c471f5;">
+                                                                    <i class="fas fa-comment-dots me-2"></i>Chi Tiết Phản Hồi
+                                                                </h5>
+                                                            </div>
 
-                // Clear form when modals are hidden
-                document.getElementById('resolvedModal').addEventListener('hidden.bs.modal', function () {
-                    document.getElementById('resolved-response').value = '';
-                });
+                                                            <!-- Info row -->
+                                                            <div class="row mb-3 pb-2 border-bottom">
+                                                                <div class="col-md-6">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <div>
+                                                                            <small class="text-muted">Phản Hồi Từ</small>
+                                                                            <p class="mb-0 fw-bold" style="color: #1a1a1a;"><%= name %></p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <div class="rounded-circle" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%); color: white;">
+                                                                            <i class="fas fa-calendar"></i>
+                                                                        </div>
+                                                                        <div class="ms-3">
+                                                                            <small class="text-muted">Ngày Tạo</small>
+                                                                            <p class="mb-0 fw-bold" style="color: #1a1a1a;">${feedback.getCreatedAt()}</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
 
-                document.getElementById('rejectModal').addEventListener('hidden.bs.modal', function () {
-                    document.getElementById('reject-response').value = '';
-                });
-            </script>
-            <script>
-                // Function to show success toast
-                function showSuccessToast(message) {
-                    const successToast = document.getElementById('successToast');
-                    const successToastBody = document.getElementById('successToastBody');
+                                                            <!-- Content section -->
+                                                            <div class="feedback-content">
+                                                                <h6 class="text-muted mb-2">
+                                                                    <i class="fas fa-comment-alt me-2"></i>Nội Dung
+                                                                </h6>
+                                                                <div class="p-3 bg-light rounded">
+                                                                    <p class="mb-0 text-start" style="white-space: pre-line; color: #333;">${feedback.getContentFeedback()}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+                            </div>
 
-                    successToastBody.textContent = message;
-                    const toast = new bootstrap.Toast(successToast);
-                    toast.show();
-                }
-
-                // Function to show error toast
-                function showErrorToast(message) {
-                    const errorToast = document.getElementById('errorToast');
-                    const errorToastBody = document.getElementById('errorToastBody');
-
-                    errorToastBody.textContent = message;
-                    const toast = new bootstrap.Toast(errorToast);
-                    toast.show();
-                }
-
-                // Check for success message
-                document.addEventListener('DOMContentLoaded', function () {
-                    const successMessage = '${success}';
-                    const errorMessage = '${error}';
-
-                    if (successMessage && successMessage.trim() !== '') {
-                        showSuccessToast(successMessage);
-                    }
-
-                    if (errorMessage && errorMessage.trim() !== '') {
-                        showErrorToast(errorMessage);
-                    }
-                });
-        </script>
-
-        <script>
-            tinymce.init({
-                selector: 'textarea', // Initialize TinyMCE for all text areas
-                plugins: 'advlist autolink lists link image charmap print preview anchor',
-                toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
-                menubar: true, // Disable the menubar
-                branding: false, // Disable the TinyMCE branding
-                height: 300, // Set the height of the editor
-                setup: function (editor) {
-                    editor.on('change', function () {
-                        tinymce.triggerSave(); // Synchronize TinyMCE content with the form
-                    });
-                }
-            });
-        </script>
-    </body>
-</html>
+                            <!--modal for resolved-reject button-->
+                            <!-- Modal for Resolved Action -->
+                            <div class="modal fade" id="resolvedModal" tabindex="-1" aria-labelledby="resolvedModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-success text-white">
+                                            <h5 class="modal-title" id="resolvedModalLabel">Giải Quyết Phản Hồi</h5>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form action="feedback" method="POST">
+                                            <div class="modal-body">
+                                                <input type="hidden" id="resolved-feedback-id" name="feedback-id" value="">
+                                                <input type="hidden" name="action" value="resolved">
+                                                <div class="mb-3">
+                                                    <label for="resolved-response" class="form-label">Nhập phản hồi của bạn để giải quyết phản hồi này:</label>
+                                                    <textarea class="form-control" id="resolved-response" name="response" rows="4" required></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                                                <button type="submit" class="btn btn-success">Giải Quyết</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>

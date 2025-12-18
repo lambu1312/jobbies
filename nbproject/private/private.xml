@@ -16,9 +16,44 @@
             <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/upgit/jobbies/src/java/controller/AuthenticationController.java</file>
             <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/upgit/jobbies/src/java/controller/candidate/EducationServlet.java</file>
             <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/upgit/jobbies/web/view/user/Education.jsp</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/upgit/jobbies/src/java/dao/GenericDAO.java</file>
             <file>file:/C:/Users/lam%20bu/Downloads/jobbies%20(1)/jobbies%20(1)/jobbies/web/view/admin/handbookForm.jsp</file>
-            <file>file:/C:/Users/lam%20bu/Downloads/jobbies%20(1)/jobbies%20(1)/jobbies/src/java/dao/DBContext.java</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/web/view/recruiter/addJobPosting.jsp</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/web/view/recruiter/createCompany.jsp</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/web/view/recruiter/editCompany.jsp</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/web/view/recruiter/editJP.jsp</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/web/view/recruiter/manageApplications.jsp</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/web/view/authen/login.jsp</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/web/view/common/header-area.jsp</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/web/view/common/admin/header-admin.jsp</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/web/view/common/user/header-user.jsp</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/src/java/controller/recruiter/GeminiAISuggestion.java</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/web/assets/logo/Logo.jpg</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/web/view/home.jsp</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/web/view/recruiter/jobPost-manager.jsp</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/src/java/controller/recruiter/AddJobPosting.java</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/web/view/admin/jobPostManagement.jsp</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/src/java/controller/admin/JobPostingController.java</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/src/java/dao/JobPostingsDAO.java</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/src/java/dao/AccountDAO.java</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/src/java/controller/seeker/HomeSeekerServlet.java</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/src/java/controller/recruiter/Dashboard.java</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/web/view/recruiter/dashboard.jsp</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/web/view/recruiter/header-re.jsp</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/web/view/recruiter/viewJP.jsp</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/web/view/recruiter/verifyRecruiter.jsp</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/src/java/controller/candidate/ApplicationServlet.java</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/src/java/controller/candidate/ViewDetailJobPostingServlet.java</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/src/java/dao/DBContext.java</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/src/java/dao/ApplicationDAO.java</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/web/view/admin/feedbackManagement.jsp</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/src/java/dao/GenericDAO.java</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/src/java/dao/CompanyDAO.java</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/src/java/controller/recruiter/JobPost.java</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/src/java/model/JobPostings.java</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/web/view/admin/adminHome.jsp</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/web/view/user/userHome.jsp</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/web/view/user/ViewJobPosting.jsp</file>
+            <file>file:/C:/Users/admin/OneDrive/Máy%20tính/PullDev/jobbies/web/view/user/userProfile.jsp</file>
         </group>
     </open-files>
 </project-private>

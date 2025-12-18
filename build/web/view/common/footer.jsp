@@ -254,6 +254,7 @@
             }
         }
     </style>
+    
 
     <!-- Chatbot Widget -->
     <%@ include file="chatbot-component.jsp" %>

@@ -50,7 +50,6 @@ public class JobPostingController extends HttpServlet {
         request.setAttribute("error", error);
         request.setAttribute("duplicate", duplicate);
         request.setAttribute("duplicateEdit", duplicateEdit);
-        
         // get ve pageNumber
         PageControl pageControl = new PageControl();
         String pageRaw = request.getParameter("page");
@@ -64,33 +63,33 @@ public class JobPostingController extends HttpServlet {
         } catch (NumberFormatException e) {
             page = 1;
         }
-        
+
         //get ve url
         String requestURL = request.getRequestURL().toString();
-        
+
         //get ve ben jsp - FIXED: Lấy đúng tên parameter từ form
         String status = request.getParameter("filterStatus") != null ? request.getParameter("filterStatus") : "";
-String currency = request.getParameter("filterCurrency") != null ? request.getParameter("filterCurrency") : "";
+        String currency = request.getParameter("filterCurrency") != null ? request.getParameter("filterCurrency") : "";
         String salaryRange = request.getParameter("filterSalaryRange") != null ? request.getParameter("filterSalaryRange") : "";
         String postDate = request.getParameter("filterDate") != null ? request.getParameter("filterDate") : "";
         String search = request.getParameter("search") != null ? request.getParameter("search") : "";
 
         // FIXED: Gọi phương thức với tất cả tham số lọc bao gồm currency và salaryRange
         List<JobPostings> jobPostingsList = jobPostingsDAO.findAndfilterJobPostings(
-            status, currency, salaryRange, postDate, search, page);
-        
+                status, currency, salaryRange, postDate, search, page);
+
         int totalRecord = jobPostingsDAO.findAndfilterAllRecord(
-            status, currency, salaryRange, postDate, search);
+                status, currency, salaryRange, postDate, search);
 
         // FIXED: Cập nhật URL pattern với tất cả tham số lọc
-        pageControl.setUrlPattern(requestURL + "?filterStatus=" + status 
-            + "&filterCurrency=" + currency
-            + "&filterSalaryRange=" + salaryRange
-            + "&filterDate=" + postDate
-            + "&search=" + search + "&");
-        
+        pageControl.setUrlPattern(requestURL + "?filterStatus=" + status
+                + "&filterCurrency=" + currency
+                + "&filterSalaryRange=" + salaryRange
+                + "&filterDate=" + postDate
+                + "&search=" + search + "&");
+
         request.setAttribute("jobPostingsList", jobPostingsList);
-        
+
         //total page
         int totalPage = (totalRecord % RECORD_PER_PAGE) == 0 ? (totalRecord / RECORD_PER_PAGE) : (totalRecord / RECORD_PER_PAGE) + 1;
         //set total record, total page, page to pageControl
@@ -133,7 +132,8 @@ String currency = request.getParameter("filterCurrency") != null ? request.getPa
         }
         response.sendRedirect(url);
     }
-private String violateJobPosting(HttpServletRequest request) throws UnsupportedEncodingException {
+
+    private String violateJobPosting(HttpServletRequest request) throws UnsupportedEncodingException {
         String url = "";
         try {
             int jobPostId = Integer.parseInt(request.getParameter("jobPostID"));
@@ -192,5 +192,4 @@ private String violateJobPosting(HttpServletRequest request) throws UnsupportedE
         }
         return url;
     }
-
 }

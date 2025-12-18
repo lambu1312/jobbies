@@ -74,33 +74,6 @@
                         <!-- header area end -->
 
                         <div class="container mt-5 mb-5">
-                            <div>
-                                <c:if test="${jobSeeker != null}">
-                                    <div>
-                                        <span class="badge custom-badge bg-success">Your JobSeeker ID:
-                                            #${jobSeeker.getJobSeekerID()}</span>
-                                    </div>
-
-                                </c:if>
-
-                                <!-- If jobSeeker is null, show the alternative content -->
-                                <c:if test="${jobSeeker == null}">
-                                    <div>
-                                        <h2>Aren't you a Job Seeker yet?</h2>
-                                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
-                                            data-bs-target="#modalJoinJobSeeker">
-                                            Join Job Seeker
-                                        </button>
-                                    </div>
-                                </c:if>
-
-                                <!-- Display error message if available -->
-                                <c:if test="${not empty errorJobSeeker}">
-                                    <div style="color: red;">
-                                        ${error}
-                                    </div>
-                                </c:if>
-                            </div>
                             <div class="row">
                                 <!-- Sidebar Section -->
                                 <div class="col-md-3 sidebar p-3">
