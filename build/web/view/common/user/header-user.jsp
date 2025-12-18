@@ -47,7 +47,7 @@
                                 <i class="fas fa-briefcase"></i>
                                 <span>Experience</span>
                             </a>
-<a href="${pageContext.request.contextPath}/application" class="dropdown-item">
+                            <a href="${pageContext.request.contextPath}/application" class="dropdown-item">
                                 <i class="fas fa-paper-plane"></i>
                                 <span>My Applications</span>
                             </a>
@@ -86,13 +86,13 @@
             }
 
             .navbar-container {
-                max-width: 1400px;
-                margin: 0 auto;
                 display: flex;
-                justify-content: space-between;
                 align-items: center;
-                padding: 1.5rem 3rem;
-                gap: 2rem;
+                gap: clamp(1rem, 2vw, 2rem);
+                flex: 1;                 /* 👈 chiếm phần giữa */
+                justify-content: center; /* menu luôn cân giữa */
+                min-width: 0;
+                background: linear-gradient(135deg, #0a0015 0%, #1a0b2e 50%, #16213e 100%);
             }
 
             .logo {
@@ -126,7 +126,7 @@
                 text-decoration: none;
                 font-weight: 600;
                 transition: all 0.3s;
-position: relative;
+                position: relative;
                 white-space: nowrap;
             }
 

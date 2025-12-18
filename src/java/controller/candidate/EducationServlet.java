@@ -23,44 +23,44 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Account;
-
 import model.Education;
 import model.JobSeekers;
 
 @MultipartConfig(
         fileSizeThreshold = 1024 * 1024, // 1 MB
-        maxFileSize = 1024 * 1024 * 10, // 10 MB
-        maxRequestSize = 1024 * 1024 * 50 // 50 MB
+        maxFileSize = 1024 * 1024 * 10, // 10MB - SỬA: maxFileSize phải lớn hơn 200KB
+        maxRequestSize = 1024 * 1024 * 50 // 50 MB - SỬA: maxRequestSize 
 )
-
 @WebServlet(name = "EducationServlet", urlPatterns = {"/education"})
 public class EducationServlet extends HttpServlet {
 
     private final EducationDAO eduDAO = new EducationDAO();
     private final JobSeekerDAO jobSeekerDAO = new JobSeekerDAO();
+    private static final long MAX_FILE_SIZE = 200 * 1024; // 200KB
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Get the error parameter from the request, typically set in doPost
         String error = request.getParameter("error") != null ? request.getParameter("error") : "";
         request.setAttribute("error", error);
+        
+        String errorEducation = request.getParameter("errorEducation") != null ? request.getParameter("errorEducation") : "";
+        request.setAttribute("errorEducation", errorEducation);
+        
         String action = request.getParameter("action") != null ? request.getParameter("action") : "";
-        String url = "view/user/Education.jsp"; // Default URL for forwarding
+        String url = "view/user/Education.jsp";
 
         switch (action) {
             case "update-education":
-                // Forward to the education update page
                 url = "view/user/Education.jsp";
                 break;
 
             default: {
-                // Default action to display education page or handle error
                 HttpSession session = request.getSession();
                 Account account = (Account) session.getAttribute(CommonConst.SESSION_ACCOUNT);
 
                 if (account == null) {
-                    response.sendRedirect("view/authen/login.jsp"); // Redirect to login if not logged in
+                    response.sendRedirect("view/authen/login.jsp");
                     return;
                 }
 
@@ -68,24 +68,21 @@ public class EducationServlet extends HttpServlet {
 
                 if (jobSeeker != null) {
                     try {
-                        // Attempt to view education details
                         url = viewEducation(request, response);
                     } catch (Exception e) {
                         e.printStackTrace();
                         response.getWriter().println("Database error.");
-                        url = "view/user/Education.jsp"; // Set URL to education page in case of exception
+                        url = "view/user/Education.jsp";
                     }
                 } else {
-                    // Set error message if job seeker information is missing
-                    error = "You are not currently a member of Job Seeker. Please join to use this function.";
+                    error = "You are not currently a member of Jobbies. Please join to use this function.";
                     request.setAttribute("errorJobSeeker", error);
-                    url = "view/user/Education.jsp"; // Forward to education page to show the error message
+                    url = "view/user/Education.jsp";
                 }
                 break;
             }
         }
 
-        // Forward to the designated page with any relevant error or data attributes set
         request.getRequestDispatcher(url).forward(request, response);
     }
 
@@ -102,23 +99,22 @@ public class EducationServlet extends HttpServlet {
             case "update-education":
                 url = updateEducation(request);
                 break;
-            case "delete-education": // New case for delete action
+            case "delete-education":
                 url = deleteEducation(request);
                 break;
             default:
-                url = "home"; // Default URL if no action matches
+                url = "education";
         }
 
         response.sendRedirect(url);
     }
 
-    // Upload CV
     public String addEducation(HttpServletRequest request) throws IOException, ServletException {
-        String url = null; // URL to navigate to after processing
+        String url = null;
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute(CommonConst.SESSION_ACCOUNT);
         JobSeekers jobSeeker = jobSeekerDAO.findJobSeekerIDByAccountID(account.getId() + "");
-        List<Education> edus = eduDAO.findEducationbyJobSeekerID(jobSeeker.getJobSeekerID());
+        
         if (jobSeeker != null) {
             try {
                 String institution = request.getParameter("institution");
@@ -126,91 +122,71 @@ public class EducationServlet extends HttpServlet {
                 String fieldofstudy = request.getParameter("fieldofstudy");
                 String startDateStr = request.getParameter("startDate");
                 String endDateStr = request.getParameter("endDate");
-
                 Part degreeImgPart = request.getPart("degreeImg");
-                String uploadDir = "uploads/degreeImgs";
-                String degreeImgName = saveFile(degreeImgPart, uploadDir);
+
+                // KIỂM TRA FILE SIZE TRƯỚC - QUAN TRỌNG!
+                if (degreeImgPart == null || degreeImgPart.getSize() == 0) {
+                    url = "education?errorEducation=" + URLEncoder.encode("Vui lòng chọn file ảnh bằng cấp.", "UTF-8");
+                    saveFormData(session, institution, degree, fieldofstudy, startDateStr, endDateStr);
+                    return url;
+                }
+                
+                if (degreeImgPart.getSize() > MAX_FILE_SIZE) {
+                    url = "education?errorEducation=" + URLEncoder.encode("Kích thước file vượt quá 200KB.", "UTF-8");
+                    saveFormData(session, institution, degree, fieldofstudy, startDateStr, endDateStr);
+                    return url;
+                }
 
                 Date startDate = Date.valueOf(startDateStr);
                 Date endDate = Date.valueOf(endDateStr);
 
-                Calendar startCal = Calendar.getInstance();
-                startCal.setTime(startDate);
-
-                Calendar endCal = Calendar.getInstance();
-                endCal.setTime(endDate);
-
-                boolean isCertificate = "Certificate".equals(degree);
-                int yearsDiff = endCal.get(Calendar.YEAR) - startCal.get(Calendar.YEAR);
-                int monthsDiff = endCal.get(Calendar.MONTH) - startCal.get(Calendar.MONTH);
-
-// Calculate total months between startDate and endDate
-                int totalMonths = yearsDiff * 12 + monthsDiff;
-
-// If it's not a Certificate degree and total months is below 24, show an error
-                if (!isCertificate && totalMonths < 24) {
-                    try {
-                        url = "education?error=" + URLEncoder.encode("End date must be at least 2 years after the start date.", "UTF-8");
-                        session.setAttribute("institution", institution);
-                        session.setAttribute("degree", degree);
-                        session.setAttribute("fieldofstudy", fieldofstudy);
-                        session.setAttribute("startDateStr", startDateStr);
-                        session.setAttribute("endDateStr", endDateStr);
-                    } catch (UnsupportedEncodingException ex) {
-                        Logger.getLogger(EducationServlet.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } else {
-                    // Create and populate the Education object
-                    Education eduAdd = new Education();
-                    eduAdd.setJobSeekerID(jobSeeker.getJobSeekerID());
-                    eduAdd.setInstitution(institution);
-                    eduAdd.setDegree(degree);
-                    eduAdd.setFieldOfStudy(fieldofstudy);
-                    eduAdd.setStartDate(startDate);
-                    eduAdd.setEndDate(endDate);
-                    eduAdd.setDegreeImg(degreeImgName);
-
-                    session.removeAttribute("institution");
-                    session.removeAttribute("degree");
-                    session.removeAttribute("fieldofstudy");
-                    session.removeAttribute("startDateStr");
-                    session.removeAttribute("endDateStr");
-
-                    eduDAO.insert(eduAdd);
-                    // Continue processing eduAdd as needed (e.g., save to the database)
-                    request.setAttribute("successEducation", "Profile add successfully.");
-                    request.setAttribute("edus", edus);
-                    request.setAttribute("jobSeeker", jobSeeker);
-                    url = "education"; // Điều hướng đến trang Education
+                // KIỂM TRA NGÀY
+                if (!validateDateRange(startDate, endDate, degree)) {
+                    url = "education?errorEducation=" + URLEncoder.encode("Ngày kết thúc phải sau ngày bắt đầu ít nhất 2 năm.", "UTF-8");
+                    saveFormData(session, institution, degree, fieldofstudy, startDateStr, endDateStr);
+                    return url;
                 }
+
+                // LÀM VIỆC VỚI FILE - UPLOAD
+                String uploadDir = "uploads/degreeImgs";
+                String degreeImgName = saveFile(degreeImgPart, uploadDir);
+
+                // TẠO EDUCATION OBJECT
+                Education eduAdd = new Education();
+                eduAdd.setJobSeekerID(jobSeeker.getJobSeekerID());
+                eduAdd.setInstitution(institution);
+                eduAdd.setDegree(degree);
+                eduAdd.setFieldOfStudy(fieldofstudy);
+                eduAdd.setStartDate(startDate);
+                eduAdd.setEndDate(endDate);
+                eduAdd.setDegreeImg(degreeImgName);
+
+                // XÓA SESSION DATA
+                clearFormData(session);
+
+                // INSERT VÀO DB
+                eduDAO.insert(eduAdd);
+                
+                url = "education"; // SUCCESS - không có parameter error
+                
             } catch (Exception e) {
-                e.printStackTrace(); // Log the exception for debugging
-                try {
-                    url = "education?error=" + URLEncoder.encode("An error occurred while uploading the profile. Please try again.", "UTF-8");
-                } catch (UnsupportedEncodingException ex) {
-                    Logger.getLogger(EducationServlet.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                url = "education"; // Redirect back to Education upload page with error
+                e.printStackTrace();
+                url = "education?errorEducation=" + URLEncoder.encode("Đã xảy ra lỗi khi thêm học vấn. Vui lòng thử lại.", "UTF-8");
             }
         } else {
-            try {
-                url = "education?error=" + URLEncoder.encode("You are not currently a member of Job Seeker. Please join to use this function.", "UTF-8");
-            } catch (UnsupportedEncodingException ex) {
-                Logger.getLogger(EducationServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            url = "education?errorEducation=" + URLEncoder.encode("Bạn chưa phải thành viên của Jobbies.", "UTF-8");
         }
 
-        return url; // Return the URL to navigate to
+        return url;
     }
 
-//Update CV
     public String updateEducation(HttpServletRequest request) throws IOException, ServletException {
-        String url = null; // URL to navigate to after processing
+        String url = null;
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute(CommonConst.SESSION_ACCOUNT);
         JobSeekers jobSeeker = jobSeekerDAO.findJobSeekerIDByAccountID(String.valueOf(account.getId()));
-        List<Education> edus = eduDAO.findEducationbyJobSeekerID(jobSeeker.getJobSeekerID());
-        if (jobSeeker != null && edus != null) { // Thay đổi để check đúng edu khác null
+        
+        if (jobSeeker != null) {
             try {
                 String educationIDStr = request.getParameter("educationID");
                 String institution = request.getParameter("institution");
@@ -218,70 +194,59 @@ public class EducationServlet extends HttpServlet {
                 String fieldofstudy = request.getParameter("fieldofstudy");
                 String startDateStr = request.getParameter("startDate");
                 String endDateStr = request.getParameter("endDate");
-
                 Part degreeImgPart = request.getPart("degreeImg");
-                String uploadDir = "uploads/degreeImgs";
-                String degreeImgName = saveFile(degreeImgPart, uploadDir);
 
                 int educationID = Integer.parseInt(educationIDStr);
                 Date startDate = Date.valueOf(startDateStr);
-                Date endDate = Date.valueOf(endDateStr); // Mặc định là null
+                Date endDate = Date.valueOf(endDateStr);
 
-                Calendar startCal = Calendar.getInstance();
-                startCal.setTime(startDate);
-
-                Calendar endCal = Calendar.getInstance();
-                endCal.setTime(endDate);
-
-                boolean isCertificate = "Certificate".equals(degree);
-                // Tính số năm giữa 2 ngày
-                int yearsDiff = endCal.get(Calendar.YEAR) - startCal.get(Calendar.YEAR);
-                int monthsDiff = endCal.get(Calendar.MONTH) - startCal.get(Calendar.MONTH);
-
-                // Tính tổng số tháng giữa startDate và endDate
-                int totalMonths = yearsDiff * 12 + monthsDiff;
-
-                // Nếu tổng số tháng dưới 24, không lưu và trả về thông báo lỗi
-                if (!isCertificate && totalMonths < 24) {
-                    try {
-                        url = "education?error=" + URLEncoder.encode("End date must be at least 2 years after the start date.", "UTF-8");
-                    } catch (UnsupportedEncodingException ex) {
-                        Logger.getLogger(EducationServlet.class.getName()).log(Level.SEVERE, null, ex);
+                // KIỂM TRA FILE SIZE NẾU CÓ FILE MỚI
+                if (degreeImgPart != null && degreeImgPart.getSize() > 0) {
+                    if (degreeImgPart.getSize() > MAX_FILE_SIZE) {
+                        url = "education?errorEducation=" + URLEncoder.encode("Kích thước file vượt quá 200KB.", "UTF-8") 
+                                + "&educationID=" + educationID;
+                        return url;
                     }
-                } else {
-                    Education edu = new Education();
+                }
 
-                    // Tạo đối tượng Education
-                    edu.setEducationID(educationID);
-                    edu.setInstitution(institution);
-                    edu.setDegree(degree);
-                    edu.setFieldOfStudy(fieldofstudy);
-                    edu.setStartDate(startDate);
-                    edu.setEndDate(endDate);
+                // KIỂM TRA NGÀY
+                if (!validateDateRange(startDate, endDate, degree)) {
+                    url = "education?errorEducation=" + URLEncoder.encode("Ngày kết thúc phải sau ngày bắt đầu ít nhất 2 năm.", "UTF-8")
+                            + "&educationID=" + educationID;
+                    return url;
+                }
+
+                // UPLOAD FILE NẾU CÓ
+                String degreeImgName = null;
+                if (degreeImgPart != null && degreeImgPart.getSize() > 0) {
+                    String uploadDir = "uploads/degreeImgs";
+                    degreeImgName = saveFile(degreeImgPart, uploadDir);
+                }
+
+                // CẬP NHẬT EDUCATION
+                Education edu = new Education();
+                edu.setEducationID(educationID);
+                edu.setInstitution(institution);
+                edu.setDegree(degree);
+                edu.setFieldOfStudy(fieldofstudy);
+                edu.setStartDate(startDate);
+                edu.setEndDate(endDate);
+                if (degreeImgName != null) {
                     edu.setDegreeImg(degreeImgName);
+                }
 
-                    // Cập nhật bản ghi trong CSDL
-                    eduDAO.updateEducation(edu);
-                    request.setAttribute("successEducation", "Profile updated successfully.");
-                    request.setAttribute("edus", edus);
-                    request.setAttribute("jobSeeker", jobSeeker);
-                    url = "education"; // Điều hướng đến trang Education
-                }
+                eduDAO.updateEducation(edu);
+                url = "education"; // SUCCESS
+                
             } catch (Exception e) {
-                e.printStackTrace(); // Log the exception for debugging
-                try {
-                    url = "education?error=" + URLEncoder.encode("An error occurred while uploading the profile. Please try again.", "UTF-8");
-                } catch (UnsupportedEncodingException ex) {
-                    Logger.getLogger(EducationServlet.class.getName()).log(Level.SEVERE, null, ex);
-                }
-                url = "education"; // Redirect back to Education upload page with error
+                e.printStackTrace();
+                url = "education?errorEducation=" + URLEncoder.encode("Đã xảy ra lỗi khi cập nhật học vấn.", "UTF-8");
             }
         } else {
-            request.setAttribute("error", "No Job Seeker found for the current account.");
             url = "JobSeekerCheck";
         }
 
-        return url; // Return the URL to navigate to
+        return url;
     }
 
     private String viewEducation(HttpServletRequest request, HttpServletResponse response) throws IOException, Exception {
@@ -290,38 +255,29 @@ public class EducationServlet extends HttpServlet {
         Account account = (Account) session.getAttribute(CommonConst.SESSION_ACCOUNT);
 
         if (account == null) {
-            return "view/authen/login.jsp"; // Redirect if user is not logged in
+            return "view/authen/login.jsp";
         }
 
         JobSeekers jobSeeker = jobSeekerDAO.findJobSeekerIDByAccountID(account.getId() + "");
 
         if (jobSeeker == null) {
-            try {
-                url = "education?error=" + URLEncoder.encode("You are not currently a member of Job Seeker. Please join to use this function.", "UTF-8");
-            } catch (UnsupportedEncodingException ex) {
-                Logger.getLogger(EducationServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            url = "education?errorEducation=" + URLEncoder.encode("Bạn chưa phải thành viên của Jobbies.", "UTF-8");
+            return url;
         }
 
-        // Lấy danh sách học vấn thay vì một đối tượng học vấn đơn lẻ
         List<Education> educationList = eduDAO.findEducationbyJobSeekerID(jobSeeker.getJobSeekerID());
 
         if (educationList == null || educationList.isEmpty()) {
-            request.setAttribute("errorEducation", "No Education found for this Job Seeker.");
-            url = "view/user/Education.jsp";
+            request.setAttribute("errorEducation", "Không tìm thấy hồ sơ học vấn.");
         }
 
-        // Set danh sách học vấn vào request attribute
         request.setAttribute("edus", educationList);
-
-        // Forward to the education view page
         url = "view/user/Education.jsp";
         return url;
     }
 
-    // New method to delete education
     public String deleteEducation(HttpServletRequest request) throws IOException, ServletException {
-        String url; // URL to navigate to after processing
+        String url;
         HttpSession session = request.getSession();
         Account account = (Account) session.getAttribute(CommonConst.SESSION_ACCOUNT);
         JobSeekers jobSeeker = jobSeekerDAO.findJobSeekerIDByAccountID(String.valueOf(account.getId()));
@@ -331,36 +287,31 @@ public class EducationServlet extends HttpServlet {
                 String educationIDStr = request.getParameter("educationID");
                 int educationID = Integer.parseInt(educationIDStr);
 
-                // Delete the education record
                 eduDAO.deleteEducation(educationID);
-                request.setAttribute("successEducation", "Education deleted successfully.");
+                request.setAttribute("successEducation", "Xóa học vấn thành công.");
             } catch (Exception e) {
-                e.printStackTrace(); // Log the exception for debugging
-                request.setAttribute("errorEducation", "An error occurred while deleting the education record. Please try again.");
+                e.printStackTrace();
+                request.setAttribute("errorEducation", "Đã xảy ra lỗi khi xóa học vấn.");
             }
         } else {
-            request.setAttribute("error", "No Job Seeker found for the current account.");
             url = "JobSeekerCheck";
+            return url;
         }
 
-        url = "education"; // Redirect back to the education page
-        return url; // Return the URL to navigate to
+        url = "education";
+        return url;
     }
 
     private String saveFile(Part filePart, String uploadDir) throws IOException {
-        // Resolve the absolute path for the upload directory
         Path uploadPath = Paths.get(getServletContext().getRealPath("/") + uploadDir);
 
-        // Create directories if they don't exist
         if (!Files.exists(uploadPath)) {
             Files.createDirectories(uploadPath);
         }
 
-        // Get the file name from the uploaded part
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-
-        // Check if the file already exists; if so, add a timestamp to create a unique file name
         Path filePath = uploadPath.resolve(fileName);
+        
         if (Files.exists(filePath)) {
             String fileExtension = "";
             int dotIndex = fileName.lastIndexOf('.');
@@ -370,16 +321,59 @@ public class EducationServlet extends HttpServlet {
                 fileName = fileName.substring(0, dotIndex);
             }
 
-            // Append timestamp for uniqueness
             fileName = fileName + "_" + System.currentTimeMillis() + fileExtension;
             filePath = uploadPath.resolve(fileName);
         }
 
-        // Save the file
         Files.copy(filePart.getInputStream(), filePath);
-
-        // Return the relative path to the saved file
         return uploadDir + "/" + fileName;
     }
 
+    // HELPER METHODS
+    
+    /**
+     * Validate date range - endDate phải sau startDate ít nhất 2 năm
+     */
+    private boolean validateDateRange(Date startDate, Date endDate, String degree) {
+        Calendar startCal = Calendar.getInstance();
+        startCal.setTime(startDate);
+
+        Calendar endCal = Calendar.getInstance();
+        endCal.setTime(endDate);
+
+        boolean isCertificate = "Certificate".equals(degree);
+        int yearsDiff = endCal.get(Calendar.YEAR) - startCal.get(Calendar.YEAR);
+        int monthsDiff = endCal.get(Calendar.MONTH) - startCal.get(Calendar.MONTH);
+        int totalMonths = yearsDiff * 12 + monthsDiff;
+
+        // Nếu là Certificate thì không cần kiểm tra 2 năm
+        if (isCertificate) {
+            return true;
+        }
+
+        return totalMonths >= 24;
+    }
+
+    /**
+     * Lưu form data vào session khi có lỗi
+     */
+    private void saveFormData(HttpSession session, String institution, String degree, 
+                             String fieldofstudy, String startDateStr, String endDateStr) {
+        session.setAttribute("institution", institution);
+        session.setAttribute("degree", degree);
+        session.setAttribute("fieldofstudy", fieldofstudy);
+        session.setAttribute("startDateStr", startDateStr);
+        session.setAttribute("endDateStr", endDateStr);
+    }
+
+    /**
+     * Xóa form data khỏi session
+     */
+    private void clearFormData(HttpSession session) {
+        session.removeAttribute("institution");
+        session.removeAttribute("degree");
+        session.removeAttribute("fieldofstudy");
+        session.removeAttribute("startDateStr");
+        session.removeAttribute("endDateStr");
+    }
 }

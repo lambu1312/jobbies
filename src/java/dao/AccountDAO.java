@@ -152,6 +152,44 @@ public class AccountDAO extends GenericDAO<Account> {
         parameterMap.put("id", account.getId());
         updateGenericDAO(sql, parameterMap);
     }
+    
+    /**
+ * Đếm tổng số account theo roleId và date range
+ * @param roleId - 2: Recruiter, 3: Seeker
+ * @param startDate - Ngày bắt đầu (format: yyyy-MM-dd)
+ * @param endDate - Ngày kết thúc (format: yyyy-MM-dd)
+ * @return Tổng số record
+ */
+public int findAllTotalRecordByDateRange(int roleId, String startDate, String endDate) {
+    String sql = "SELECT COUNT(*) FROM Account WHERE roleId = ? AND createAt BETWEEN ? AND ?";
+    
+    parameterMap = new LinkedHashMap<>();
+    parameterMap.put("roleId", roleId);
+    parameterMap.put("startDate", startDate);
+    parameterMap.put("endDate", endDate);
+    
+    return findTotalRecordGenericDAO(Account.class, sql, parameterMap);
+}
+
+/**
+ * Đếm số account theo status, roleId và date range
+ * @param isActive - true/false
+ * @param roleId - 2: Recruiter, 3: Seeker
+ * @param startDate - Ngày bắt đầu (format: yyyy-MM-dd)
+ * @param endDate - Ngày kết thúc (format: yyyy-MM-dd)
+ * @return Tổng số record
+ */
+public int findTotalRecordByStatusAndDateRange(boolean isActive, int roleId, String startDate, String endDate) {
+    String sql = "SELECT COUNT(*) FROM Account WHERE isActive = ? AND roleId = ? AND createAt BETWEEN ? AND ?";
+    
+    parameterMap = new LinkedHashMap<>();
+    parameterMap.put("isActive", isActive);
+    parameterMap.put("roleId", roleId);
+    parameterMap.put("startDate", startDate);
+    parameterMap.put("endDate", endDate);
+    
+    return findTotalRecordGenericDAO(Account.class, sql, parameterMap);
+}
 
 //    update password
     public void updatePassword(Account account) {

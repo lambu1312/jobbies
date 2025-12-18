@@ -12,8 +12,11 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/upgit/jobbies/web/view/admin/seekerManagement.jsp</file>
-            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/upgit/jobbies/web/view/admin/confirmRecruiter.jsp</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/upgit/jobbies/src/java/dao/EducationDAO.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/upgit/jobbies/src/java/controller/AuthenticationController.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/upgit/jobbies/src/java/controller/candidate/EducationServlet.java</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/upgit/jobbies/web/view/user/Education.jsp</file>
+            <file>file:/C:/Users/Admin/OneDrive/Documents/NetBeansProjects/upgit/jobbies/src/java/dao/GenericDAO.java</file>
         </group>
     </open-files>
 </project-private>

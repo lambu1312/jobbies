@@ -61,7 +61,7 @@ public class ExperienceServlet extends HttpServlet {
                     }
                 } else {
                     // Set error message if job seeker information is missing
-                    error = "You are not currently a member of Job Seeker. Please join to use this function.";
+                    error = "You are not currently a member of Jobbies. Please join to use this function.";
                     request.setAttribute("errorJobSeeker", error);
                     url = "view/user/Experience.jsp"; // Forward to education page to show the error message
                 }
@@ -158,7 +158,7 @@ public class ExperienceServlet extends HttpServlet {
             }
         } else {
             try {
-                url = "experience?error=" + URLEncoder.encode("You are not currently a member of Job Seeker. Please join to use this function.", "UTF-8");
+                url = "experience?error=" + URLEncoder.encode("You are not currently a member of Jobbies. Please join to use this function.", "UTF-8");
             } catch (UnsupportedEncodingException ex) {
                 Logger.getLogger(ExperienceServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -218,7 +218,7 @@ public class ExperienceServlet extends HttpServlet {
                 request.setAttribute("errorExperience", "An error occurred while updating the experience.");
             }
         } else {
-            request.setAttribute("error", "No Job Seeker found for the current account.");
+            request.setAttribute("error", "No Jobbies found for the current account.");
         }
 
         return url;
@@ -238,7 +238,7 @@ public class ExperienceServlet extends HttpServlet {
 
         if (jobSeeker == null) {
             try {
-                url = "experience?error=" + URLEncoder.encode("You are not currently a member of Job Seeker. Please join to use this function.", "UTF-8");
+                url = "experience?error=" + URLEncoder.encode("You are not currently a member of Jobbies. Please join to use this function.", "UTF-8");
             } catch (UnsupportedEncodingException ex) {
                 Logger.getLogger(ExperienceServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -247,7 +247,7 @@ public class ExperienceServlet extends HttpServlet {
         List<WorkExperience> weList = weDAO.findWorkExperiencesbyJobSeekerID(jobSeeker.getJobSeekerID());
 
         if (weList == null || weList.isEmpty()) {
-            request.setAttribute("errorExperience", "No experience found for this Job Seeker.");
+            request.setAttribute("errorExperience", "Không tìm thấy hồ sơ kinh nghiệm.");
             url = "view/user/Experience.jsp";
         }
 
@@ -276,7 +276,7 @@ public class ExperienceServlet extends HttpServlet {
                 request.setAttribute("errorExperience", "An error occurred while deleting the experience.");
             }
         } else {
-            request.setAttribute("error", "No Job Seeker found for the current account.");
+            request.setAttribute("error", "No Jobbies found for the current account.");
         }
 
         return "experience"; // Redirect to experience page

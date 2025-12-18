@@ -80,10 +80,8 @@
                 <div class="alert alert-success" role="alert">
                     ${successApplication}
                 </div>
-</c:if>
+            </c:if>
 
-            <!-- Applications Table -->
-            <c:if test="${not empty applications}">
                 <form action="application" method="GET" class="mb-4">
                     <select name="status" class="form-select" onchange="this.form.submit()">
                         <option value="" ${empty param.status ? 'selected' : ''}>All Status</option>
@@ -93,7 +91,8 @@
                         <option value="0" ${param.status == '0' ? 'selected' : ''}>Cancelled</option>
                     </select>
                 </form>
-
+            <!-- Applications Table -->
+            <c:if test="${not empty applications}">
                 <table class="table table-bordered">
                     <thead class="thead-light">
                         <tr>

@@ -17,6 +17,43 @@
                         <link rel="stylesheet"
                             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
                         <style>
+                            nav.navbar,
+    .navbar {
+        position: relative !important;
+        z-index: 9999 !important;
+    }
+
+    .user-dropdown {
+        position: relative !important;
+        z-index: 10000 !important;
+    }
+
+    .user-dropdown .dropdown-menu {
+        position: absolute !important;
+        top: calc(100% + 0.5rem) !important;
+        right: 0 !important;
+        z-index: 10001 !important;
+        display: block !important;
+    }
+
+    .user-dropdown:not(.active) .dropdown-menu {
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+    }
+
+    .user-dropdown.active .dropdown-menu {
+        opacity: 1 !important;
+        visibility: visible !important;
+        pointer-events: auto !important;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
                             .custom-badge {
                                 font-size: 1.2rem;
                                 /* Adjust font size as needed */

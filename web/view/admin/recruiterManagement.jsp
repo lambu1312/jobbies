@@ -638,12 +638,6 @@ hr {
                         </div>
                     </div>
                 </div>
-                <!-- content area end -->
-
-                <!-- Back to Top Button -->
-                <!--                <button type="button" class="btn btn-primary position-fixed" id="rts-back-to-top" style="bottom: 20px; right: 20px;">
-                                    <i class="fas fa-arrow-up"></i>
-                                </button>-->
             </div>
         </div>
     </div>

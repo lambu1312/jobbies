@@ -283,25 +283,85 @@ public class JobPostingsDAO extends GenericDAO<JobPostings> {
         return queryGenericDAO(JobPostings.class, sql, parameterMap);
     }
 
-    public List<JobPostings> findTop5Recruiter() {
-        String sql = "SELECT *\n"
-                + "FROM JobPostings\n"
-                + "WHERE RecruiterID IN (\n"
-                + "    SELECT TOP 5 RecruiterID\n"
-                + "    FROM JobPostings\n"
-                + "    GROUP BY RecruiterID\n"
-                + "    ORDER BY COUNT(*) DESC\n"
-                + ")\n"
-                + "ORDER BY RecruiterID, PostedDate;";
+    // ========== METHODS CHO DASHBOARD WITH DATE FILTER ==========
+    /**
+     * Lấy top 5 recruiters có nhiều job postings nhất
+     * Hỗ trợ filter theo date range
+     */
+    public List<JobPostings> findTop5Recruiter(String startDate, String endDate) {
+        String sql = "SELECT * FROM JobPostings WHERE RecruiterID IN ("
+                + "    SELECT TOP 5 RecruiterID FROM JobPostings ";
+        
+        // Thêm WHERE clause nếu có date filter
+        if (startDate != null && !startDate.isEmpty() && endDate != null && !endDate.isEmpty()) {
+            sql += "    WHERE PostedDate BETWEEN ? AND ? ";
+        }
+        
+        sql += "    GROUP BY RecruiterID "
+                + "    ORDER BY COUNT(*) DESC"
+                + ") ";
+        
+        // Thêm WHERE clause cho query chính nếu có date filter
+        if (startDate != null && !startDate.isEmpty() && endDate != null && !endDate.isEmpty()) {
+            sql += "AND PostedDate BETWEEN ? AND ? ";
+        }
+        
+        sql += "ORDER BY RecruiterID, PostedDate DESC";
+        
+        parameterMap = new LinkedHashMap<>();
+        
+        // Set parameters nếu có date filter
+        if (startDate != null && !startDate.isEmpty() && endDate != null && !endDate.isEmpty()) {
+            parameterMap.put("StartDate1", startDate);
+            parameterMap.put("EndDate1", endDate);
+            parameterMap.put("StartDate2", startDate);
+            parameterMap.put("EndDate2", endDate);
+        }
+        
         return queryGenericDAO(JobPostings.class, sql, parameterMap);
+    }
+    
+    /**
+     * Method overload để giữ compatibility với code cũ
+     */
+    public List<JobPostings> findTop5Recruiter() {
+        return findTop5Recruiter(null, null);
     }
 
-    public List<JobPostings> filterJobPostingStatusForChart() {
-        String sql = "SELECT *\n"
-                + "FROM JobPostings\n"
-                + "ORDER BY Status;";
+    /**
+     * Lấy tất cả job postings để đếm theo status
+     * Hỗ trợ filter theo date range
+     */
+    public List<JobPostings> filterJobPostingStatusForChart(String startDate, String endDate) {
+        String sql = "SELECT * FROM JobPostings ";
+        
+        // Thêm WHERE clause nếu có date filter
+        if (startDate != null && !startDate.isEmpty() && endDate != null && !endDate.isEmpty()) {
+            sql += "WHERE PostedDate BETWEEN ? AND ? ";
+        }
+        
+        sql += "ORDER BY Status";
+        
+        parameterMap = new LinkedHashMap<>();
+        
+        // Set parameters nếu có date filter
+        if (startDate != null && !startDate.isEmpty() && endDate != null && !endDate.isEmpty()) {
+            parameterMap.put("StartDate", startDate);
+            parameterMap.put("EndDate", endDate);
+        }
+        
         return queryGenericDAO(JobPostings.class, sql, parameterMap);
     }
+    
+    /**
+     * Method overload để giữ compatibility với code cũ
+     */
+    public List<JobPostings> filterJobPostingStatusForChart() {
+        return filterJobPostingStatusForChart(null, null);
+    }
+    
+    
+    // ========== KẾT THÚC METHODS CHO DASHBOARD ==========
 
     // Tim Job theo khoang luong
     public List<JobPostings> getJobsBySalaryRange(double MinSalary, double MaxSalary, int page, int pageSize, String sortField) {

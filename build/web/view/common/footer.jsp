@@ -84,7 +84,7 @@
             z-index: 10;
             margin-top: 4rem;
             background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(30px);
+            backdrop-filter: auto ;
             border-top: 2px solid rgba(196, 113, 245, 0.3);
         }
 
