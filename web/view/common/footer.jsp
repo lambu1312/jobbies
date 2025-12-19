@@ -76,7 +76,10 @@
                 <p class="made-with">Made with 💜 and ✨</p>
             </div>
         </div>
+                        
     </footer>
+                        
+                        
 
     <style>
         .footer {
@@ -84,7 +87,7 @@
             z-index: 10;
             margin-top: 4rem;
             background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(30px);
+            backdrop-filter: auto ;
             border-top: 2px solid rgba(196, 113, 245, 0.3);
         }
 
@@ -251,52 +254,8 @@
             }
         }
     </style>
-    =======
-    /* Ensures the page-wrapper takes up at least 100% of the viewport height */
-    html, body {
-    height: 100%;
-    margin: 0;
-    }
+    
 
-    .page-wrapper {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    }
-
-    .content {
-    flex: 1; /* This makes the main content area grow to fill space */
-    }
-
-    .rts__section.footer__home__one {
-    background-color: #495057;
-    color: #f8f9fa;
-    border-top: 5px solid #28a745;
-    }
-
-    .footer__wrapper {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    padding-top: 60px;
-    padding-bottom: 60px;
-    }
-
-    .footer__link {
-    transition: color 0.3s ease, transform 0.3s ease;
-    }
-
-    .footer__link:hover {
-    color: #28a745;
-    transform: scale(1.05);
-    }
-
-    @media (max-width: 768px) {
-    .footer__wrapper {
-    flex-direction: column;
-    align-items: center;
-    }
-    }
-
-    </style>
- 
+    <!-- Chatbot Widget -->
+    <%@ include file="chatbot-component.jsp" %>
+  

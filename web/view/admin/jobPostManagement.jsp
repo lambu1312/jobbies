@@ -413,9 +413,6 @@
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <jsp:include page="../common/admin/header-admin.jsp"></jsp:include>
-
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
@@ -447,34 +444,51 @@
                                 <h6 class="fw-medium mb-30 text-center fs-2">QUẢN LÝ BÀI ĐĂNG CÔNG VIỆC</h6>
 
                                 <!-- Filter Section -->
+                                <!-- Filter Section -->
                                 <form action="job_posting" method="get" id="filterForm" class="mb-4">
                                     <div class="row g-3">
                                         <div class="col-md-2">
                                             <label class="form-label">Trạng Thái</label>
                                             <select class="form-select" name="filterStatus" onchange="document.getElementById('filterForm').submit();">
-                                                <option value="all" ${param.filterStatus == 'all' ? 'selected' : ''}>Tất Cả</option>
-                                                <option value="open" ${param.filterStatus == 'open' ? 'selected' : ''}>Mở</option>
-                                                <option value="closed" ${param.filterStatus == 'closed' ? 'selected' : ''}>Đóng</option>
-                                                <option value="violate" ${param.filterStatus == 'violate' ? 'selected' : ''}>Vi Phạm</option>
+                                                <option value="all" ${param.filterStatus == 'all' || param.filterStatus == null || param.filterStatus == '' ? 'selected' : ''}>Tất Cả</option>
+                                                <option value="Open" ${param.filterStatus == 'Open' ? 'selected' : ''}>Mở</option>
+                                                <option value="Closed" ${param.filterStatus == 'Closed' ? 'selected' : ''}>Đóng</option>
+                                                <option value="Violate" ${param.filterStatus == 'Violate' ? 'selected' : ''}>Vi Phạm</option>
                                             </select>
                                         </div>
 
                                         <div class="col-md-2">
-                                            <label class="form-label">Lương</label>
-                                            <select class="form-select" name="filterSalary" onchange="document.getElementById('filterForm').submit();">
-                                                <option value="all" ${param.filterSalary == 'all' ? 'selected' : ''}>Tất Cả</option>
-                                                <option value="0-1000" ${param.filterSalary == '0-1000' ? 'selected' : ''}>0-1000 USD</option>
-                                                <option value="1000+" ${param.filterSalary == '1000+' ? 'selected' : ''}>1000+ USD</option>
-                                                <option value="2000+" ${param.filterSalary == '2000+' ? 'selected' : ''}>2000+ USD</option>
+                                            <label class="form-label">Loại Tiền</label>
+                                            <select class="form-select" name="filterCurrency" onchange="document.getElementById('filterForm').submit();">
+                                                <option value="all" ${param.filterCurrency == 'all' || param.filterCurrency == null || param.filterCurrency == '' ? 'selected' : ''}>Tất Cả</option>
+                                                <option value="VND" ${param.filterCurrency == 'VND' ? 'selected' : ''}>VND (₫)</option>
+                                                <option value="USD" ${param.filterCurrency == 'USD' ? 'selected' : ''}>USD ($)</option>
+                                                <option value="EUR" ${param.filterCurrency == 'EUR' ? 'selected' : ''}>EUR (€)</option>
+                                                <option value="GBP" ${param.filterCurrency == 'GBP' ? 'selected' : ''}>GBP (£)</option>
+                                                <option value="JPY" ${param.filterCurrency == 'JPY' ? 'selected' : ''}>JPY (¥)</option>
+                                                <option value="AUD" ${param.filterCurrency == 'AUD' ? 'selected' : ''}>AUD (A$)</option>
+                                                <option value="CAD" ${param.filterCurrency == 'CAD' ? 'selected' : ''}>CAD (C$)</option>
                                             </select>
                                         </div>
 
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
+                                            <label class="form-label">Khoảng Lương</label>
+                                            <select class="form-select" name="filterSalaryRange" onchange="document.getElementById('filterForm').submit();">
+                                                <option value="all" ${param.filterSalaryRange == 'all' || param.filterSalaryRange == null || param.filterSalaryRange == '' ? 'selected' : ''}>Tất Cả</option>
+                                                <option value="0-500" ${param.filterSalaryRange == '0-500' ? 'selected' : ''}>0 - 500</option>
+                                                <option value="500-1000" ${param.filterSalaryRange == '500-1000' ? 'selected' : ''}>500 - 1000</option>
+                                                <option value="1000-2000" ${param.filterSalaryRange == '1000-2000' ? 'selected' : ''}>1000 - 2000</option>
+                                                <option value="2000-5000" ${param.filterSalaryRange == '2000-5000' ? 'selected' : ''}>2000 - 5000</option>
+                                                <option value="5000+" ${param.filterSalaryRange == '5000+' ? 'selected' : ''}>5000+</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-2">
                                             <label class="form-label">Ngày Đăng</label>
                                             <input type="date" class="form-control" name="filterDate" value="${param.filterDate}" onchange="document.getElementById('filterForm').submit();">
                                         </div>
 
-                                        <div class="col-md-5">
+                                        <div class="col-md-4">
                                             <label class="form-label">Tìm Kiếm</label>
                                             <div class="input-group">
                                                 <input type="text" class="form-control" name="search" placeholder="Tìm theo người tạo..." value="${param.search}">
@@ -543,7 +557,9 @@
                                                         <%= accountName %>
                                                     </td>
                                                     <td>${jobPost.getTitle()}</td>
-                                                    <td>${jobPost.getMinSalary()} - ${jobPost.getMaxSalary()} USD</td>
+                                                    <td>
+                                                        ${jobPost.getMinSalary()} - ${jobPost.getMaxSalary()} ${jobPost.getCurrency()}
+                                                    </td>
                                                     <td>${jobPost.getLocation()}</td>
                                                     <td>
                                                         <%

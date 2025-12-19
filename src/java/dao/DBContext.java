@@ -12,7 +12,11 @@ public class DBContext {
 
     public DBContext() {
         try {
-            //Change the username password and url to connect your own database
+//            //Change the username password and url to connect your own database
+//            String username = "group3";
+//            String password = "123456@Bcdej";
+//            String url = "jdbc:sqlserver://group3.database.windows.net;databaseName=JobSeeker";
+
             String username = "sa";
             String password = "123";
             String url = "jdbc:sqlserver://localhost:1433;databaseName=JobSeeker";
