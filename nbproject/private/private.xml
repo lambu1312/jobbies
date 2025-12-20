@@ -12,21 +12,8 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/src/java/utils/CloudinaryUploadUtil.java</file>
-            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/src/java/config/CloudinaryConfig.java</file>
-            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/src/java/controller/recruiter/CompanyController.java</file>
-            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/src/java/controller/AuthenticationController.java</file>
-            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/src/java/dao/DBContext.java</file>
-            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/src/java/controller/recruiter/InterviewManagementController.java</file>
-            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/web/view/recruiter/viewRecruiterProfile.jsp</file>
-            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/web/view/home.jsp</file>
-            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/web/view/recruiter/jobPost-manager.jsp</file>
-            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/web/view/recruiter/editRecruiterProfile.jsp</file>
-            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/src/java/controller/recruiter/GeminiAISuggestion.java</file>
-            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/web/view/recruiter/manageApplications.jsp</file>
-            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/web/view/recruiter/cvSeeker.jsp</file>
-            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/web/view/recruiter/editCompany.jsp</file>
-            <file>file:/C:/Users/buimi/Downloads/jobbies_real/jobbies/web/view/recruiter/createCompany.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/jobbies_real_upgitlen/jobbies/web/view/recruiter/manageApplications.jsp</file>
+            <file>file:/C:/Users/buimi/Downloads/jobbies_real_upgitlen/jobbies/src/java/controller/recruiter/ApplicationSeekersController.java</file>
         </group>
     </open-files>
 </project-private>

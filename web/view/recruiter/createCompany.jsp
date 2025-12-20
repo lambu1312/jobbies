@@ -193,13 +193,18 @@
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label for="businessCode" class="form-label">Mã Số Thuế / Mã Doanh Nghiệp <span class="text-danger">*</span></label>
+                                    <label for="businessCode" class="form-label">Mã Số Thuế / Mã Doanh Nghiệp (10 số) <span class="text-danger">*</span></label>
 
                                     <input type="text" 
                                            class="form-control <c:if test='${not empty errorCode or not empty duplicateCode}'>is-invalid</c:if>" 
                                            id="businessCode" name="businessCode" 
                                            placeholder="Nhập mã số kinh doanh"
-                                           value="${requestScope.company.getBusinessCode()}" required>
+                                           value="${requestScope.company.getBusinessCode()}"
+                                           pattern="[0-9]{10}"
+                                           maxlength="10"
+                                           minlength="10"
+                                           title="Business code must be exactly 10 digits"
+                                           required>
 
                                     <c:if test="${not empty errorCode}">
                                         <div class="invalid-feedback">
@@ -242,16 +247,16 @@
         
         <script>
             tinymce.init({
-                selector: 'textarea#companyDescription', // Chỉ áp dụng cho textarea có id cụ thể
+                selector: 'textarea#companyDescription',
                 plugins: 'advlist autolink lists link image charmap print preview anchor',
                 toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
-                menubar: false, // Tắt thanh menu
-                branding: false, // Tắt branding của TinyMCE
-                height: 350, // Chiều cao
+                menubar: false,
+                branding: false,
+                height: 350,
                 placeholder: 'Nhập mô tả chi tiết về công ty tại đây...',
                 setup: function (editor) {
                     editor.on('change', function () {
-                        tinymce.triggerSave(); // Đồng bộ dữ liệu TinyMCE với form
+                        tinymce.triggerSave();
                     });
                 }
             });

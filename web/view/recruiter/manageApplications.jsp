@@ -80,7 +80,6 @@
                 color: white;
                 font-weight: 500;
             }
-
             .badge.bg-warning {
                 background-color: #f59e0b !important; /* Pending - Cam */
                 color: white;
@@ -114,7 +113,7 @@
                 border-color: #d946ef;
                 color: #d946ef;
             }
-            
+
             .btn-primary {
                 background: var(--gradient-bg);
                 border: none;
@@ -164,25 +163,25 @@
             .content-wrapper {
                 display: flex;
                 flex-direction: column;
-                min-height: 80vh; 
+                min-height: 80vh;
             }
 
             .table-responsive {
-                flex-grow: 1; 
+                flex-grow: 1;
                 margin-bottom: 20px;
             }
 
             .pagination-container {
-                margin-top: auto; 
-                padding-bottom: 20px; 
+                margin-top: auto;
+                padding-bottom: 20px;
             }
-            
+
             .pagination .page-link {
                 color: #9333ea;
                 border-radius: 5px;
                 margin: 0 2px;
             }
-            
+
             .pagination .page-item.active .page-link {
                 background: var(--gradient-bg);
                 border-color: transparent;
@@ -195,28 +194,28 @@
                 background: -webkit-linear-gradient(#c026d3, #7e22ce);
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
-                padding-top: 30px; 
-                margin-bottom: 30px; 
+                padding-top: 30px;
+                margin-bottom: 30px;
                 text-align: center;
                 text-transform: uppercase;
                 letter-spacing: 1px;
             }
-            
+
             /* Custom Scrollbar */
             ::-webkit-scrollbar {
                 width: 8px;
             }
             ::-webkit-scrollbar-track {
-                background: #f1f1f1; 
+                background: #f1f1f1;
             }
             ::-webkit-scrollbar-thumb {
-                background: #d8b4fe; 
+                background: #d8b4fe;
                 border-radius: 4px;
             }
             ::-webkit-scrollbar-thumb:hover {
-                background: #c084fc; 
+                background: #c084fc;
             }
-            
+
             /* Inputs */
             .form-control, .form-select {
                 border: 1px solid #e9d5ff;
@@ -339,6 +338,13 @@
                                                     <a href="${pageContext.request.contextPath}/applicationSeekers?action=viewCV&id=${application.getCVID()}" class="btn-action" title="Xem CV">
                                                         <i class="fas fa-file-pdf fa-lg"></i> Xem CV
                                                     </a>
+                                                     <a href="${pageContext.request.contextPath}/applicationSeekers?action=viewEducation&id=${application.jobSeeker.getJobSeekerID()}" class="btn-action text-secondary">
+                                                        <i class="fas fa-graduation-cap"></i>Học vấn
+                                                    </a>
+                                                    <a href="${pageContext.request.contextPath}/applicationSeekers?action=viewWorkExperience&id=${application.jobSeeker.getJobSeekerID()}" class="btn-action text-warning">
+                                                        <i class="fas fa-briefcase"></i>Kinh nghiệm
+
+                                                    </a>
                                                 </c:otherwise>
                                             </c:choose>
                                         </td>
@@ -351,16 +357,16 @@
                                         <td>
                                             <c:choose>
                                                 <c:when test="${application.getStatus() == 3}">
-                                                    <button type="button" class="btn-confirm-custom <%= isViolate ? "disabled opacity-50" : "" %>" 
+                                                    <button type="button" class="btn-confirm-custom <%= isViolate ? "disabled opacity-50" : ""%>" 
                                                             data-bs-toggle="modal" data-bs-target="#changeStatusModal" 
                                                             onclick="openModal(${application.getApplicationID()})" 
-                                                            <%= isViolate ? "disabled" : "" %>>
+                                                            <%= isViolate ? "disabled" : ""%>>
                                                         <i class="fas fa-edit"></i> Xét duyệt
                                                     </button>
 
                                                     <% if (isViolate) { %>
                                                     <span class="text-danger small d-block mt-1"> (Bị chặn)</span>
-                                                    <% } %>
+                                                    <% }%>
                                                 </c:when>
                                                 <c:when test="${application.getStatus() == 2}">
                                                     <c:set var="hasInterview" value="false" />
@@ -370,7 +376,7 @@
                                                             <c:set var="currentInterview" value="${interview}" />
                                                         </c:if>
                                                     </c:forEach>
-                                                    
+
                                                     <c:choose>
                                                         <c:when test="${hasInterview}">
                                                             <button type="button" class="btn btn-outline-primary btn-sm rounded-pill" 
@@ -421,7 +427,7 @@
 
                                 <c:if test="${currentPage < totalPages}">
                                     <li class="page-item"><a class="page-link" href="?jobPostId=${param.jobPostId}&page=${currentPage + 1}">Sau <i class="fas fa-chevron-right"></i></a></li>
-                                    </c:if>
+                                        </c:if>
                             </ul>
                         </nav>
                     </div>
@@ -481,19 +487,19 @@
                                     <input type="hidden" name="jobPostId" value="${param.jobPostId}">
                                     <input type="hidden" name="status" value="Scheduled">
                                     <input type="hidden" name="returnTo" value="applications">
-                                    
+
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="interviewDate" class="form-label">Ngày phỏng vấn <span class="text-danger">*</span></label>
-                                            <input type="date" class="form-control" id="interviewDate" name="interviewDate" 
-                                                   min="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date()) %>" required>
+                                            <input type="date" class="form-control" id="interviewDate" name="interviewDate"
+                                                   min="<%= new java.text.SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date())%>" required>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="interviewTime" class="form-label">Giờ phỏng vấn <span class="text-danger">*</span></label>
                                             <input type="time" class="form-control" id="interviewTime" name="interviewTime" required>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="mb-3">
                                         <label for="interviewType" class="form-label">Hình thức phỏng vấn <span class="text-danger">*</span></label>
                                         <select class="form-select" id="interviewType" name="interviewType" onchange="toggleMeetingLink()" required>
@@ -502,25 +508,25 @@
                                             <option value="Offline">Offline (Tại văn phòng)</option>
                                         </select>
                                     </div>
-                                    
+
                                     <div class="mb-3" id="locationField">
                                         <label for="location" class="form-label">Địa điểm</label>
                                         <input type="text" class="form-control" id="location" name="location" 
                                                placeholder="Nhập địa điểm phỏng vấn">
                                     </div>
-                                    
+
                                     <div class="mb-3" id="meetingLinkField" style="display: none;">
                                         <label for="meetingLink" class="form-label">Link cuộc họp (Meeting Link) <span class="text-danger">*</span></label>
                                         <input type="url" class="form-control" id="meetingLink" name="meetingLink" 
                                                placeholder="Ví dụ: https://zoom.us/j/123456789">
                                     </div>
-                                    
+
                                     <div class="mb-3">
                                         <label for="notes" class="form-label">Ghi chú / Hướng dẫn</label>
                                         <textarea class="form-control" id="notes" name="notes" rows="3" 
                                                   placeholder="Nhập thêm thông tin hoặc hướng dẫn cho ứng viên..."></textarea>
                                     </div>
-                                    
+
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                                             <i class="fas fa-times"></i> Hủy
@@ -550,53 +556,52 @@
                                     <input type="hidden" name="interviewId" id="viewInterviewId" value="">
                                     <input type="hidden" name="jobPostId" value="${param.jobPostId}">
                                     <input type="hidden" name="returnTo" value="applications">
-                                    
+
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="viewInterviewDate" class="form-label">Ngày phỏng vấn <span class="text-danger">*</span></label>
-                                            <input type="date" class="form-control" id="viewInterviewDate" name="interviewDate" required>
+                                            <input type="date" class="form-control" id="viewInterviewDate" readonly name="interviewDate" required>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="viewInterviewTime" class="form-label">Giờ phỏng vấn <span class="text-danger">*</span></label>
-                                            <input type="time" class="form-control" id="viewInterviewTime" name="interviewTime" required>
+                                            <input type="time" class="form-control" id="viewInterviewTime" readonly name="interviewTime" required>
                                         </div>
                                     </div>
-                                    
                                     <div class="mb-3">
                                         <label for="viewInterviewType" class="form-label">Hình thức <span class="text-danger">*</span></label>
-                                        <select class="form-select" id="viewInterviewType" name="interviewType" onchange="toggleMeetingLinkView()" required>
+                                        <select class="form-select" id="viewInterviewType" disabled name="interviewType" onchange="toggleMeetingLinkView()" required>
                                             <option value="Online">Online</option>
                                             <option value="Offline">Offline</option>
                                         </select>
                                     </div>
-                                    
+
                                     <div class="mb-3" id="viewLocationField">
                                         <label for="viewLocation" class="form-label">Địa điểm</label>
-                                        <input type="text" class="form-control" id="viewLocation" name="location">
+                                        <input type="text" class="form-control" id="viewLocation" name="location" readonly>
                                     </div>
-                                    
+
                                     <div class="mb-3" id="viewMeetingLinkField">
                                         <label for="viewMeetingLink" class="form-label">Link cuộc họp</label>
-                                        <input type="url" class="form-control" id="viewMeetingLink" name="meetingLink">
+                                        <input type="url" class="form-control" id="viewMeetingLink" name="meetingLink" readonly>
                                     </div>
-                                    
+
                                     <div class="mb-3">
                                         <label for="viewNotes" class="form-label">Ghi chú</label>
-                                        <textarea class="form-control" id="viewNotes" name="notes" rows="3"></textarea>
+                                        <textarea class="form-control" id="viewNotes" name="notes" rows="3" readonly></textarea>
                                     </div>
-                                    
+
                                     <input type="hidden" id="viewStatus" name="status" value="Scheduled">
-                                    
+
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger" onclick="deleteInterview()">
-                                            <i class="fas fa-trash"></i> Xóa Lịch
-                                        </button>
+<!--                                        <button type="button" class="btn btn-danger" onclick="deleteInterview()">
+                                            <i class="fas fa-trash"></i> Hủy Lịch
+                                        </button>-->
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                                             <i class="fas fa-times"></i> Đóng
                                         </button>
-                                        <button type="submit" class="btn btn-primary">
+<!--                                        <button type="submit" class="btn btn-primary">
                                             <i class="fas fa-save"></i> Cập Nhật
-                                        </button>
+                                        </button>-->
                                     </div>
                                 </form>
                             </div>
@@ -608,102 +613,101 @@
 
             <%@ include file="../recruiter/footer-re.jsp" %>
         </div>
-
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
         <script>
-                                    function openModal(applicationId) {
-                                        document.getElementById("applicationId").value = applicationId;
-                                    }
+                                            function openModal(applicationId) {
+                                                document.getElementById("applicationId").value = applicationId;
+                                            }
         </script>
         <script src="https://cdn.tiny.cloud/1/1af9q7p79qcrurx9hkvj3z4dn90yr8d6lwb5fdyny56uqoh9/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
         <script>
-                                    // Khởi tạo TinyMCE cho textarea với id là 'emailContent'
-                                    tinymce.init({
-                                        selector: 'textarea#emailContent',
-                                        plugins: 'advlist autolink lists link image charmap print preview anchor',
-                                        toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
-                                        branding: false,
-                                        height: 300,
-                                        setup: function (editor) {
-                                            editor.on('change', function () {
-                                                tinymce.triggerSave();
+                                            // Khởi tạo TinyMCE cho textarea với id là 'emailContent'
+                                            tinymce.init({
+                                                selector: 'textarea#emailContent',
+                                                plugins: 'advlist autolink lists link image charmap print preview anchor',
+                                                toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
+                                                branding: false,
+                                                height: 300,
+                                                setup: function (editor) {
+                                                    editor.on('change', function () {
+                                                        tinymce.triggerSave();
+                                                    });
+                                                }
                                             });
-                                        }
-                                    });
 
-                                    // Hàm reset để xóa nội dung trong TinyMCE
-                                    function resetForm() {
-                                        // Reset nội dung của TinyMCE editor
-                                        tinymce.get('emailContent').setContent('');
+                                            // Hàm reset để xóa nội dung trong TinyMCE
+                                            function resetForm() {
+                                                // Reset nội dung của TinyMCE editor
+                                                tinymce.get('emailContent').setContent('');
 
-                                        // Reset các trường khác trong form nếu cần
-                                        document.getElementById('status').selectedIndex = 0; // Đặt lại giá trị đầu tiên của dropdown
-                                        document.getElementById('changeStatusForm').reset(); // Reset form nếu cần
-                                    }
-                                    
-                                    // Interview scheduling functions
-                                    function setApplicationId(applicationId) {
-                                        document.getElementById('scheduleApplicationId').value = applicationId;
-                                    }
-                                    
-                                    function toggleMeetingLink() {
-                                        const interviewType = document.getElementById('interviewType').value;
-                                        const meetingLinkField = document.getElementById('meetingLinkField');
-                                        const meetingLinkInput = document.getElementById('meetingLink');
-                                        const locationField = document.getElementById('locationField');
-                                        
-                                        if (interviewType === 'Online') {
-                                            meetingLinkField.style.display = 'block';
-                                            meetingLinkInput.required = true;
-                                            locationField.style.display = 'none';
-                                        } else {
-                                            meetingLinkField.style.display = 'none';
-                                            meetingLinkInput.required = false;
-                                            locationField.style.display = 'block';
-                                        }
-                                    }
-                                    
-                                    function toggleMeetingLinkView() {
-                                        const interviewType = document.getElementById('viewInterviewType').value;
-                                        const meetingLinkField = document.getElementById('viewMeetingLinkField');
-                                        const locationField = document.getElementById('viewLocationField');
-                                        
-                                        if (interviewType === 'Online') {
-                                            meetingLinkField.style.display = 'block';
-                                            locationField.style.display = 'none';
-                                        } else {
-                                            meetingLinkField.style.display = 'none';
-                                            locationField.style.display = 'block';
-                                        }
-                                    }
-                                    
-                                    function viewInterview(interviewId, applicationId, interviewDate, interviewTime, location, interviewType, meetingLink, notes, status) {
-                                        document.getElementById('viewInterviewId').value = interviewId;
-                                        
-                                        // Parse datetime if needed (format: 2024-12-09 00:00:00.0)
-                                        if (interviewDate && interviewDate.includes(' ')) {
-                                            interviewDate = interviewDate.split(' ')[0];
-                                        }
-                                        
-                                        document.getElementById('viewInterviewDate').value = interviewDate;
-                                        document.getElementById('viewInterviewTime').value = interviewTime || '';
-                                        document.getElementById('viewLocation').value = location || '';
-                                        document.getElementById('viewInterviewType').value = interviewType || 'Offline';
-                                        document.getElementById('viewMeetingLink').value = meetingLink || '';
-                                        document.getElementById('viewNotes').value = notes || '';
-                                        document.getElementById('viewStatus').value = status || 'Scheduled';
-                                        
-                                        // Toggle fields based on interview type
-                                        toggleMeetingLinkView();
-                                    }
-                                    
-                                    function deleteInterview() {
-                                        if (confirm('Bạn có chắc chắn muốn xóa lịch phỏng vấn này không?')) {
-                                            const interviewId = document.getElementById('viewInterviewId').value;
-                                            const jobPostId = '${param.jobPostId}';
-                                            window.location.href = '${pageContext.request.contextPath}/scheduleInterview?action=delete&interviewId=' + interviewId + '&jobPostId=' + jobPostId;
-                                        }
-                                    }
+                                                // Reset các trường khác trong form nếu cần
+                                                document.getElementById('status').selectedIndex = 0; // Đặt lại giá trị đầu tiên của dropdown
+                                                document.getElementById('changeStatusForm').reset(); // Reset form nếu cần
+                                            }
+
+                                            // Interview scheduling functions
+                                            function setApplicationId(applicationId) {
+                                                document.getElementById('scheduleApplicationId').value = applicationId;
+                                            }
+
+                                            function toggleMeetingLink() {
+                                                const interviewType = document.getElementById('interviewType').value;
+                                                const meetingLinkField = document.getElementById('meetingLinkField');
+                                                const meetingLinkInput = document.getElementById('meetingLink');
+                                                const locationField = document.getElementById('locationField');
+
+                                                if (interviewType === 'Online') {
+                                                    meetingLinkField.style.display = 'block';
+                                                    meetingLinkInput.required = true;
+                                                    locationField.style.display = 'none';
+                                                } else {
+                                                    meetingLinkField.style.display = 'none';
+                                                    meetingLinkInput.required = false;
+                                                    locationField.style.display = 'block';
+                                                }
+                                            }
+
+                                            function toggleMeetingLinkView() {
+                                                const interviewType = document.getElementById('viewInterviewType').value;
+                                                const meetingLinkField = document.getElementById('viewMeetingLinkField');
+                                                const locationField = document.getElementById('viewLocationField');
+
+                                                if (interviewType === 'Online') {
+                                                    meetingLinkField.style.display = 'block';
+                                                    locationField.style.display = 'none';
+                                                } else {
+                                                    meetingLinkField.style.display = 'none';
+                                                    locationField.style.display = 'block';
+                                                }
+                                            }
+
+                                            function viewInterview(interviewId, applicationId, interviewDate, interviewTime, location, interviewType, meetingLink, notes, status) {
+                                                document.getElementById('viewInterviewId').value = interviewId;
+
+                                                // Parse datetime if needed (format: 2024-12-09 00:00:00.0)
+                                                if (interviewDate && interviewDate.includes(' ')) {
+                                                    interviewDate = interviewDate.split(' ')[0];
+                                                }
+
+                                                document.getElementById('viewInterviewDate').value = interviewDate;
+                                                document.getElementById('viewInterviewTime').value = interviewTime || '';
+                                                document.getElementById('viewLocation').value = location || '';
+                                                document.getElementById('viewInterviewType').value = interviewType || 'Offline';
+                                                document.getElementById('viewMeetingLink').value = meetingLink || '';
+                                                document.getElementById('viewNotes').value = notes || '';
+                                                document.getElementById('viewStatus').value = status || 'Scheduled';
+
+                                                // Toggle fields based on interview type
+                                                toggleMeetingLinkView();
+                                            }
+
+                                            function deleteInterview() {
+                                                if (confirm('Bạn có chắc chắn muốn xóa lịch phỏng vấn này không?')) {
+                                                    const interviewId = document.getElementById('viewInterviewId').value;
+                                                    const jobPostId = '${param.jobPostId}';
+                                                    window.location.href = '${pageContext.request.contextPath}/scheduleInterview?action=delete&interviewId=' + interviewId + '&jobPostId=' + jobPostId;
+                                                }
+                                            }
         </script>
     </body>
 </html>

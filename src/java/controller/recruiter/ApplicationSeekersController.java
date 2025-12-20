@@ -31,7 +31,6 @@ import model.JobSeekers;
 import model.WorkExperience;
 import utils.Email;
 
-
 @WebServlet(name = "ApplicationSeekersController", urlPatterns = {"/applicationSeekers"})
 public class ApplicationSeekersController extends HttpServlet {
 
@@ -87,9 +86,9 @@ public class ApplicationSeekersController extends HttpServlet {
             case "viewProfile":
                 this.viewProfile(request, response);
                 break;
-            case "viewCV":
-                this.viewCV(request, response);
-                break;
+//            case "viewCV":
+//                this.viewCV(request, response);
+//                break;
             case "viewEducation":
                 this.viewEducation(request, response);
                 break;
@@ -181,7 +180,7 @@ public class ApplicationSeekersController extends HttpServlet {
             // Lấy tiêu đề và trạng thái của JobPost
             String jobPostingTitle = jp.getJobPostingTitleByJobPostingId(jobPostIdInt);
             String jobPostingStatus = jp.findJobPostingStatusByJobPostingId(jobPostIdInt);
-            
+
             // Get interview data for each application
             List<Interview> interviews = interviewDao.getInterviewsByJobPostingId(jobPostIdInt);
 
@@ -218,15 +217,15 @@ public class ApplicationSeekersController extends HttpServlet {
             String applicantEmail = application.getJobSeeker().getAccount().getEmail();
 
             // Nội dung email mẫu
-            String subject = "[Company] Notification about the job you applied for";
-            String greeting = "Dear " + application.getJobSeeker().getAccount().getFullName() + ",<br><br>";
-            String footer = "<br><br>Best regards,<br>Thank you very much.";
+            String subject = "[Company] Thông báo kết quả ứng tuyển";
+            String greeting = "Xin chào " + application.getJobSeeker().getAccount().getFullName() + ",<br><br>";
+            String footer = "<br><br>Trân trọng,<br>Bộ phận tuyển dụng";
 
             // Nội dung mẫu cho trúng tuyển và từ chối
-            String successContent = "Congratulations! We are pleased to inform you that your application has been successful. "
-                    + "Please find the details below:<br><br>";
-            String rejectContent = "We regret to inform you that after careful consideration, we have decided not to move forward with your application. "
-                    + "We appreciate the time you invested in your application. Please feel free to apply again in the future.<br><br>";
+            String successContent = "Chúc mừng bạn! Chúng tôi vui mừng thông báo rằng hồ sơ ứng tuyển của bạn đã được chấp nhận. "
+                    + "Dưới đây là thông tin chi tiết và các bước tiếp theo:<br><br>";
+            String rejectContent = "Chúng tôi rất tiếc phải thông báo rằng sau khi xem xét kỹ lưỡng, chúng tôi nhận thấy hồ sơ của bạn chưa phù hợp với yêu cầu hiện tại của vị trí này. "
+                    + "Chúng tôi rất trân trọng thời gian và sự quan tâm bạn dành cho công ty. Hy vọng sẽ có cơ hội hợp tác với bạn ở các vị trí khác trong tương lai.<br><br>";
 
             // Chọn nội dung mẫu dựa trên status (trúng tuyển hay bị từ chối)
             String emailBody;
