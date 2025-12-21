@@ -117,6 +117,7 @@ public class ScheduleInterviewServlet extends HttpServlet {
         interview.setStatus("Scheduled");
         
         // Save to database
+        //Save to database
         boolean success = interviewDAO.createInterview(interview);
         
         if (success) {
