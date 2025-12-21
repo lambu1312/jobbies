@@ -103,6 +103,7 @@ public class ScheduleInterviewServlet extends HttpServlet {
                 }
             }
         }
+        //Create interview object
         
         // Create interview object
         Interview interview = new Interview();
