@@ -8,108 +8,93 @@
         <title>Job Detail - Jobbies</title>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
         <style>
+            :root {
+                --color-primary: #2B59FF;
+                --color-primary-dark: #1E3FCC;
+                --color-text-primary: #0A0E27;
+                --color-text-secondary: #5B6B8C;
+                --color-border: #E4E8F0;
+                --color-background: #FAFBFC;
+                --color-surface: #FFFFFF;
+                --color-success: #0EA770;
+                --color-success-light: #E8F7F0;
+                --color-danger: #E03E52;
+                --color-danger-light: #FFEBEE;
+                --color-warning: #F59E0B;
+                --color-warning-light: #FFF9EB;
+                --color-info: #0EA5E9;
+                --shadow-sm: 0 1px 2px rgba(10, 14, 39, 0.03);
+                --shadow-md: 0 4px 12px rgba(10, 14, 39, 0.06);
+                --shadow-lg: 0 12px 32px rgba(10, 14, 39, 0.08);
+                --radius-sm: 8px;
+                --radius-md: 12px;
+                --radius-lg: 16px;
+            }
+
             * {
                 margin: 0;
                 padding: 0;
                 box-sizing: border-box;
             }
 
-            .action-card {
-                position: static;
-            }
-
-            .stars {
-                position: fixed;
-                width: 100%;
-                height: 100%;
-                pointer-events: none;
-                z-index: 1;
-            }
-
-            .star {
-                position: absolute;
-                width: 2px;
-                height: 2px;
-                background: #fff;
-                border-radius: 50%;
-                animation: twinkle 3s infinite;
-            }
-
-            @keyframes twinkle {
-                0%, 100% {
-                    opacity: 0.3;
-                }
-                50% {
-                    opacity: 1;
-                }
-            }
-
-            .pixel-decoration {
-                position: fixed;
-                font-size: 3rem;
-                opacity: 0.3;
-                z-index: 5;
-                animation: float 4s ease-in-out infinite;
-            }
-
-            @keyframes float {
-                0%, 100% {
-                    transform: translateY(0px);
-                }
-                50% {
-                    transform: translateY(-20px);
-                }
-            }
-
-            .deco-1 {
-                top: 20%;
-                left: 10%;
-            }
-            .deco-2 {
-                top: 60%;
-                right: 15%;
-                animation-delay: 2s;
-            }
-            .deco-3 {
-                bottom: 15%;
-                left: 20%;
-                animation-delay: 1s;
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                background: var(--color-background);
+                color: var(--color-text-primary);
+                line-height: 1.6;
+                -webkit-font-smoothing: antialiased;
+                -moz-osx-font-smoothing: grayscale;
             }
 
             .container {
-                padding: 1rem;
+                max-width: 1200px;
+                margin: 0 auto;
+                padding: 3rem 2rem;
             }
 
-            .job-title {
-                font-size: 2rem;
+            .alert {
+                padding: 1rem 1.25rem;
+                border-radius: var(--radius-md);
+                margin-bottom: 2rem;
+                display: flex;
+                align-items: flex-start;
+                gap: 0.875rem;
+                font-size: 0.9375rem;
+                border: 1px solid;
+                animation: slideInRight 0.4s ease-out;
             }
 
-            @keyframes slideIn {
+            @keyframes slideInRight {
                 from {
                     opacity: 0;
-                    transform: translateY(-20px);
+                    transform: translateX(-20px);
                 }
                 to {
                     opacity: 1;
-                    transform: translateY(0);
+                    transform: translateX(0);
                 }
             }
 
+            .alert i {
+                flex-shrink: 0;
+                margin-top: 0.125rem;
+            }
+
             .alert-danger {
-                background: rgba(255, 107, 107, 0.2);
-                border: 1px solid #ff6b6b;
-                color: #ff6b6b;
+                background: var(--color-danger-light);
+                border-color: var(--color-danger);
+                color: var(--color-danger);
             }
 
             .alert-success {
-                background: rgba(57, 255, 20, 0.2);
-                border: 1px solid #39ff14;
-                color: #39ff14;
+                background: var(--color-success-light);
+                border-color: var(--color-success);
+                color: var(--color-success);
             }
 
             .job-detail-wrapper {
                 display: grid;
-                grid-template-columns: 1fr 280px;
+                grid-template-columns: 1fr 320px;
                 gap: 2rem;
             }
 
@@ -120,13 +105,26 @@
             }
 
             .card {
-                background: rgba(255, 255, 255, 0.05);
-                backdrop-filter: blur(20px);
-                border: 1px solid rgba(255, 255, 255, 0.1);
-                border-radius: 20px;
-                padding: 2rem;
-                transition: all 0.3s;
+                background: var(--color-surface);
+                border-radius: var(--radius-lg);
+                border: 1px solid var(--color-border);
+                overflow: hidden;
+                box-shadow: var(--shadow-md);
                 animation: fadeInUp 0.6s ease-out;
+                animation-fill-mode: both;
+            }
+
+            .card:nth-child(1) {
+                animation-delay: 0.1s;
+            }
+            .card:nth-child(2) {
+                animation-delay: 0.2s;
+            }
+            .card:nth-child(3) {
+                animation-delay: 0.3s;
+            }
+            .card:nth-child(4) {
+                animation-delay: 0.4s;
             }
 
             @keyframes fadeInUp {
@@ -140,102 +138,87 @@
                 }
             }
 
-            .card:hover {
-                border-color: rgba(196, 113, 245, 0.3);
-                box-shadow: 0 10px 40px rgba(196, 113, 245, 0.2);
-            }
-
             .job-title {
-                font-size: 2.5rem;
-                font-weight: 900;
-                background: linear-gradient(135deg, #fff 0%, #c471f5 100%);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
+                font-size: 2rem;
+                font-weight: 700;
+                color: var(--color-text-primary);
                 margin-bottom: 1.5rem;
-                line-height: 1.2;
+                line-height: 1.3;
+                padding: 2rem 2rem 0;
             }
 
             .job-meta {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 1rem;
-                padding-top: 1rem;
-                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.5rem;
+                padding: 0 2rem 2rem;
             }
 
             .meta-item {
                 display: flex;
-                align-items: center;
-                gap: 0.8rem;
-                color: #e0e0e0;
+                align-items: flex-start;
+                gap: 0.75rem;
             }
 
-            .meta-item i {
-                color: #c471f5;
-                font-size: 1.1rem;
-                width: 24px;
-                text-align: center;
+            .meta-icon {
+                width: 40px;
+                height: 40px;
+                background: linear-gradient(135deg, #E0F2FE 0%, #F0F9FF 100%);
+                border-radius: 10px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-shrink: 0;
+            }
+
+            .meta-icon i {
+                color: var(--color-primary);
+                font-size: 1rem;
+            }
+
+            .meta-content {
+                flex: 1;
             }
 
             .meta-label {
-                color: #b8b8d1;
-                font-size: 0.85rem;
-                margin-right: 0.3rem;
+                color: var(--color-text-secondary);
+                font-size: 0.8125rem;
+                margin-bottom: 0.25rem;
+                font-weight: 500;
             }
 
             .meta-value {
                 font-weight: 600;
-            }
-
-            .salary-display {
-                background: linear-gradient(135deg, rgba(196, 113, 245, 0.1), rgba(250, 113, 205, 0.1));
-                padding: 0.8rem 1rem;
-                border-radius: 10px;
-                border-left: 3px solid #c471f5;
-            }
-
-            .salary-amount {
-                font-size: 1.3rem;
-                font-weight: 800;
-                background: linear-gradient(135deg, #7ee8fa, #c471f5);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-            }
-
-            .salary-currency {
-                font-size: 0.9rem;
-                color: #7ee8fa;
-                font-weight: 700;
-                margin-top: 0.3rem;
+                color: var(--color-text-primary);
+                font-size: 0.9375rem;
             }
 
             .card-header {
+                background: linear-gradient(to bottom, #F8FAFC, #F1F5F9);
+                padding: 1.25rem 2rem;
+                border-bottom: 2px solid var(--color-border);
                 display: flex;
                 align-items: center;
-                gap: 0.8rem;
-                margin-bottom: 1.5rem;
-                padding-bottom: 1rem;
-                border-bottom: 2px solid rgba(196, 113, 245, 0.3);
+                gap: 0.75rem;
             }
 
             .card-header i {
-                font-size: 1.5rem;
-                color: #c471f5;
+                font-size: 1.25rem;
+                color: var(--color-primary);
             }
 
             .card-header h5 {
-                font-size: 1.5rem;
-                font-weight: 700;
-                background: linear-gradient(135deg, #fff 0%, #c471f5 100%);
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
+                font-size: 1.125rem;
+                font-weight: 600;
+                color: var(--color-text-primary);
                 margin: 0;
             }
 
             .card-content {
-                color: #e0e0e0;
+                padding: 2rem;
+                color: var(--color-text-secondary);
                 line-height: 1.8;
-                font-size: 1rem;
+                font-size: 0.9375rem;
             }
 
             .sidebar {
@@ -247,63 +230,80 @@
             .action-card {
                 position: sticky;
                 top: 2rem;
+                animation: fadeInUp 0.6s ease-out 0.5s both;
+            }
+
+            .action-card .card {
+                padding: 1.5rem;
             }
 
             .btn {
                 width: 100%;
-                padding: 1rem;
+                padding: 0.875rem 1.25rem;
                 border: none;
-                border-radius: 15px;
-                font-weight: 700;
-                font-size: 1rem;
+                border-radius: var(--radius-sm);
+                font-weight: 500;
+                font-size: 0.9375rem;
                 cursor: pointer;
-                transition: all 0.3s;
+                transition: all 0.2s ease;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 gap: 0.5rem;
                 text-decoration: none;
+                margin-bottom: 0.75rem;
+            }
+
+            .btn:last-child {
+                margin-bottom: 0;
+            }
+
+            .btn i {
+                font-size: 0.875rem;
             }
 
             .btn-like {
-                background: rgba(126, 232, 250, 0.2);
-                color: #7ee8fa;
-                border: 1px solid #7ee8fa;
+                background: white;
+                color: var(--color-danger);
+                border: 2px solid var(--color-danger);
             }
 
             .btn-like:hover {
-                background: rgba(126, 232, 250, 0.3);
-                transform: translateY(-2px);
-                box-shadow: 0 5px 20px rgba(126, 232, 250, 0.4);
+                background: var(--color-danger);
+                color: white;
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(224, 62, 82, 0.2);
             }
 
             .btn-liked {
-                background: rgba(126, 232, 250, 0.3);
-                color: #7ee8fa;
-                border: 1px solid #7ee8fa;
-                cursor: default;
+                background: var(--color-danger-light);
+                color: var(--color-danger);
+                border: 2px solid var(--color-danger);
+                cursor: not-allowed;
             }
 
             .btn-apply {
-                background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
-                color: #fff;
-                box-shadow: 0 5px 20px rgba(196, 113, 245, 0.4);
+                background: var(--color-primary);
+                color: white;
+                border: 2px solid var(--color-primary);
             }
 
             .btn-apply:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 8px 25px rgba(196, 113, 245, 0.6);
+                background: var(--color-primary-dark);
+                border-color: var(--color-primary-dark);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(43, 89, 255, 0.2);
             }
 
             .btn-applied {
-                background: rgba(57, 255, 20, 0.3);
-                color: #39ff14;
-                border: 1px solid #39ff14;
-                cursor: default;
+                background: var(--color-success-light);
+                color: var(--color-success);
+                border: 2px solid var(--color-success);
+                cursor: not-allowed;
             }
 
             .feedback-form {
-                margin-top: 1rem;
+                padding: 2rem;
             }
 
             .form-group {
@@ -312,97 +312,157 @@
 
             .form-label {
                 display: block;
-                color: #b8b8d1;
+                color: var(--color-text-primary);
                 font-weight: 600;
                 margin-bottom: 0.5rem;
-                font-size: 0.9rem;
+                font-size: 0.875rem;
             }
 
             .form-textarea {
                 width: 100%;
-                padding: 1rem;
-                background: rgba(255, 255, 255, 0.08);
-                border: 1px solid rgba(255, 255, 255, 0.2);
-                border-radius: 10px;
-                color: #fff;
-                font-size: 0.95rem;
+                padding: 0.875rem;
+                background: var(--color-surface);
+                border: 1px solid var(--color-border);
+                border-radius: var(--radius-sm);
+                color: var(--color-text-primary);
+                font-size: 0.9375rem;
                 outline: none;
-                transition: all 0.3s;
+                transition: all 0.2s ease;
                 resize: vertical;
                 min-height: 120px;
+                font-family: inherit;
             }
 
             .form-textarea:focus {
-                border-color: #c471f5;
-                box-shadow: 0 0 15px rgba(196, 113, 245, 0.3);
+                border-color: var(--color-primary);
+                box-shadow: 0 0 0 3px rgba(43, 89, 255, 0.1);
             }
 
             .form-textarea::placeholder {
-                color: rgba(255, 255, 255, 0.4);
+                color: #9CA3AF;
             }
 
             .btn-submit {
-                background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
-                color: #fff;
-                padding: 0.8rem 2rem;
+                background: var(--color-primary);
+                color: white;
+                border: 2px solid var(--color-primary);
                 width: auto;
-                margin-top: 1rem;
+                padding: 0.75rem 1.5rem;
             }
 
             .btn-submit:hover {
-                transform: translateY(-2px);
-                box-shadow: 0 5px 20px rgba(196, 113, 245, 0.5);
+                background: var(--color-primary-dark);
+                border-color: var(--color-primary-dark);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 12px rgba(43, 89, 255, 0.25);
             }
 
             .toast {
                 position: fixed;
                 top: 2rem;
                 right: 2rem;
-                background: rgba(57, 255, 20, 0.95);
-                backdrop-filter: blur(20px);
-                color: #000;
+                background: var(--color-success);
+                color: white;
                 padding: 1rem 1.5rem;
-                border-radius: 15px;
-                box-shadow: 0 10px 40px rgba(57, 255, 20, 0.4);
+                border-radius: var(--radius-md);
+                box-shadow: 0 10px 40px rgba(14, 167, 112, 0.3);
                 display: flex;
                 align-items: center;
                 gap: 1rem;
                 z-index: 1000;
-                animation: slideInRight 0.3s ease-out;
+                animation: slideInFromRight 0.3s ease-out;
             }
-    </style>
-</head>
-<body>
-    <div class="stars" id="stars"></div>
+
+            @keyframes slideInFromRight {
+                from {
+                    opacity: 0;
+                    transform: translateX(100%);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateX(0);
+                }
+            }
+
+            .toast-close {
+                background: none;
+                border: none;
+                color: white;
+                font-size: 1.2rem;
+                cursor: pointer;
+                padding: 0;
+                display: flex;
+                align-items: center;
+            }
+
+            .divider {
+                height: 1px;
+                background: var(--color-border);
+                margin: 1.5rem 0;
+            }
+
+            @media (max-width: 1024px) {
+                .job-detail-wrapper {
+                    grid-template-columns: 1fr;
+                }
+
+                .action-card {
+                    position: static;
+                }
+
+                .sidebar {
+                    order: -1;
+                }
+            }
+
+            @media (max-width: 768px) {
+                .container {
+                    padding: 2rem 1rem;
+                }
+
+                .job-title {
+                    font-size: 1.75rem;
+                    padding: 1.5rem 1.5rem 0;
+                }
+
+                .job-meta {
+                    grid-template-columns: 1fr;
+                    padding: 0 1.5rem 1.5rem;
+                }
+
+                .card-header,
+                .card-content,
+                .feedback-form {
+                    padding: 1.5rem;
+                }
+
+                .toast {
+                    right: 1rem;
+                    left: 1rem;
+                    top: 1rem;
+                }
+            }
+        </style>
     </head>
     <body>
-        <div class="stars" id="stars"></div>
-
-        <% if (request.getParameter("success") != null) { %>
-        <div class="alert alert-success">
-            <i class="fas fa-check-circle"></i>
-            <%= request.getParameter("success") %>
-        </div>
-        <% } %>
-
         <!-- Header -->
         <jsp:include page="../common/user/header-user.jsp"></jsp:include>
 
             <div class="container">
                 <!-- Alert Messages -->
-            <% if (request.getParameter("error") != null) { %>
+            <% if (request.getParameter("error") != null) {%>
             <div class="alert alert-danger">
                 <i class="fas fa-exclamation-circle"></i>
-                <%= request.getParameter("error") %>
+                <span><%= request.getParameter("error")%></span>
             </div>
             <% } %>
 
-            <% if (request.getParameter("success") != null) { %>
+            <% if (request.getParameter("success") != null) {%>
             <div class="alert alert-success">
                 <i class="fas fa-check-circle"></i>
-                <%= request.getParameter("success") %>
+                <span><%= request.getParameter("success")%></span>
             </div>
-            <% } %>
+            <% }%>
 
             <c:if test="${not empty jobPost}">
                 <div class="job-detail-wrapper">
@@ -414,91 +474,71 @@
 
                             <div class="job-meta">
                                 <div class="meta-item">
-                                    <i class="fas fa-calendar-alt"></i>
-                                    <div>
-                                        <span class="meta-label">Posted:</span>
-                                        <span class="meta-value">${jobPost.postedDate}</span>
+                                    <div class="meta-icon">
+                                        <i class="fas fa-calendar-alt"></i>
+                                    </div>
+                                    <div class="meta-content">
+                                        <div class="meta-label">Ngày đăng</div>
+                                        <div class="meta-value">${jobPost.postedDate}</div>
                                     </div>
                                 </div>
 
                                 <div class="meta-item">
-                                    <i class="fas fa-hourglass-end"></i>
-                                    <div>
-                                        <span class="meta-label">Deadline:</span>
-                                        <span class="meta-value">${jobPost.closingDate}</span>
+                                    <div class="meta-icon">
+                                        <i class="fas fa-hourglass-end"></i>
+                                    </div>
+                                    <div class="meta-content">
+                                        <div class="meta-label">Hạn ứng tuyển</div>
+                                        <div class="meta-value">${jobPost.closingDate}</div>
                                     </div>
                                 </div>
 
                                 <div class="meta-item">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <div>
-                                        <span class="meta-label">Location:</span>
-                                        <span class="meta-value">${jobPost.location}</span>
+                                    <div class="meta-icon">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                    <div class="meta-content">
+                                        <div class="meta-label">Địa điểm</div>
+                                        <div class="meta-value">${jobPost.location}</div>
                                     </div>
                                 </div>
 
                                 <div class="meta-item">
-                                    <i class="fas fa-dollar-sign"></i>
-                                    <div>
-                                        <span class="meta-label">Salary:</span>
-                                        <div class="salary-display">
-                                            <div class="salary-amount">
-                                                ${jobPost.minSalary} - ${jobPost.maxSalary}
-                                            </div>
-                                            <div class="salary-currency">
-                                                <c:choose>
-                                                    <c:when test="${jobPost.currency == 'USD'}">
-                                                        💵 USD ($)
-                                                    </c:when>
-                                                    <c:when test="${jobPost.currency == 'VND'}">
-                                                        🇻🇳 VND (₫)
-                                                    </c:when>
-                                                    <c:when test="${jobPost.currency == 'EUR'}">
-                                                        💶 EUR (€)
-                                                    </c:when>
-                                                    <c:when test="${jobPost.currency == 'GBP'}">
-                                                        💷 GBP (£)
-                                                    </c:when>
-                                                    <c:when test="${jobPost.currency == 'JPY'}">
-                                                        🇯🇵 JPY (¥)
-                                                    </c:when>
-                                                    <c:when test="${jobPost.currency == 'AUD'}">
-                                                        🇦🇺 AUD (A$)
-                                                    </c:when>
-                                                    <c:when test="${jobPost.currency == 'CAD'}">
-                                                        🇨🇦 CAD (C$)
-                                                    </c:when>
-                                                    <c:otherwise>
-                                                        ${jobPost.currency}
-                                                    </c:otherwise>
-                                                </c:choose>
-                                            </div>
-                                        </div>
+                                    <div class="meta-icon">
+                                        <i class="fas fa-dollar-sign"></i>
                                     </div>
-                                </div>
+                                    <div class="meta-content">
+                                        <div class="meta-label">Mức lương</div>
+                                        <div class="meta-value">${jobPost.minSalary} - ${jobPost.maxSalary} ${jobPost.getCurrency()}</div>
+                                    </div>
+                                </div>  
 
                                 <div class="meta-item">
-                                    <i class="fas fa-list"></i>
-                                    <div>
-                                        <span class="meta-label">Category:</span>
-                                        <span class="meta-value">
+                                    <div class="meta-icon">
+                                        <i class="fas fa-list"></i>
+                                    </div>
+                                    <div class="meta-content">
+                                        <div class="meta-label">Danh mục</div>
+                                        <div class="meta-value">
                                             <c:choose>
                                                 <c:when test="${category != 'This category was deleted!'}">
                                                     ${category.name}
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <span style="color: #ff6b6b;">Deleted Category</span>
+                                                    <span style="color: var(--color-danger);">Deleted Category</span>
                                                 </c:otherwise>
                                             </c:choose>
-                                        </span>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="meta-item">
-                                    <i class="fas fa-circle"></i>
-                                    <div>
-                                        <span class="meta-label">Status:</span>
-                                        <span class="meta-value">${jobPost.status}</span>
+                                    <div class="meta-icon">
+                                        <i class="fas fa-circle"></i>
+                                    </div>
+                                    <div class="meta-content">
+                                        <div class="meta-label">Trạng thái</div>
+                                        <div class="meta-value">${jobPost.status}</div>
                                     </div>
                                 </div>
                             </div>
@@ -508,7 +548,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <i class="fas fa-file-alt"></i>
-                                <h5>Job Description</h5>
+                                <h5>Mô tả công việc</h5>
                             </div>
                             <div class="card-content">
                                 ${jobPost.description}
@@ -519,7 +559,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <i class="fas fa-clipboard-check"></i>
-                                <h5>Requirements</h5>
+                                <h5>Yêu cầu công việc</h5>
                             </div>
                             <div class="card-content">
                                 ${jobPost.requirements}
@@ -530,17 +570,17 @@
                         <div class="card">
                             <div class="card-header">
                                 <i class="fas fa-comments"></i>
-                                <h5>Feedback</h5>
+                                <h5>Đánh giá công việc</h5>
                             </div>
                             <form action="${pageContext.request.contextPath}/feedbackSeeker?action=create" method="post" class="feedback-form">
                                 <input type="hidden" name="jobPostingID" value="${jobPost.jobPostingID}">
                                 <div class="form-group">
-                                    <label class="form-label">Leave your feedback:</label>
-                                    <textarea class="form-textarea" name="content" required placeholder="Enter your feedback here..."></textarea>
+                                    <label class="form-label">Để lại đánh giá của bạn:</label>
+                                    <textarea class="form-textarea" name="content" required placeholder="Nhập đánh giá của bạn về công việc này..."></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-submit">
                                     <i class="fas fa-paper-plane"></i>
-                                    Submit Feedback
+                                    Gửi đánh giá
                                 </button>
                             </form>
                         </div>
@@ -550,9 +590,9 @@
                     <aside class="sidebar">
                         <div class="card action-card">
                             <c:if test="${not empty error}">
-                                <div class="alert alert-danger">
+                                <div class="alert alert-danger" style="margin-bottom: 1rem;">
                                     <i class="fas fa-exclamation-circle"></i>
-                                    ${error}
+                                    <span>${error}</span>
                                 </div>
                             </c:if>
 
@@ -566,14 +606,14 @@
                                         </c:if>
                                         <button type="submit" class="btn btn-like">
                                             <i class="fas fa-heart"></i>
-                                            Like
+                                            Yêu thích
                                         </button>
                                     </form>
                                 </c:when>
                                 <c:otherwise>
                                     <button class="btn btn-liked" disabled>
                                         <i class="fas fa-heart"></i>
-                                        Liked
+                                        Đã yêu thích
                                     </button>
                                 </c:otherwise>
                             </c:choose>
@@ -592,7 +632,7 @@
                                             </c:if>
                                             <button type="submit" class="btn btn-apply">
                                                 <i class="fas fa-paper-plane"></i>
-                                                Apply Job
+                                                Ứng tuyển ngay
                                             </button>
                                         </form>
                                     </c:if>
@@ -600,7 +640,7 @@
                                 <c:otherwise>
                                     <button class="btn btn-applied" disabled>
                                         <i class="fas fa-check-circle"></i>
-                                        Applied
+                                        Đã ứng tuyển
                                     </button>
                                 </c:otherwise>
                             </c:choose>
@@ -625,22 +665,11 @@
         <jsp:include page="../common/footer.jsp"></jsp:include>
 
         <script>
-            // Generate stars
-            const starsContainer = document.getElementById('stars');
-            for (let i = 0; i < 100; i++) {
-                const star = document.createElement('div');
-                star.className = 'star';
-                star.style.left = Math.random() * 100 + '%';
-                star.style.top = Math.random() * 100 + '%';
-                star.style.animationDelay = Math.random() * 3 + 's';
-                starsContainer.appendChild(star);
-            }
-
             // Auto-hide toast after 5 seconds
             const toast = document.getElementById('liveToast');
             if (toast) {
                 setTimeout(() => {
-                    toast.style.animation = 'slideOutRight 0.3s ease-out';
+                    toast.style.animation = 'slideInFromRight 0.3s ease-out reverse';
                     setTimeout(() => toast.remove(), 300);
                 }, 5000);
             }

@@ -349,7 +349,7 @@ public class AuthenticationController extends HttpServlet {
         } else {
             // Generate OTP and send email
             int sixDigitNumber = 100000 + new Random().nextInt(900000);
-            Email.sendEmail(email, "OTP Register Account", "Hello, your OTP code is: " + sixDigitNumber);
+            Email.sendEmail(email, "OTP Register Account", "Xin chào, mã OTP của bạn là " + sixDigitNumber);
 
             // Store OTP and account info in session
             HttpSession session = request.getSession();
@@ -484,7 +484,7 @@ public class AuthenticationController extends HttpServlet {
         } else {
             // Generate a 6-digit OTP and send it to the user's email
             int sixDigitNumber = 100000 + new Random().nextInt(900000); //SWT: Bugs
-            Email.sendEmail(email, "OTP Reset Password", "Your OTP code is: " + sixDigitNumber);
+            Email.sendEmail(email, "OTP Reset Password", "MÃ OTP của bạn là: " + sixDigitNumber);
 
             // Store OTP and account info in the session
             HttpSession session = request.getSession();

@@ -36,7 +36,7 @@
 
             /* Main content container */
             .main-content {
-                flex: 1 0 auto; 
+                flex: 1 0 auto;
                 padding: 30px;
                 margin-left: 260px; /* Space for sidebar */
                 background-color: #fdfbff;
@@ -82,11 +82,11 @@
             }
 
             .form-control, .form-select {
-border-radius: 8px;
+                border-radius: 8px;
                 border: 1px solid #e9d5ff;
                 padding: 10px;
             }
-            
+
             .form-control:focus {
                 border-color: #d8b4fe;
                 box-shadow: 0 0 0 0.25rem rgba(216, 180, 254, 0.25);
@@ -97,7 +97,7 @@ border-radius: 8px;
                 justify-content: flex-end; /* Đẩy nút sang phải */
                 margin-top: 30px;
             }
-            
+
             /* Custom Button */
             .btn-create {
                 background: var(--gradient-bg);
@@ -110,7 +110,7 @@ border-radius: 8px;
                 transition: all 0.3s ease;
                 box-shadow: 0 4px 15px rgba(236, 72, 153, 0.3);
             }
-            
+
             .btn-create:hover {
                 transform: translateY(-2px);
                 box-shadow: 0 6px 20px rgba(236, 72, 153, 0.5);
@@ -141,7 +141,7 @@ border-radius: 8px;
                 margin-bottom: 25px;
                 border-radius: 10px;
             }
-            
+
             /* TinyMCE border fix */
             .tox-tinymce {
                 border: 1px solid #e9d5ff !important;
@@ -151,7 +151,7 @@ border-radius: 8px;
     </head>
     <body>
         <%@ include file="../recruiter/sidebar-re.jsp" %>
-        
+
         <div class="page-wrapper">
             <div class="main-content">
                 <%@ include file="../recruiter/header-re.jsp" %>
@@ -171,7 +171,7 @@ border-radius: 8px;
                 </c:if>
 
                 <div class="card">
-<div class="card-header">
+                    <div class="card-header">
                         <i class="fas fa-building"></i> Điền Thông Tin Công Ty
                     </div>
                     <div class="card-body">
@@ -193,13 +193,18 @@ border-radius: 8px;
 
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label for="businessCode" class="form-label">Mã Số Thuế / Mã Doanh Nghiệp <span class="text-danger">*</span></label>
+                                    <label for="businessCode" class="form-label">Mã Số Thuế / Mã Doanh Nghiệp (10 số) <span class="text-danger">*</span></label>
 
                                     <input type="text" 
                                            class="form-control <c:if test='${not empty errorCode or not empty duplicateCode}'>is-invalid</c:if>" 
-                                           id="businessCode" name="businessCode" 
-                                           placeholder="Nhập mã số kinh doanh"
-                                           value="${requestScope.company.getBusinessCode()}" required>
+                                               id="businessCode" name="businessCode" 
+                                               placeholder="Nhập mã số kinh doanh"
+                                               value="${requestScope.company.getBusinessCode()}"
+                                           pattern="[0-9]{10}"
+                                           maxlength="10"
+                                           minlength="10"
+                                           title="Business code must be exactly 10 digits"
+                                           required>
 
                                     <c:if test="${not empty errorCode}">
                                         <div class="invalid-feedback">
@@ -212,9 +217,9 @@ border-radius: 8px;
                                         </div>
                                     </c:if>
                                 </div>
-                                
+
                                 <div class="col-md-6 mb-3">
-<label for="businessLicense" class="form-label">Giấy Phép Kinh Doanh (Ảnh) <span class="text-danger">*</span></label>
+                                    <label for="businessLicense" class="form-label">Giấy Phép Kinh Doanh (Ảnh) <span class="text-danger">*</span></label>
                                     <input type="file" class="form-control" id="businessLicense" name="businessLicense" accept="image/*" required>
                                     <div class="form-text text-muted">Vui lòng tải lên ảnh chụp rõ nét giấy phép kinh doanh.</div>
                                 </div>
@@ -239,19 +244,19 @@ border-radius: 8px;
 
             <%@ include file="../recruiter/footer-re.jsp" %>
         </div>
-        
+
         <script>
             tinymce.init({
-                selector: 'textarea#companyDescription', // Chỉ áp dụng cho textarea có id cụ thể
+                selector: 'textarea#companyDescription',
                 plugins: 'advlist autolink lists link image charmap print preview anchor',
                 toolbar: 'undo redo | formatselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat',
-                menubar: false, // Tắt thanh menu
-                branding: false, // Tắt branding của TinyMCE
-                height: 350, // Chiều cao
+                menubar: false,
+                branding: false,
+                height: 350,
                 placeholder: 'Nhập mô tả chi tiết về công ty tại đây...',
                 setup: function (editor) {
                     editor.on('change', function () {
-                        tinymce.triggerSave(); // Đồng bộ dữ liệu TinyMCE với form
+                        tinymce.triggerSave();
                     });
                 }
             });

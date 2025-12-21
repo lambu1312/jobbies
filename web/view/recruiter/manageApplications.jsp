@@ -335,8 +335,16 @@
                                                     <span class="text-muted">Không có thông tin</span>
                                                 </c:when>
                                                 <c:otherwise>
-                                                    <a href="${pageContext.request.contextPath}/applicationSeekers?action=viewCV&id=${application.getCVID()}" class="btn-action" title="Xem CV">
+                                                    <a href="${pageContext.request.contextPath}/recruiter/cv/preview?applicationId=${application.getApplicationID()}"
+                                                       class="btn-action" target="_blank" title="Xem CV">
                                                         <i class="fas fa-file-pdf fa-lg"></i> Xem CV
+                                                    </a>
+                                                    <a href="${pageContext.request.contextPath}/applicationSeekers?action=viewEducation&id=${application.jobSeeker.getJobSeekerID()}" class="btn-action text-secondary">
+                                                        <i class="fas fa-graduation-cap"></i>Học vấn
+                                                    </a>
+                                                    <a href="${pageContext.request.contextPath}/applicationSeekers?action=viewWorkExperience&id=${application.jobSeeker.getJobSeekerID()}" class="btn-action text-warning">
+                                                        <i class="fas fa-briefcase"></i>Kinh nghiệm
+
                                                     </a>
                                                 </c:otherwise>
                                             </c:choose>
@@ -553,16 +561,16 @@
                                     <div class="row">
                                         <div class="col-md-6 mb-3">
                                             <label for="viewInterviewDate" class="form-label">Ngày phỏng vấn <span class="text-danger">*</span></label>
-                                            <input type="date" class="form-control" id="viewInterviewDate" name="interviewDate" required>
+                                            <input type="date" class="form-control" id="viewInterviewDate" readonly name="interviewDate" required>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="viewInterviewTime" class="form-label">Giờ phỏng vấn <span class="text-danger">*</span></label>
-                                            <input type="time" class="form-control" id="viewInterviewTime" name="interviewTime" required>
+                                            <input type="time" class="form-control" id="viewInterviewTime" readonly name="interviewTime" required>
                                         </div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="viewInterviewType" class="form-label">Hình thức <span class="text-danger">*</span></label>
-                                        <select class="form-select" id="viewInterviewType" name="interviewType" onchange="toggleMeetingLinkView()" required>
+                                        <select class="form-select" id="viewInterviewType" disabled name="interviewType" onchange="toggleMeetingLinkView()" required>
                                             <option value="Online">Online</option>
                                             <option value="Offline">Offline</option>
                                         </select>
@@ -570,31 +578,31 @@
 
                                     <div class="mb-3" id="viewLocationField">
                                         <label for="viewLocation" class="form-label">Địa điểm</label>
-                                        <input type="text" class="form-control" id="viewLocation" name="location">
+                                        <input type="text" class="form-control" id="viewLocation" name="location" readonly>
                                     </div>
 
                                     <div class="mb-3" id="viewMeetingLinkField">
                                         <label for="viewMeetingLink" class="form-label">Link cuộc họp</label>
-                                        <input type="url" class="form-control" id="viewMeetingLink" name="meetingLink">
+                                        <input type="url" class="form-control" id="viewMeetingLink" name="meetingLink" readonly>
                                     </div>
 
                                     <div class="mb-3">
                                         <label for="viewNotes" class="form-label">Ghi chú</label>
-                                        <textarea class="form-control" id="viewNotes" name="notes" rows="3"></textarea>
+                                        <textarea class="form-control" id="viewNotes" name="notes" rows="3" readonly></textarea>
                                     </div>
 
                                     <input type="hidden" id="viewStatus" name="status" value="Scheduled">
 
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger" onclick="deleteInterview()">
-                                            <i class="fas fa-trash"></i> Xóa Lịch
-                                        </button>
+                                        <!--                                        <button type="button" class="btn btn-danger" onclick="deleteInterview()">
+                                                                                    <i class="fas fa-trash"></i> Hủy Lịch
+                                                                                </button>-->
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                                             <i class="fas fa-times"></i> Đóng
                                         </button>
-                                        <button type="submit" class="btn btn-primary">
-                                            <i class="fas fa-save"></i> Cập Nhật
-                                        </button>
+                                        <!--                                        <button type="submit" class="btn btn-primary">
+                                                                                    <i class="fas fa-save"></i> Cập Nhật
+                                                                                </button>-->
                                     </div>
                                 </form>
                             </div>
@@ -642,7 +650,6 @@
                                             function setApplicationId(applicationId) {
                                                 document.getElementById('scheduleApplicationId').value = applicationId;
                                             }
-
                                             function toggleMeetingLink() {
                                                 const interviewType = document.getElementById('interviewType').value;
                                                 const meetingLinkField = document.getElementById('meetingLinkField');
@@ -681,7 +688,6 @@
                                                 if (interviewDate && interviewDate.includes(' ')) {
                                                     interviewDate = interviewDate.split(' ')[0];
                                                 }
-
                                                 document.getElementById('viewInterviewDate').value = interviewDate;
                                                 document.getElementById('viewInterviewTime').value = interviewTime || '';
                                                 document.getElementById('viewLocation').value = location || '';

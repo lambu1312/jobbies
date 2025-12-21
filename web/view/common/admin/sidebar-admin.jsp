@@ -51,7 +51,7 @@
             <li>
                 <a href="${pageContext.request.contextPath}/handbook_admin" class="nav-link">
                     <span class="nav-icon"><i class="fa-solid fa-book"></i></span>
-                    <span class="nav-text">Handbook</span>
+                    <span class="nav-text">Cẩm nang</span>
                 </a>
             </li>
         </ul>

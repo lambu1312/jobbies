@@ -1,7 +1,7 @@
 package controller.candidate;
 
 import constant.CommonConst;
-import dao.CVDAO;
+import dao.CvDAO;
 import dao.JobSeekerDAO;
 import model.CV;
 import java.io.File;
@@ -34,7 +34,7 @@ import model.JobSeekers;
 
 public class CVServlet extends HttpServlet {
 
-    private final CVDAO cvDAO = new CVDAO();
+    private final CvDAO cvDAO = new CvDAO();
     private final JobSeekerDAO jobSeekerDAO = new JobSeekerDAO();
 
     @Override
@@ -73,7 +73,7 @@ public class CVServlet extends HttpServlet {
                     }
                 } else {
                     // Set the error message to display on the CV page
-                    error = "You are not currently a member of Job Seeker. Please join to use this function.";
+                    error = "Bạn chưa là thành viên của Jobbies, hãy đăng ký là thành viên trong hồ sơ. ";
                     request.setAttribute("errorJobSeeker", error);
                 }
             }
@@ -115,7 +115,7 @@ public class CVServlet extends HttpServlet {
         JobSeekers jobSeeker = jobSeekerDAO.findJobSeekerIDByAccountID(account.getId() + "");
         if (jobSeeker == null) {
             try {
-                url = "cv?error=" + URLEncoder.encode("You are not currently a member of Job Seeker. Please join to use this function.", "UTF-8");
+                url = "cv?error=" + URLEncoder.encode("Bạn chưa là thành viên của Jobbies, hãy đăng ký là thành viên trong hồ sơ. ", "UTF-8");
             } catch (UnsupportedEncodingException ex) {
                 Logger.getLogger(CVServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -163,10 +163,10 @@ public class CVServlet extends HttpServlet {
 
             // Insert CV record into the database
             CV newCV = new CV();
-            newCV.setJobSeekerID(jobSeeker.getJobSeekerID());
+            newCV.setCvId(jobSeeker.getJobSeekerID());
             newCV.setFilePath(request.getContextPath() + "/cvFiles/" + cvFile.getName());
             newCV.setUploadDate(Date.valueOf(LocalDate.now()));
-            cvDAO.insert(newCV);
+            cvDAO.insertFileCV(newCV);
 
             // Set success message and return to the CV page
             request.setAttribute("successCV", "CV uploaded successfully.");
@@ -189,7 +189,7 @@ public class CVServlet extends HttpServlet {
             url = "view/authen/login.jsp";
         }
         JobSeekers jobSeeker = jobSeekerDAO.findJobSeekerIDByAccountID(account.getId() + "");
-        
+
         CV existingCV = cvDAO.findCVbyJobSeekerID(jobSeeker.getJobSeekerID());
         if (existingCV == null) {
             try {
@@ -230,8 +230,8 @@ public class CVServlet extends HttpServlet {
             part.write(cvFile.getAbsolutePath());
             // Update CV record in the database
             existingCV.setFilePath(request.getContextPath() + "/cvFiles/" + cvFile.getName());
-            existingCV.setUploadDate(Date.valueOf(LocalDate.now()));
-            cvDAO.updateCV(existingCV);
+            existingCV.setLastUpdated(Date.valueOf(LocalDate.now()));
+            cvDAO.update(existingCV);
 
             request.setAttribute("successCV", "CV updated successfully.");
             url = "cv";
@@ -254,7 +254,7 @@ public class CVServlet extends HttpServlet {
         JobSeekers jobSeeker = jobSeekerDAO.findJobSeekerIDByAccountID(String.valueOf(account.getId()));
         if (jobSeeker == null) {
             try {
-                url = "cv?error=" + URLEncoder.encode("You are not currently a member of Job Seeker. Please join to use this function.", "UTF-8");
+                url = "cv?error=" + URLEncoder.encode("Bạn chưa là thành viên của Jobbies, hãy đăng ký là thành viên trong hồ sơ. ", "UTF-8");
             } catch (UnsupportedEncodingException ex) {
                 Logger.getLogger(CVServlet.class.getName()).log(Level.SEVERE, null, ex);
             }

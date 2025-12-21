@@ -60,7 +60,7 @@ public class ApplicationServlet extends HttpServlet {
                 request.setAttribute("error", "Database error occurred.");
             }
         } else {
-            request.setAttribute("errorJobSeeker", "You are not currently a member of Job Seeker. Please join to use this function.");
+            request.setAttribute("errorJobSeeker", "Bạn chưa là thành viên của Jobbies, hãy đăng ký là thành viên trong hồ sơ. ");
         }
 
         request.getRequestDispatcher("view/user/Application.jsp").forward(request, response);
@@ -89,7 +89,7 @@ public class ApplicationServlet extends HttpServlet {
         JobSeekers jobSeeker = jobSeekerDAO.findJobSeekerIDByAccountID(String.valueOf(account.getId()));
 
         if (jobSeeker == null) {
-            String errorMsg = "You are not currently a member of Job Seeker. Please join to use this function.";
+            String errorMsg = "Bạn chưa là thành viên của Jobbies, hãy đăng ký là thành viên trong hồ sơ. ";
             response.sendRedirect("application?error=" + URLEncoder.encode(errorMsg, "UTF-8"));
             return;
         }
@@ -143,7 +143,7 @@ public class ApplicationServlet extends HttpServlet {
         JobSeekers jobSeeker = jobSeekerDAO.findJobSeekerIDByAccountID(String.valueOf(account.getId()));
         if (jobSeeker == null) {
             try {
-                return "application?error=" + URLEncoder.encode("You are not currently a member of Job Seeker. Please join to use this function.", "UTF-8");
+                return "application?error=" + URLEncoder.encode("Bạn chưa là thành viên của Jobbies, hãy đăng ký là thành viên trong hồ sơ. ", "UTF-8");
             } catch (UnsupportedEncodingException ex) {
                 Logger.getLogger(ApplicationServlet.class.getName()).log(Level.SEVERE, null, ex);
             }

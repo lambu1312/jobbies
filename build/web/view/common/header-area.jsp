@@ -6,7 +6,6 @@
 
         <div class="nav-links" id="navLinks">
             <a href="${pageContext.request.contextPath}/home">Việc làm</a>
-            <a href="#">Tạo CV</a>
             <a href="${pageContext.request.contextPath}/handbook">Cẩm nang</a>
 
             <c:choose>
@@ -72,11 +71,11 @@
 
 <style>
     .navbar {
+        background: linear-gradient(135deg, #2c0253 0%, #571457 100%);
+        box-shadow: 0 4px 20px rgba(102, 126, 234, 0.3);
         position: relative;
-        z-index: 100;
-        background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(20px);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        top: 0;
+        z-index: 1000;
     }
 
     .navbar-container {
@@ -93,7 +92,6 @@
         font-weight: 900;
         background: linear-gradient(135deg, #c471f5 0%, #fa71cd 100%);
         -webkit-background-clip: text;
-        background-clip: text;
         -webkit-text-fill-color: transparent;
         text-shadow: 0 0 30px rgba(196, 113, 245, 0.5);
         letter-spacing: 2px;
