@@ -409,6 +409,7 @@ public class ScheduleInterviewServlet extends HttpServlet {
         
         if (success && interview != null) {
             // Send email notification about interview cancellation
+            // Send email notification about interview cancellation
             try {
                 ApplicationDAO applicationDAO = new ApplicationDAO();
                 JobPostingsDAO jobPostingsDAO = new JobPostingsDAO();
