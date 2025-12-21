@@ -16,13 +16,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Account;
 import model.JobPostings;
 import model.Job_Posting_Category;
@@ -41,20 +37,23 @@ public class JobPostingController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //get ve thong báo
+
+        // ===== Thông báo =====
         String success = request.getParameter("success") != null ? request.getParameter("success") : "";
         String error = request.getParameter("error") != null ? request.getParameter("error") : "";
         String duplicate = request.getParameter("duplicate") != null ? request.getParameter("duplicate") : "";
         String duplicateEdit = request.getParameter("duplicateEdit") != null ? request.getParameter("duplicateEdit") : "";
+
         request.setAttribute("success", success);
         request.setAttribute("error", error);
         request.setAttribute("duplicate", duplicate);
         request.setAttribute("duplicateEdit", duplicateEdit);
-        // get ve pageNumber
+
+        // ===== Phân trang =====
         PageControl pageControl = new PageControl();
         String pageRaw = request.getParameter("page");
-        //valid page
         int page;
+
         try {
             page = Integer.parseInt(pageRaw);
             if (page <= 1) {
@@ -63,41 +62,78 @@ public class JobPostingController extends HttpServlet {
         } catch (NumberFormatException e) {
             page = 1;
         }
-        //get ve url
-        String requestURL = request.getRequestURL().toString();
-        //get ve ben jsp
-        String status = request.getParameter("filterStatus") != null ? request.getParameter("filterStatus") : "";
-        String salaryRange = request.getParameter("filterSalary") != null ? request.getParameter("filterSalary") : "";
-        String postDate = request.getParameter("filterDate") != null ? request.getParameter("filterDate") : "";
 
+        String requestURL = request.getRequestURL().toString();
+
+        // ===== Filter =====
+        String status = request.getParameter("filterStatus") != null ? request.getParameter("filterStatus") : "";
+        String currency = request.getParameter("filterCurrency") != null ? request.getParameter("filterCurrency") : "";
+
+        String minSalaryRaw = request.getParameter("minSalary");
+        String maxSalaryRaw = request.getParameter("maxSalary");
+
+        Double minSalary = null;
+        Double maxSalary = null;
+
+        try {
+            if (minSalaryRaw != null && !minSalaryRaw.isEmpty()) {
+                minSalary = Double.parseDouble(minSalaryRaw);
+            }
+            if (maxSalaryRaw != null && !maxSalaryRaw.isEmpty()) {
+                maxSalary = Double.parseDouble(maxSalaryRaw);
+            }
+        } catch (NumberFormatException e) {
+            minSalary = null;
+            maxSalary = null;
+        }
+
+        String postDate = request.getParameter("filterDate") != null ? request.getParameter("filterDate") : "";
         String search = request.getParameter("search") != null ? request.getParameter("search") : "";
 
-        List<JobPostings> jobPostingsList = jobPostingsDAO.findAndfilterJobPostings(status, salaryRange, postDate, search, page);
-        int totalRecord = jobPostingsDAO.findAndfilterAllRecord(status, salaryRange, postDate, search);
+        // ===== Query dữ liệu =====
+        List<JobPostings> jobPostingsList = jobPostingsDAO.findAndfilterJobPostings(
+                status, currency, minSalary, maxSalary, postDate, search, page);
 
-        pageControl.setUrlPattern(requestURL + "?filterStatus=" + status + "&filterSalary="
-                + salaryRange + "&search=" + search + "&");
+        int totalRecord = jobPostingsDAO.findAndfilterAllRecord(
+                status, currency, minSalary, maxSalary, postDate, search);
+
+        // ===== URL phân trang (ĐÃ FIX) =====
+        pageControl.setUrlPattern(requestURL
+                + "?filterStatus=" + status
+                + "&filterCurrency=" + currency
+                + "&minSalary=" + (minSalary != null ? minSalary : "")
+                + "&maxSalary=" + (maxSalary != null ? maxSalary : "")
+                + "&filterDate=" + postDate
+                + "&search=" + search + "&");
+
         request.setAttribute("jobPostingsList", jobPostingsList);
-        //total page
-        int totalPage = (totalRecord % RECORD_PER_PAGE) == 0 ? (totalRecord / RECORD_PER_PAGE) : (totalRecord / RECORD_PER_PAGE) + 1;
-        //set total record, total page, page to pageControl
+
+        // ===== Tổng trang =====
+        int totalPage = (totalRecord % RECORD_PER_PAGE == 0)
+                ? (totalRecord / RECORD_PER_PAGE)
+                : (totalRecord / RECORD_PER_PAGE + 1);
+
         pageControl.setPage(page);
         pageControl.setTotalRecord(totalRecord);
         pageControl.setTotalPages(totalPage);
-        //set attribute pageControl 
+
         request.setAttribute("pageControl", pageControl);
 
-        //tai thong tin cac category job posting
+        // ===== Category =====
         List<Job_Posting_Category> listCate = cateDao.findAll();
         request.setAttribute("categoryList", listCate);
-        request.getRequestDispatcher("view/admin/jobPostManagement.jsp").forward(request, response);
+
+        request.getRequestDispatcher("view/admin/jobPostManagement.jsp")
+                .forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
         String url = "";
         String action = request.getParameter("action") != null ? request.getParameter("action") : "";
+
         switch (action) {
             case "violate":
                 url = violateJobPosting(request);
@@ -118,6 +154,7 @@ public class JobPostingController extends HttpServlet {
             default:
                 url = "job_posting";
         }
+
         response.sendRedirect(url);
     }
 
@@ -125,18 +162,23 @@ public class JobPostingController extends HttpServlet {
         String url = "";
         try {
             int jobPostId = Integer.parseInt(request.getParameter("jobPostID"));
-            //lay ve account mail
+
             JobPostings jobPost = jobPostingsDAO.findJobPostingById(jobPostId);
-            int recruiterId = jobPost.getRecruiterID();
-            Recruiters recruiters = reDao.findById(String.valueOf(recruiterId));
+            Recruiters recruiters = reDao.findById(String.valueOf(jobPost.getRecruiterID()));
             Account account = accDao.findUserById(recruiters.getAccountID());
-            String subject = "Job Posting Suspension Notice";
-            String content = request.getParameter("response");
-            Email.sendEmail(account.getEmail(), subject, content);
+
+            Email.sendEmail(account.getEmail(),
+                    "Job Posting Suspension Notice",
+                    request.getParameter("response"));
+
             jobPostingsDAO.violateJobPost(jobPostId);
-            url = "job_posting?success=" + URLEncoder.encode("Violate job post and send email successfully!!", "UTF-8");
+
+            url = "job_posting?success="
+                    + URLEncoder.encode("Violate job post and send email successfully!!", "UTF-8");
+
         } catch (MessagingException ex) {
-            url = "job_posting?error=" + URLEncoder.encode("Have error in process violate job post and send email!!", "UTF-8");
+            url = "job_posting?error="
+                    + URLEncoder.encode("Have error in process violate job post and send email!!", "UTF-8");
         }
         return url;
     }
@@ -149,36 +191,35 @@ public class JobPostingController extends HttpServlet {
     }
 
     private String editCategory(HttpServletRequest request) throws UnsupportedEncodingException {
-        String url = "";
         int categoryId = Integer.parseInt(request.getParameter("categoryId"));
         String nameCate = request.getParameter("newCategoryName");
+
         if (cateDao.checkDuplicateOther(categoryId, nameCate)) {
-            url = "job_posting?duplicateEdit=" + URLEncoder.encode("This category is existed!!", "UTF-8");
-        } else {
-            cateDao.editCategory(categoryId, nameCate);
-            url = "job_posting";
+            return "job_posting?duplicateEdit="
+                    + URLEncoder.encode("This category is existed!!", "UTF-8");
         }
-        return url;
+
+        cateDao.editCategory(categoryId, nameCate);
+        return "job_posting";
     }
 
     private String deleteCategory(HttpServletRequest request) {
-        String categoryId = request.getParameter("categoryId");
-        cateDao.delete(categoryId);
+        cateDao.delete(request.getParameter("categoryId"));
         return "job_posting";
     }
 
     private String addCategory(HttpServletRequest request) throws UnsupportedEncodingException {
-        String url = "";
         String nameCate = request.getParameter("cateName");
-        Job_Posting_Category jobPostCate = new Job_Posting_Category();
-        jobPostCate.setName(nameCate);
-        if (cateDao.checkDuplicateName(nameCate)) {
-            url = "job_posting?duplicate=" + URLEncoder.encode("This category is existed!!", "UTF-8");
-        } else {
-            cateDao.insert(jobPostCate);
-            url = "job_posting";
-        }
-        return url;
-    }
 
+        if (cateDao.checkDuplicateName(nameCate)) {
+            return "job_posting?duplicate="
+                    + URLEncoder.encode("This category is existed!!", "UTF-8");
+        }
+
+        Job_Posting_Category cate = new Job_Posting_Category();
+        cate.setName(nameCate);
+        cateDao.insert(cate);
+
+        return "job_posting";
+    }
 }

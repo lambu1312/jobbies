@@ -120,6 +120,7 @@
             justify-content: center;
             margin-bottom: 2rem;
             padding: 2rem 0;
+            margin-top: 50px;
         }
 
         .header-section h2 {
@@ -519,6 +520,7 @@ border: 1.5px solid #c471f5;
         <!-- Main content for Job Posting Management -->
         <div class="job-posting-container">
             <!-- Centered Header section -->
+            
             <div class="header-section">
                 <h2>Quản Lý Bài Đăng Việc Làm</h2>
             </div>

@@ -305,8 +305,7 @@ justify-content: center;
                             required
                         >
 </div>
-
-                    <c:if test="${requestScope.error != null}">
+<c:if test="${requestScope.error != null}">
                         <div class="error-message">
                             <i class="fas fa-exclamation-circle"></i>
                             ${requestScope.error}

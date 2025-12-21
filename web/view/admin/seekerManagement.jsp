@@ -391,30 +391,27 @@ hr {
                 <div class="container-fluid" style="margin-bottom: 20px; margin-top: 20px">
                     <div class="dash__content">
                         <div class="dash__overview">
-                            <h6 class="fw-medium mb-30 text-center fs-2">CANDIDATE ACCOUNT MANAGEMENT</h6>
+                            <h6 class="fw-medium mb-30 text-center fs-2">QUẢN LÝ TÀI KHOẢN NGƯỜI TÌM VIỆC</h6>
                             
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <!--drop-down filter candidate-->
-                                <div class="filter-dropdown">
-                                    <form action="${pageContext.request.contextPath}/candidates" method="GET">
-                                        <label for="candidate-filter">Filter</label>
-                                        <select id="candidate-filter" name="filter" onchange="this.form.submit()">
-                                            <option value="all" ${param.filter == null || param.filter == 'all' ? 'selected' : ''}>All Candidates</option>
-                                            <option value="active" ${param.filter == 'active' ? 'selected' : ''}>Active Candidates</option>
-                                            <option value="inactive" ${param.filter == 'inactive' ? 'selected' : ''}>Inactive Candidates</option>
-                                        </select>
-                                    </form>
-                                </div>
-                            </div>
+                            
                             
                             <hr/>
                             
                             <!--search candidate-->
                             <form action="${pageContext.request.contextPath}/candidates" method="GET">
+                             
                                 <div class="d-flex justify-content-center mb-3">
+                                    <div class="filter-dropdown">
+                                        <label for="candidate-filter">Filter</label>
+                                        <select id="candidate-filter" name="filter" onchange="this.form.submit()">
+                                            <option value="all" ${param.filter == null || param.filter == 'all' ? 'selected' : ''}>Toàn bộ tài khoản</option>
+                                            <option value="active" ${param.filter == 'active' ? 'selected' : ''}>tài khoản hoạt động</option>
+                                            <option value="inactive" ${param.filter == 'inactive' ? 'selected' : ''}>tài khoản không hoạt động</option>
+                                        </select>
+                                </div>
                                     <input type="hidden" name="filter" value="${param.filter != null ? param.filter : 'all'}">
-                                    <input type="text" id="searchCandidate" name="searchQuery" class="form-control" style="width: 60%;" placeholder="Search for name/email...">
-                                    <button type="submit" class="btn btn-primary ms-2">Search</button>
+                                    <input type="text" id="searchCandidate" name="searchQuery" class="form-control" style="width: 60%;" placeholder="Tìm theo tên/email...">
+                                    <button type="submit" class="btn btn-primary ms-2">Tìm</button>
                                 </div>
                             </form>
 
@@ -425,10 +422,10 @@ hr {
                                         <tr>
                                             <th>Id</th>
                                             <th>Avatar</th>
-                                            <th>Full Name</th>
+                                            <th>Tên</th>
                                             <th>Email</th>
-                                            <th>Status Account</th>
-                                            <th>View</th>
+                                            <th>Trạng thái tài khoản</th>
+                                            <th>Xem</th>
                                         </tr>
                                     </thead>
                                     <tbody>

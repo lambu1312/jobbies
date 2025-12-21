@@ -12,13 +12,27 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/SWP391deptrai/jobbies/web/view/authen/ForgotPasswordOTP.jsp</file>
-            <file>file:/C:/SWP391deptrai/jobbies/web/view/authen/login.jsp</file>
-            <file>file:/C:/SWP391deptrai/jobbies/web/view/authen/logout.jsp</file>
-            <file>file:/C:/SWP391deptrai/jobbies/web/view/authen/ResetPassword.jsp</file>
-            <file>file:/C:/SWP391deptrai/jobbies/web/view/admin/adminHome.jsp</file>
-            <file>file:/C:/SWP391deptrai/jobbies/web/view/authen/ConfirmOTP.jsp</file>
-            <file>file:/C:/SWP391deptrai/jobbies/web/view/common/footer.jsp</file>
+            <file>file:/D:/mg/jobbies/jobbies/web/view/ViewJobPosting.jsp</file>
+            <file>file:/D:/mg/jobbies/jobbies/web/view/user/FavourJobPosting.jsp</file>
+            <file>file:/D:/mg/jobbies/jobbies/web/view/recruiter/jobPost-manager.jsp</file>
+            <file>file:/D:/mg/jobbies/jobbies/src/java/controller/recruiter/JobPost.java</file>
+            <file>file:/D:/mg/jobbies/jobbies/test/test/AuthTest.java</file>
+            <file>file:/D:/mg/jobbies/jobbies/test/test/RecruitersTest.java</file>
+            <file>file:/D:/mg/jobbies/jobbies/src/java/dao/RecruitersDAO.java</file>
+            <file>file:/D:/mg/jobbies/jobbies/src/java/dao/HandbookPostsDAO.java</file>
+            <file>file:/D:/mg/jobbies/jobbies/src/java/dao/EducationDAO.java</file>
+            <file>file:/D:/mg/jobbies/jobbies/src/java/dao/DBContext.java</file>
+            <file>file:/D:/mg/jobbies/jobbies/src/java/controller/recruiter/ApplicationSeekersController.java</file>
+            <file>file:/D:/mg/jobbies/jobbies/src/java/controller/DownloadCVServlet.java</file>
+            <file>file:/D:/mg/jobbies/jobbies/web/view/user/cv_edit.jsp</file>
+            <file>file:/D:/mg/jobbies/jobbies/web/view/user/cv_builder_add.jsp</file>
+            <file>file:/D:/mg/jobbies/jobbies/web/view/user/userHome.jsp</file>
+            <file>file:/D:/mg/jobbies/jobbies/web/view/home.jsp</file>
+            <file>file:/D:/mg/jobbies/jobbies/src/java/dao/JobPostingsDAO.java</file>
+            <file>file:/D:/mg/jobbies/jobbies/src/java/controller/candidate/HomeSeekerServlet.java</file>
+            <file>file:/D:/mg/jobbies/jobbies/src/java/controller/HomeController.java</file>
+            <file>file:/D:/mg/jobbies/jobbies/web/view/recruiter/manageApplications.jsp</file>
+            <file>file:/D:/mg/jobbies/jobbies/src/java/controller/recruiter/RecruiterCvPreviewServlet.java</file>
         </group>
     </open-files>
 </project-private>

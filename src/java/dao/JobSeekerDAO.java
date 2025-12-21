@@ -59,4 +59,20 @@ public class JobSeekerDAO extends GenericDAO<JobSeekers> {
             System.out.println("No Job Seeker found with AccountID" + accountIDStr);
         }
     }
+    
+    public Integer findJobSeekerIdByAccountId(int accountId) {
+    String sql = "SELECT JobSeekerID FROM [dbo].[JobSeekers] WHERE AccountID = ?";
+    parameterMap = new LinkedHashMap<>();
+    parameterMap.put("AccountID", accountId);
+
+    List<JobSeekers> list = queryGenericDAO(JobSeekers.class, sql, parameterMap);
+    return list.isEmpty() ? null : list.get(0).getJobSeekerID();
+}
+    
+    public Integer insertAndReturnId(JobSeekers js) {
+    String sql = "INSERT INTO JobSeekers (AccountID) VALUES (?)";
+    parameterMap = new LinkedHashMap<>();
+    parameterMap.put("AccountID", js.getAccountID());
+    return insertGenericDAO(sql, parameterMap);
+}
 }

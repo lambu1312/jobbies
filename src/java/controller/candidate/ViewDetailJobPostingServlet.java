@@ -24,6 +24,7 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
     private final JobSeekerDAO jobSeekerDAO = new JobSeekerDAO();
     private final ApplicationDAO applicationDAO = new ApplicationDAO();
     private final FavourJobPostingDAO favourJPDAO = new FavourJobPostingDAO();
+    private final CvDAO cvDAO = new CvDAO();
     private final Validation valid = new Validation();
 
     @Override
@@ -75,8 +76,7 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
                 case "add-favourJP":
                     url = processAddFavouriteJobPosting(request);
                     break;
-
-                default:
+default:
                     url = "home";
             }
 
@@ -120,7 +120,7 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
             if (jobSeeker == null) {
                 // Set a message but still display job details
                 request.setAttribute("errorJobSeeker",
-                        "You are not currently a member of Job Seeker. Please join to use this function.");
+                        "Bạn chưa là thành viên của Jobbies, hãy đăng ký là thành viên trong hồ sơ. ");
             } else {
                 // Continue retrieving related information if the job seeker exists
                 Applications existingApplication = applicationDAO.findPendingApplication(
@@ -141,8 +141,7 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
             if (notice != null) {
                 request.setAttribute("notice", notice);
             }
-
-            return "view/user/ViewJobPosting.jsp";
+return "view/user/ViewJobPosting.jsp";
 
         } catch (NumberFormatException e) {
             Logger.getLogger(ViewDetailJobPostingServlet.class.getName()).log(Level.SEVERE, null, e);
@@ -164,8 +163,17 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
             JobSeekers jobSeeker = jobSeekerDAO.findJobSeekerIDByAccountID(account.getId() + "");
             if (jobSeeker == null) {
                 return "jobPostingDetail?action=details&idJP=" + jobPostingId + "&error="
-                        + URLEncoder.encode("You are not currently a member of Job Seeker. Please join to use this function.", "UTF-8");
+                        + URLEncoder.encode("Bạn chưa là thành viên của Jobbies, hãy đăng ký là thành viên trong hồ sơ. ", "UTF-8");
             }
+
+            CV cv = cvDAO.findCVbyJobSeekerID(jobSeeker.getJobSeekerID());
+            if (cv == null) {
+                return "jobPostingDetail?action=details&idJP=" + jobPostingId + "&error="
+                        + URLEncoder.encode("Chưa có CV, bạn hãy tạo CV trước. ", "UTF-8");
+
+            }
+
+            request.setAttribute("cv", cv.getCvId());
 
             // Check for existing pending application
             Applications existingApp = applicationDAO.findPendingApplication(
@@ -179,6 +187,7 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
             Applications application = new Applications();
             application.setJobPostingID(jobPostingId);
             application.setJobSeekerID(jobSeeker.getJobSeekerID());
+            application.setCVID(cv.getCvId());
             application.setStatus(3); // Pending status
             applicationDAO.insert(application);
 
@@ -196,7 +205,7 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
         Account account = (Account) session.getAttribute(CommonConst.SESSION_ACCOUNT);
 
         if (account == null) {
-            return "view/authen/login.jsp";
+return "view/authen/login.jsp";
         }
 
         try {
@@ -205,7 +214,7 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
 
             if (jobSeeker == null) {
                 return "jobPostingDetail?action=details&idJP=" + jobPostingId + "&error="
-                        + URLEncoder.encode("You are not currently a member of Job Seeker. Please join to use this function.", "UTF-8");
+                        + URLEncoder.encode("Bạn chưa là thành viên của Jobbies, hãy đăng ký là thành viên trong hồ sơ. ", "UTF-8");
             }
 
             if (!favourJPDAO.getJobPostingsByJobSeeker(jobSeeker.getJobSeekerID(), jobPostingId)) {
@@ -216,11 +225,11 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
             }
 
             return "jobPostingDetail?action=details&idJP=" + jobPostingId + "&success="
-                    + URLEncoder.encode("Job posting added to favorites.", "UTF-8");
+                    + URLEncoder.encode("Đã thích bài đăng tuyển dụng này.", "UTF-8");
 
         } catch (NumberFormatException e) {
             Logger.getLogger(ViewDetailJobPostingServlet.class.getName()).log(Level.SEVERE, null, e);
-            return "jobPostingDetail?error=" + URLEncoder.encode("Invalid job posting information.", "UTF-8");
+            return "jobPostingDetail?error=" + URLEncoder.encode("Không có thông tin bài đăng.", "UTF-8");
         }
     }
 
@@ -233,6 +242,15 @@ public class ViewDetailJobPostingServlet extends HttpServlet {
         }
 
         JobSeekers jobSeeker = jobSeekerDAO.findJobSeekerIDByAccountID(String.valueOf(account.getId()));
+        if (jobSeeker != null) {
+            CV cv = cvDAO.findCVbyJobSeekerID(jobSeeker.getJobSeekerID());
+            if (cv != null) {
+                request.setAttribute("cvFilePath", cv.getFilePath());
+            }
+        } else {
+            request.setAttribute("errorJobSeeker",
+                    "Bạn chưa là thành viên của Jobbies, hãy đăng ký là thành viên trong hồ sơ. ");
+        }
 
         return "view/user/ViewJobPosting.jsp";
     }

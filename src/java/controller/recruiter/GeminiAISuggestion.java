@@ -20,24 +20,24 @@ import java.nio.charset.StandardCharsets;
 public class GeminiAISuggestion extends HttpServlet {
 
     // Working API key (tested with curl)
-    private static final String GEMINI_API_KEY = "AIzaSyAZh5Onr3b8SdSxspVXjV5TNfyXqeY7xuQ";
-    
+    private static final String GEMINI_API_KEY = "AIzaSyAPSi0NWA4XXNOrk6J0KUdpyEsoPJFRquI";
+
     // Use v1beta API (confirmed working with curl test)
     private static final String[] AVAILABLE_MODELS = {
-        "gemini-2.5-flash",           // Fastest, tested working
-        "gemini-2.5-pro",             // Most capable
-        "gemini-2.0-flash-001",       // Stable version
-        "gemini-2.0-flash"            // General version
+        "gemini-2.5-flash", // Fastest, tested working
+        "gemini-2.5-pro", // Most capable
+        "gemini-2.0-flash-001", // Stable version
+        "gemini-2.0-flash" // General version
     };
     private static String GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + GEMINI_API_KEY;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        
+
         try {
             // Đọc jobTitle từ request
             BufferedReader reader = request.getReader();
@@ -46,13 +46,13 @@ public class GeminiAISuggestion extends HttpServlet {
             while ((line = reader.readLine()) != null) {
                 sb.append(line);
             }
-            
+
             Gson gson = new Gson();
             JsonObject requestData = gson.fromJson(sb.toString(), JsonObject.class);
             String jobTitle = requestData.get("jobTitle").getAsString();
-            
+
             System.out.println("Received job title: " + jobTitle);
-            
+
             if (jobTitle == null || jobTitle.trim().isEmpty()) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 JsonObject errorResponse = new JsonObject();
@@ -60,21 +60,21 @@ public class GeminiAISuggestion extends HttpServlet {
                 response.getWriter().write(gson.toJson(errorResponse));
                 return;
             }
-            
+
             // Detect language (Vietnamese or English)
             boolean isVietnamese = containsVietnamese(jobTitle);
             String language = isVietnamese ? "Vietnamese" : "English";
-            
+
             System.out.println("Detected language: " + language);
 // Tạo prompt cho Gemini AI
             String prompt = createPrompt(jobTitle, language);
-            
+
             System.out.println("Generated prompt: " + prompt);
-            
+
             // Gọi Gemini API với retry mechanism
             System.out.println("=== Calling Gemini AI (Required) ===");
             JsonObject aiResponse = callGeminiAPIWithRetry(prompt, jobTitle, 3); // Retry 3 lần
-            
+
             if (aiResponse != null && aiResponse.has("description") && aiResponse.has("requirements")) {
                 System.out.println("✓ AI Response received successfully");
                 response.setStatus(HttpServletResponse.SC_OK);
@@ -87,11 +87,11 @@ public class GeminiAISuggestion extends HttpServlet {
                 errorResponse.addProperty("retryable", true);
                 response.getWriter().write(gson.toJson(errorResponse));
             }
-            
+
         } catch (Exception e) {
             System.err.println("Exception in doPost: " + e.getMessage());
             e.printStackTrace();
-            
+
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             JsonObject errorResponse = new JsonObject();
             errorResponse.addProperty("error", "System error occurred. Please try again.");
@@ -99,24 +99,24 @@ public class GeminiAISuggestion extends HttpServlet {
             response.getWriter().write(new Gson().toJson(errorResponse));
         }
     }
-    
+
     private JsonObject callGeminiAPIWithRetry(String prompt, String jobTitle, int maxRetries) {
         JsonObject response = null;
-        
+
         // Try different models if one fails (using v1beta API)
         for (String model : AVAILABLE_MODELS) {
             GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/" + model + ":generateContent?key=" + GEMINI_API_KEY;
             System.out.println("Trying model: " + model);
-            
+
             response = callGeminiAPI(prompt, jobTitle);
-            
+
             if (response != null && response.has("description") && response.has("requirements")) {
                 System.out.println("✓ Success with model: " + model);
                 return response;
             }
-            
+
             System.out.println("✗ Failed with model: " + model + ", trying next...");
-            
+
             // Wait 2 seconds before trying next model
             try {
                 Thread.sleep(2000);
@@ -124,76 +124,76 @@ public class GeminiAISuggestion extends HttpServlet {
                 Thread.currentThread().interrupt();
             }
         }
-System.err.println("All models failed");
+        System.err.println("All models failed");
         return null;
     }
-    
+
     private boolean containsVietnamese(String text) {
         // Check for Vietnamese characters
         return text.matches(".*[àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ].*");
     }
-    
+
     private String createPrompt(String jobTitle, String language) {
         if (language.equals("Vietnamese")) {
-            return "Bạn là chuyên gia tuyển dụng chuyên nghiệp. Hãy tạo nội dung tuyển dụng CỤ THỂ cho vị trí: '" + jobTitle + "'\n\n" +
-                   "Yêu cầu:\n" +
-                   "1. Phân tích kỹ tên vị trí '" + jobTitle + "' để hiểu đúng công việc thực tế\n" +
-                   "2. Tạo mô tả công việc CHI TIẾT gồm:\n" +
-                   "   - Tổng quan về vị trí và vai trò trong công ty\n" +
-                   "   - Liệt kê 5-8 TRÁCH NHIỆM CỤ THỂ mà người làm '" + jobTitle + "' phải thực hiện hàng ngày\n" +
-                   "   - Mô tả môi trường làm việc và công nghệ/công cụ sẽ sử dụng\n" +
-                   "3. Liệt kê yêu cầu tuyển dụng CỤ THỂ:\n" +
-                   "   - Trình độ học vấn phù hợp với '" + jobTitle + "'\n" +
-                   "   - Số năm kinh nghiệm cần thiết\n" +
-                   "   - 5-8 KỸ NĂNG CHUYÊN MÔN cụ thể cho '" + jobTitle + "' (ngôn ngữ lập trình, công cụ, framework...)\n" +
-                   "   - Kỹ năng mềm cần có\n\n" +
-                   "QUAN TRỌNG:\n" +
-                   "- KHÔNG dùng cụm từ chung chung như 'this position', 'các nhiệm vụ', 'công cụ liên quan'\n" +
-                   "- PHẢI nêu TÊN CỤ THỂ: tên công nghệ, tên công cụ, tên kỹ năng cho vị trí '" + jobTitle + "'\n" +
-                   "- Ví dụ: Nếu là 'Lập trình viên Java' thì phải có: Spring Boot, Hibernate, MySQL, Maven...\n" +
-                   "- Ví dụ: Nếu là 'Marketing Manager' thì phải có: Google Ads, Facebook Ads, SEO, Google Analytics...\n" +
-                   "- Viết HOÀN TOÀN bằng tiếng Việt\n" +
-                   "- Sử dụng HTML: <p>, <strong>, <ul>, <li>\n\n" +
-                   "Trả về ĐÚNG format JSON này (không có markdown):\n" +
-                   "{\n" +
-                   "  \"description\": \"<p><strong>Tổng quan:</strong></p><p>...</p><p><strong>Trách nhiệm:</strong></p><ul><li>...</li></ul>\",\n" +
-                   "  \"requirements\": \"<p><strong>Yêu cầu:</strong></p><ul><li>...</li></ul>\"\n" +
-                   "}";
+            return "Bạn là chuyên gia tuyển dụng chuyên nghiệp. Hãy tạo nội dung tuyển dụng CỤ THỂ cho vị trí: '" + jobTitle + "'\n\n"
+                    + "Yêu cầu:\n"
+                    + "1. Phân tích kỹ tên vị trí '" + jobTitle + "' để hiểu đúng công việc thực tế\n"
+                    + "2. Tạo mô tả công việc CHI TIẾT gồm:\n"
+                    + "   - Tổng quan về vị trí và vai trò trong công ty\n"
+                    + "   - Liệt kê 5-8 TRÁCH NHIỆM CỤ THỂ mà người làm '" + jobTitle + "' phải thực hiện hàng ngày\n"
+                    + "   - Mô tả môi trường làm việc và công nghệ/công cụ sẽ sử dụng\n"
+                    + "3. Liệt kê yêu cầu tuyển dụng CỤ THỂ:\n"
+                    + "   - Trình độ học vấn phù hợp với '" + jobTitle + "'\n"
+                    + "   - Số năm kinh nghiệm cần thiết\n"
+                    + "   - 5-8 KỸ NĂNG CHUYÊN MÔN cụ thể cho '" + jobTitle + "' (ngôn ngữ lập trình, công cụ, framework...)\n"
+                    + "   - Kỹ năng mềm cần có\n\n"
+                    + "QUAN TRỌNG:\n"
+                    + "- KHÔNG dùng cụm từ chung chung như 'this position', 'các nhiệm vụ', 'công cụ liên quan'\n"
+                    + "- PHẢI nêu TÊN CỤ THỂ: tên công nghệ, tên công cụ, tên kỹ năng cho vị trí '" + jobTitle + "'\n"
+                    + "- Ví dụ: Nếu là 'Lập trình viên Java' thì phải có: Spring Boot, Hibernate, MySQL, Maven...\n"
+                    + "- Ví dụ: Nếu là 'Marketing Manager' thì phải có: Google Ads, Facebook Ads, SEO, Google Analytics...\n"
+                    + "- Viết HOÀN TOÀN bằng tiếng Việt\n"
+                    + "- Sử dụng HTML: <p>, <strong>, <ul>, <li>\n\n"
+                    + "Trả về ĐÚNG format JSON này (không có markdown):\n"
+                    + "{\n"
+                    + "  \"description\": \"<p><strong>Tổng quan:</strong></p><p>...</p><p><strong>Trách nhiệm:</strong></p><ul><li>...</li></ul>\",\n"
+                    + "  \"requirements\": \"<p><strong>Yêu cầu:</strong></p><ul><li>...</li></ul>\"\n"
+                    + "}";
         } else {
-            return "You are a professional recruitment expert. Create SPECIFIC job posting content for: '" + jobTitle + "'\n\n" +
-                   "Requirements:\n" +
-                   "1. Analyze the job title '" + jobTitle + "' to understand the actual work\n" +
-                   "2. Create DETAILED job description with:\n" +
-"   - Overview of the position and role in company\n" +
-                   "   - List 5-8 SPECIFIC RESPONSIBILITIES that a '" + jobTitle + "' performs daily\n" +
-                   "   - Describe work environment and technologies/tools to be used\n" +
-                   "3. List SPECIFIC requirements:\n" +
-                   "   - Education level appropriate for '" + jobTitle + "'\n" +
-                   "   - Years of experience needed\n" +
-                   "   - 5-8 SPECIFIC TECHNICAL SKILLS for '" + jobTitle + "' (programming languages, tools, frameworks...)\n" +
-                   "   - Soft skills needed\n\n" +
-                   "CRITICAL:\n" +
-                   "- DO NOT use generic phrases like 'this position', 'related tasks', 'relevant tools'\n" +
-                   "- MUST name SPECIFIC: technology names, tool names, skill names for '" + jobTitle + "'\n" +
-                   "- Example: If 'Java Developer' then include: Spring Boot, Hibernate, MySQL, Maven, Git...\n" +
-                   "- Example: If 'Marketing Manager' then include: Google Ads, Facebook Ads, SEO, Google Analytics...\n" +
-                   "- Write ENTIRELY in English\n" +
-                   "- Use HTML: <p>, <strong>, <ul>, <li>\n\n" +
-                   "Return this EXACT JSON format (no markdown):\n" +
-                   "{\n" +
-                   "  \"description\": \"<p><strong>Overview:</strong></p><p>...</p><p><strong>Responsibilities:</strong></p><ul><li>...</li></ul>\",\n" +
-                   "  \"requirements\": \"<p><strong>Requirements:</strong></p><ul><li>...</li></ul>\"\n" +
-                   "}";
+            return "You are a professional recruitment expert. Create SPECIFIC job posting content for: '" + jobTitle + "'\n\n"
+                    + "Requirements:\n"
+                    + "1. Analyze the job title '" + jobTitle + "' to understand the actual work\n"
+                    + "2. Create DETAILED job description with:\n"
+                    + "   - Overview of the position and role in company\n"
+                    + "   - List 5-8 SPECIFIC RESPONSIBILITIES that a '" + jobTitle + "' performs daily\n"
+                    + "   - Describe work environment and technologies/tools to be used\n"
+                    + "3. List SPECIFIC requirements:\n"
+                    + "   - Education level appropriate for '" + jobTitle + "'\n"
+                    + "   - Years of experience needed\n"
+                    + "   - 5-8 SPECIFIC TECHNICAL SKILLS for '" + jobTitle + "' (programming languages, tools, frameworks...)\n"
+                    + "   - Soft skills needed\n\n"
+                    + "CRITICAL:\n"
+                    + "- DO NOT use generic phrases like 'this position', 'related tasks', 'relevant tools'\n"
+                    + "- MUST name SPECIFIC: technology names, tool names, skill names for '" + jobTitle + "'\n"
+                    + "- Example: If 'Java Developer' then include: Spring Boot, Hibernate, MySQL, Maven, Git...\n"
+                    + "- Example: If 'Marketing Manager' then include: Google Ads, Facebook Ads, SEO, Google Analytics...\n"
+                    + "- Write ENTIRELY in English\n"
+                    + "- Use HTML: <p>, <strong>, <ul>, <li>\n\n"
+                    + "Return this EXACT JSON format (no markdown):\n"
+                    + "{\n"
+                    + "  \"description\": \"<p><strong>Overview:</strong></p><p>...</p><p><strong>Responsibilities:</strong></p><ul><li>...</li></ul>\",\n"
+                    + "  \"requirements\": \"<p><strong>Requirements:</strong></p><ul><li>...</li></ul>\"\n"
+                    + "}";
         }
     }
-    
+
     private JsonObject callGeminiAPI(String prompt, String jobTitle) {
         try {
             System.out.println("========================================");
             System.out.println("Calling Gemini API...");
             System.out.println("API URL: " + GEMINI_API_URL);
             System.out.println("========================================");
-            
+
             URL url = new URL(GEMINI_API_URL);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
@@ -201,7 +201,7 @@ System.err.println("All models failed");
             conn.setDoOutput(true);
             conn.setConnectTimeout(30000); // 30 seconds timeout for Vietnamese
             conn.setReadTimeout(30000);
-            
+
             // Tạo request body theo format của Gemini API
             JsonObject requestBody = new JsonObject();
             JsonArray contents = new JsonArray();
@@ -213,21 +213,21 @@ System.err.println("All models failed");
             content.add("parts", parts);
             contents.add(content);
             requestBody.add("contents", contents);
-System.out.println("Request body: " + requestBody.toString());
-            
+            System.out.println("Request body: " + requestBody.toString());
+
             // Gửi request
             try (OutputStream os = conn.getOutputStream()) {
                 byte[] input = requestBody.toString().getBytes(StandardCharsets.UTF_8);
                 os.write(input, 0, input.length);
             }
-            
+
             // Đọc response
             int responseCode = conn.getResponseCode();
             System.out.println("========================================");
             System.out.println("Response Code: " + responseCode);
             System.out.println("Response Message: " + conn.getResponseMessage());
             System.out.println("========================================");
-            
+
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 try (BufferedReader br = new BufferedReader(
                         new InputStreamReader(conn.getInputStream(), StandardCharsets.UTF_8))) {
@@ -236,16 +236,16 @@ System.out.println("Request body: " + requestBody.toString());
                     while ((responseLine = br.readLine()) != null) {
                         responseStr.append(responseLine.trim());
                     }
-                    
+
                     System.out.println("Gemini response: " + responseStr.toString());
-                    
+
                     // Parse response từ Gemini
                     Gson gson = new Gson();
                     JsonObject geminiResponse = gson.fromJson(responseStr.toString(), JsonObject.class);
-                    
+
                     // Extract text từ response
                     String generatedText = extractTextFromGeminiResponse(geminiResponse);
-                    
+
                     if (generatedText != null && !generatedText.isEmpty()) {
                         System.out.println("Generated text: " + generatedText);
                         // Parse JSON từ generated text
@@ -267,15 +267,15 @@ System.out.println("Request body: " + requestBody.toString());
                 }
                 System.err.println("========================================");
             }
-            
+
         } catch (Exception e) {
             System.err.println("Exception in callGeminiAPI: " + e.getMessage());
-e.printStackTrace();
+            e.printStackTrace();
         }
-        
+
         return null; // Return null to let caller handle default response with proper language
     }
-    
+
     private String extractTextFromGeminiResponse(JsonObject response) {
         try {
             JsonArray candidates = response.getAsJsonArray("candidates");
@@ -293,7 +293,7 @@ e.printStackTrace();
         }
         return null;
     }
-    
+
     private JsonObject parseAIGeneratedText(String text) {
         try {
             // Remove markdown code blocks if present
@@ -308,16 +308,16 @@ e.printStackTrace();
                 text = text.substring(0, text.length() - 3);
             }
             text = text.trim();
-            
+
             // Find JSON in text response
             int jsonStart = text.indexOf("{");
             int jsonEnd = text.lastIndexOf("}");
-            
+
             if (jsonStart != -1 && jsonEnd != -1) {
                 String jsonStr = text.substring(jsonStart, jsonEnd + 1);
                 Gson gson = new Gson();
                 JsonObject result = gson.fromJson(jsonStr, JsonObject.class);
-                
+
                 // Validate result has required fields
                 if (result.has("description") && result.has("requirements")) {
                     return result;

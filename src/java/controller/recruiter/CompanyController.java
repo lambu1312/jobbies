@@ -26,6 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Account;
 import model.Company;
+import utils.CloudinaryUploadUtil;
 import validate.Validation;
 
 @MultipartConfig
@@ -38,9 +39,6 @@ public class CompanyController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //get ve cac notice va error
-
-        //get ve action tu side bar
         String action = request.getParameter("action") != null ? request.getParameter("action") : "";
         String url;
         switch (action) {
@@ -54,7 +52,6 @@ public class CompanyController extends HttpServlet {
                 url = "view/recruiter/createCompany.jsp";
         }
 
-        //chuyen trang
         request.getRequestDispatcher(url).forward(request, response);
     }
 
@@ -81,13 +78,12 @@ public class CompanyController extends HttpServlet {
         Account account = (Account) session.getAttribute(CommonConst.SESSION_ACCOUNT);
         String url = "";
 
-//        get ve cac thuoc tinh cua company
         String name = request.getParameter("name");
         String description = request.getParameter("description");
         String location = request.getParameter("location");
         String businessCode = request.getParameter("businessCode");
         String businessLicense = getBusinessLicenseImg("businessLicense", request);
-//        tao doi tuong company va set cac thuoc tinh
+
         Company company = new Company();
         company.setName(name);
         company.setDescription(description);
@@ -95,15 +91,15 @@ public class CompanyController extends HttpServlet {
         company.setBusinessCode(businessCode);
         company.setBusinessLicenseImage(businessLicense);
         company.setAccountId(account.getId());
-        //set data để hiển thị sang bên jsp
+
         request.setAttribute("company", company);
-        //kiem tra xem company nay da nguoi tao chua
+
         boolean check = companyDao.checkCompanyByAccountId(company);
         if (check) {
-            //chua tao
-            //check valid business code
-            if (!validate.checkCode(businessCode)) {
-                String error = "Business code is not valid!!";
+            // Check valid business code (Updated to 10 digits)
+            // Replaced validate.checkCode with direct regex check for 10 digits
+            if (!businessCode.matches("\\d{10}")) {
+                String error = "Business code must be exactly 10 digits!!";
                 request.setAttribute("errorCode", error);
                 url = "view/recruiter/createCompany.jsp";
                 return url;
@@ -118,7 +114,6 @@ public class CompanyController extends HttpServlet {
             url = "view/recruiter/createCompany.jsp";
 
         } else {
-            //da tao roi
             String error = "You have registered your company information, please edit here";
             url = "view/recruiter/createCompany.jsp";
             request.setAttribute("error", error);
@@ -130,24 +125,12 @@ public class CompanyController extends HttpServlet {
     private String getBusinessLicenseImg(String businessLicense, HttpServletRequest request) {
         String imagePath = null;
         try {
-            // get ve businessLicense
             Part part = request.getPart(businessLicense);
-//SWT: MAJOR (CODE_SMELL)            
+
             if (part == null || part.getSubmittedFileName() == null || part.getSubmittedFileName().trim().isEmpty()) {
                 imagePath = null;
             } else {
-//        duong dan lưu ảnh
-                String path = request.getServletContext().getRealPath("images");
-                File dir = new File(path);
-//        xem duong dan nay ton tai chua
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-                File image = new File(dir, part.getSubmittedFileName());
-//        ghi file vao trong duong dan
-                part.write(image.getAbsolutePath());
-//        lay ra contextPath cua project
-                imagePath = request.getContextPath() + "/" + "/images/" + image.getName();
+                imagePath = CloudinaryUploadUtil.uploadImage(part, "businessLicense");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -169,22 +152,53 @@ public class CompanyController extends HttpServlet {
     }
 
     private String editCompanyDoPost(HttpServletRequest request, HttpServletResponse response) {
-        //get ve cac thong tin nhap
-        int id = Integer.parseInt(request.getParameter("companyId"));
-        String name = request.getParameter("name");
-        String location = request.getParameter("location");
-        String description = request.getParameter("description");
-        //tao doi tuong va set 
-        Company company = companyDao.findCompanyById(id);
-        company.setName(name);
-        company.setLocation(location);
-        company.setDescription(description);
-        //cap nhap thong tin
-        companyDao.updateCompany(company);
-        //set vao request de gui sang trang jsp
-        request.setAttribute("company", company);
-        request.setAttribute("success", "Edit successfully!!");
-        //tra ve duong dan
+        try {
+            int id = Integer.parseInt(request.getParameter("companyId"));
+            String name = request.getParameter("name");
+            String location = request.getParameter("location");
+            String description = request.getParameter("description");
+            String businessCode = request.getParameter("businessCode");
+
+            Company company = companyDao.findCompanyById(id);
+
+            // Validate business code if changed
+            if (!businessCode.equals(company.getBusinessCode())) {
+                // Check 10 digits regex
+                if (!businessCode.matches("\\d{10}")) {
+                    String error = "Business code must be exactly 10 digits!!";
+                    request.setAttribute("errorCode", error);
+                    request.setAttribute("company", company);
+                    return "view/recruiter/editCompany.jsp";
+                } else if (companyDao.checkExistBusinessCode(company.getAccountId(), businessCode)) {
+                    request.setAttribute("duplicateCode", "Business code is existed !!");
+                    request.setAttribute("company", company);
+                    return "view/recruiter/editCompany.jsp";
+                }
+            }
+
+            String newBusinessLicense = getBusinessLicenseImg("businessLicense", request);
+
+            if (newBusinessLicense != null && !newBusinessLicense.trim().isEmpty()) {
+                company.setBusinessLicenseImage(newBusinessLicense);
+            }
+
+            company.setName(name);
+            company.setLocation(location);
+            company.setDescription(description);
+            company.setBusinessCode(businessCode);
+
+            companyDao.updateCompany(company);
+
+            company = companyDao.findCompanyById(id);
+
+            request.setAttribute("company", company);
+            request.setAttribute("success", "Edit successfully!!");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Update failed: " + e.getMessage());
+        }
+
         return "view/recruiter/editCompany.jsp";
     }
 
