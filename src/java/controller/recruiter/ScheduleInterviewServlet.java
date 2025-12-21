@@ -282,6 +282,7 @@ public class ScheduleInterviewServlet extends HttpServlet {
             
             if (success) {
                 // Send email notification about interview update
+                // Send email notification about interview update
                 try {
                     // Re-fetch application for email notification
                     application = applicationDAO.getDetailApplication(interview.getApplicationID());
